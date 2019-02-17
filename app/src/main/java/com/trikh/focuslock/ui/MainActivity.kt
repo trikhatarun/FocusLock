@@ -1,7 +1,8 @@
-package com.trikh.focuslock
+package com.trikh.focuslock.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.trikh.focuslock.R
 
 class MainActivity : AppCompatActivity() {
 
