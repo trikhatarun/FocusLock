@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.container, EditScheduleFragment())
                 .addToBackStack(null).commit()
             bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+
         }
     }
 

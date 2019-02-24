@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 import com.trikh.focuslock.R
+import kotlinx.android.synthetic.main.fragment_home.*
 
-/**
- * A simple [Fragment] subclass.
- *
- */
 class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -21,5 +18,11 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        default_schedule_card.setOnClickListener {
+
+        }
+    }
 }

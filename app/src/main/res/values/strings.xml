@@ -4,4 +4,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sleep_time">Sleep Time</string>
+    <string name="wakeup_time">Wakeup Time</string>
+    <string name="blocked_apps">Blocked apps</string>
+    <string name="more_button_content_description">More options button for current schedule</string>
 </resources>
