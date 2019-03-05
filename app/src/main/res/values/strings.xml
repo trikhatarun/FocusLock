@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">FocusLock</string>
     <string name="schedule">Schedule</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sleep_time">Sleep Time</string>
     <string name="wakeup_time">Wakeup Time</string>
     <string name="blocked_apps">Blocked apps</string>
     <string name="more_button_content_description">More options button for current schedule</string>
+    <string name="set_schedule">Set Schedule</string>
+    <string name="set_your_sleep_time">Set your Sleep time</string>
+    <string name="set_your_wake_up_time">Set your Wakeup time</string>
 </resources>
