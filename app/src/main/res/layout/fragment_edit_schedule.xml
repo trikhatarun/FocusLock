@@ -36,7 +36,7 @@
         android:layout_height="81dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/night_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
@@ -76,7 +76,7 @@
         android:layout_height="81dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="#ef6737"
+        android:background="@drawable/morning_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
