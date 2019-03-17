@@ -1,5 +1,6 @@
 package com.trikh.focuslock.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -14,18 +15,15 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(bottomAppBar)
 
-        /*supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
-
         fab.setOnClickListener {
-            supportFragmentManager.beginTransaction().replace(R.id.container, EditScheduleFragment())
-                .addToBackStack(null).commit()
-            bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-
-        }*/
+            fab.hide()
+            startActivity(Intent(this@MainActivity, QuickLockActivity::class.java))
+        }
     }
 
-    override fun onBackPressed() {
-        bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-        super.onBackPressed()
+    override fun onResume() {
+        super.onResume()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        fab.show()
     }
 }

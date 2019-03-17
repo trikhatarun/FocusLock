@@ -10,6 +10,7 @@ class QuickLockActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         setContentView(R.layout.activity_quick_lock)
 
         setSupportActionBar(toolbar_layout.findViewById(R.id.toolbar))
