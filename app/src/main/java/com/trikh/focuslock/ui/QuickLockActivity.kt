@@ -13,5 +13,6 @@ class QuickLockActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.quick_lock)
     }
 }

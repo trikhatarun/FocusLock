@@ -6,29 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.QuickLockActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            app:contentScrim="@color/white"
-            app:expandedTitleMarginStart="16dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_collapseMode="pin"
-                app:title="@string/quick_lock">
-
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -142,14 +120,23 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit"
                     android:tint="@color/colorSecondaryText"
-                    android:background="?selectableItemBackgroundBorderless"
                     app:layout_constraintBottom_toBottomOf="@+id/recyclerView2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/recyclerView2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_done_black"
+        android:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
