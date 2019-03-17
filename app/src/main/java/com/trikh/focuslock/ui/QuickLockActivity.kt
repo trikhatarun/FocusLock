@@ -16,6 +16,6 @@ class QuickLockActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.quick_lock)
 
-        Handler().postDelayed(Runnable { set_quick_lock_btn.show() }, 500)
+        Handler().postDelayed({ set_quick_lock_btn.show() }, 500)
     }
 }
