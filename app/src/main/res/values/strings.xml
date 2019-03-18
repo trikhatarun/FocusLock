@@ -10,4 +10,5 @@
     <string name="set_your_wake_up_time">Set your Wakeup time</string>
     <string name="quick_lock">Quick Lock</string>
     <string name="quick_block_title">Block app till next</string>
+    <string name="search">Search</string>
 </resources>
