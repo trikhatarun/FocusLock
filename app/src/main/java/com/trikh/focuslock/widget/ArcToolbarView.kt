@@ -66,7 +66,7 @@ class ArcToolbarView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.ArcToolbarView)
             arcHeight = a.getDimension(R.styleable.ArcToolbarView_arcHeight, 60f)
-            extendOverBoundary = a.getDimension(R.styleable.ArcToolbarView_arcBoundary, 60f)
+            extendOverBoundary = a.getDimension(R.styleable.ArcToolbarView_arcBoundary, 20f)
             arcPaint.color = a.getColor(R.styleable.ArcToolbarView_arcColor, getWindowBackgroundColorOrDefault(Color.TRANSPARENT))
 
             a.recycle()
