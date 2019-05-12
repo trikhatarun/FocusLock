@@ -39,15 +39,18 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
         app:behavior_overlapTop="80dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:defaultNavHost="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:labelVisibilityMode="labeled" />
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/bottom_nav_text_color"
+        app:menu="@menu/navigation_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

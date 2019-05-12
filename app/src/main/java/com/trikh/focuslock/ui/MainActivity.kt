@@ -3,15 +3,18 @@ package com.trikh.focuslock.ui
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
-import com.trikh.focuslock.ui.video.VideoFragment
+import com.trikh.focuslock.ui.settting.SettingsFragment
 import com.trikh.focuslock.widget.extensions.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
+    SettingsFragment.OnFragmentInteractionListener {
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,5 +22,8 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         setContentView(R.layout.activity_main)
 
         arcToolbar.setAppBarLayout(appbar)
+
+        bottomNavigationBar.itemIconTintList = null
+        bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
     }
 }
