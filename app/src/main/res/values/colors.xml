@@ -10,4 +10,5 @@
     <color name="colorIcon">#8a000000</color>
     <color name="translucentColor">#19ffffff</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorYellow">#FFB500</color>
 </resources>
