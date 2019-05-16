@@ -595,7 +595,8 @@ class TimeSliderRangePicker @JvmOverloads constructor(
     }
 
     private fun degreesToTime(time: Calendar, degrees: Double) {
-        val s = degrees / 360
+        val nearestDegree = (Math.round(degrees/2.5) * 2.5)
+        val s = nearestDegree / 360
         val sr = 180 + s * 12 * 60
         time.set(Calendar.HOUR, (sr / 60).toInt() % 12)
         time.set(Calendar.MINUTE, (sr % 60).toInt())
@@ -684,7 +685,6 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 mIsThumbEndSelected = false
             }
         }
-
         invalidate()
         return true
     }
@@ -702,8 +702,4 @@ class TimeSliderRangePicker @JvmOverloads constructor(
         get() {
             return resources.displayMetrics.density.times(this)
         }
-
-    public interface OnSliderRangeMovedListener {
-        fun onChange(start: Calendar, end: Calendar)
-    }
 }
