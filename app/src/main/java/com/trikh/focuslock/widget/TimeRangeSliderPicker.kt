@@ -1,4 +1,4 @@
-package com.trikh.focuslock.widget.extensions
+package com.trikh.focuslock.widget
 
 import android.content.Context
 import android.graphics.*
@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import com.trikh.focuslock.R
 import java.util.*
 
@@ -338,8 +339,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             mCircleRadius.toFloat(),
             mPaint
         )
-
-
+        textPaint.typeface = ResourcesCompat.getFont(context,R.font.muli_regular)
         textPaint.color = Color.BLACK
         textPaint.textSize = 16.dip
         for (i in 1..12) {
@@ -644,10 +644,14 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
                 if (isThumbStartPressed) {
                     mIsThumbSelected = true
-                    updateSliderState(x, y, Thumb.START)
+                    updateSliderState(x, y,
+                        Thumb.START
+                    )
                 } else if (isThumbEndPressed) {
                     mIsThumbEndSelected = true
-                    updateSliderState(x, y, Thumb.END)
+                    updateSliderState(x, y,
+                        Thumb.END
+                    )
                 } else {
                     oldX = x
                     oldY = y
@@ -659,11 +663,15 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 if (mIsThumbSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y, Thumb.START)
+                    updateSliderState(x, y,
+                        Thumb.START
+                    )
                 } else if (mIsThumbEndSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y, Thumb.END)
+                    updateSliderState(x, y,
+                        Thumb.END
+                    )
                 } else {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
