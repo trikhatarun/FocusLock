@@ -1,6 +1,7 @@
 package com.trikh.focuslock.ui.schedule
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.trikh.focuslock.R
 import com.trikh.focuslock.widget.OnSliderRangeMovedListener
@@ -17,6 +18,9 @@ class AddScheduleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_schedule)
 
         arcToolbar.setAppBarLayout(appbar)
+        setSupportActionBar(toolbar)
+        toolbar_title.text = getString(R.string.set_schedule)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
         sleep_time_tv.text = timeFormat.format(time_picker.start.time)
@@ -33,5 +37,10 @@ class AddScheduleActivity : AppCompatActivity() {
             nestedScrollView.requestDisallowInterceptTouchEvent(true)
             false
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.add_schedule_menu, menu)
+        return true
     }
 }
