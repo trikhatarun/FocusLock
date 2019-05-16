@@ -5,6 +5,7 @@
         <!--<attr name="end_angle" format="float" />-->
         <attr name="border_thickness" format="dimension" />
         <attr name="border_color" format="color" />
+        <attr name="background_color" format="color" />
         <attr name="thumb_size" format="dimension" />
         <attr name="start_thumb_size" format="dimension" />
         <attr name="end_thumb_size" format="dimension" />

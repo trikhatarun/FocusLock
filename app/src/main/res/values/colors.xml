@@ -12,5 +12,6 @@
     <color name="white">#FFFFFF</color>
     <color name="colorYellow">#FFB500</color>
     <color name="colorClockBackground">#F9F9F9</color>
+    <color name="colorClockBorder">#F5F5F5</color>
     <color name="colorArcGradient">#f9c947</color>
 </resources>

@@ -41,6 +41,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
     private var mStartThumbColor: Int = 0
     private var mEndThumbColor: Int = 0
     private var mBorderColor: Int = 0
+    private var mBackgroundColor: Int = 0
     private var mBorderThickness: Int = 0
     private var mArcDashSize: Int = 0
     private var mArcColor: Int = 0
@@ -115,6 +116,8 @@ class TimeSliderRangePicker @JvmOverloads constructor(
         arcColorAM = a.getColor(R.styleable.TimeSliderRangePicker_arc_color_am, 0)
         arcColorPM = a.getColor(R.styleable.TimeSliderRangePicker_arc_color_pm, 0)
         val borderColor = a.getColor(R.styleable.TimeSliderRangePicker_border_color, Color.RED)
+        val backgroundColor =
+            a.getColor(R.styleable.TimeSliderRangePicker_background_color, Color.RED)
         thumbImageAM = a.getDrawable(R.styleable.TimeSliderRangePicker_start_thumb_image_am)
         thumbEndImageAM = a.getDrawable(R.styleable.TimeSliderRangePicker_end_thumb_image_am)
         thumbImagePM = a.getDrawable(R.styleable.TimeSliderRangePicker_start_thumb_image_pm)
@@ -129,6 +132,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
         setEndAngle(timeToDegrees(end))
         setBorderThickness(borderThickness)
         setBorderColor(borderColor)
+        setClockBackgroundColor(backgroundColor)
         setThumbSize(thumbSize)
         setStartThumbImage(thumbImageAM)
         setEndThumbImage(thumbEndImageAM)
@@ -215,6 +219,10 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
     fun setBorderColor(color: Int) {
         mBorderColor = color
+    }
+
+    fun setClockBackgroundColor(color: Int) {
+        mBackgroundColor = color
     }
 
     fun setStartThumbImage(drawable: Drawable?) {
@@ -311,10 +319,19 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
 
         // outer circle (ring)
-        mPaint.color = mBorderColor
+        mPaint.color = mBackgroundColor
         //  mPaint.style = Paint.Style.STROKE
         mPaint.strokeWidth = mBorderThickness.toFloat()
         mPaint.isAntiAlias = true
+        canvas.drawCircle(
+            mCircleCenterX.toFloat(),
+            mCircleCenterY.toFloat(),
+            mCircleRadius.toFloat(),
+            mPaint
+        )
+
+        mPaint.color = mBorderColor
+        mPaint.style = Paint.Style.STROKE
         canvas.drawCircle(
             mCircleCenterX.toFloat(),
             mCircleCenterY.toFloat(),
@@ -343,8 +360,8 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             textPaint.getTextBounds(numStr, 0, numStr.length, rect)
             val charWidth = rect.width()
             val charHeight = rect.height().toFloat()
-            val tx = (cX + Math.cos(angleFrom3) * (r - longTickLen - 8.dip)).toInt()
-            val ty = (cY - Math.sin(angleFrom3) * (r - longTickLen - 8.dip)).toInt()
+            val tx = (cX + Math.cos(angleFrom3) * (r - longTickLen - 12.dip)).toInt()
+            val ty = (cY - Math.sin(angleFrom3) * (r - longTickLen - 12.dip)).toInt()
 
             canvas.drawText(numStr, (tx - charWidth / 2).toFloat(), ty + charHeight / 3, textPaint)
         }
