@@ -9,6 +9,7 @@ import android.view.View
 import com.trikh.focuslock.R
 import java.util.*
 
+
 class TimeSliderRangePicker @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -280,9 +281,9 @@ class TimeSliderRangePicker @JvmOverloads constructor(
         val cY = mCircleCenterY.toDouble()
 
 
-        paint.color = Color.WHITE
-        paint.strokeWidth = 2.dip
-        textPaint.color = Color.WHITE
+        // paint.color = Color.WHITE
+        // paint.strokeWidth = 2.dip
+        /*textPaint.color = Color.BLACK
         textPaint.textSize = 16.dip
         for (i in 1..12) {
 
@@ -291,12 +292,12 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             val angleFrom3 = Math.PI / 2.0 - angleFrom12
             //g.rotate((float)angleFrom12, (int)absCX, (int)absCY);
 
-            canvas.drawLine(
+            *//*canvas.drawLine(
                 (cX + Math.cos(angleFrom3) * (r - 2.dip)).toFloat(),
                 (cY - Math.sin(angleFrom3) * (r - 2.dip)).toFloat(),
                 (cX + Math.cos(angleFrom3) * (r - medTickLen - 2.dip)).toFloat(),
                 (cY - Math.sin(angleFrom3) * (r - medTickLen - 2.dip)).toFloat(), paint
-            )
+            ) *//*
 
             val numStr = "" + i
             textPaint.getTextBounds(numStr, 0, numStr.length, rect)
@@ -306,12 +307,12 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             val ty = (cY - Math.sin(angleFrom3) * (r - longTickLen - 16.dip)).toInt()
 
             canvas.drawText(numStr, (tx - charWidth / 2).toFloat(), ty + charHeight / 3, textPaint)
-        }
+        }*/
 
 
         // outer circle (ring)
         mPaint.color = mBorderColor
-        mPaint.style = Paint.Style.STROKE
+        //  mPaint.style = Paint.Style.STROKE
         mPaint.strokeWidth = mBorderThickness.toFloat()
         mPaint.isAntiAlias = true
         canvas.drawCircle(
@@ -320,6 +321,33 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             mCircleRadius.toFloat(),
             mPaint
         )
+
+
+        textPaint.color = Color.BLACK
+        textPaint.textSize = 16.dip
+        for (i in 1..12) {
+
+            val di = i.toDouble()
+            val angleFrom12 = di / 12.0 * 2.0 * Math.PI
+            val angleFrom3 = Math.PI / 2.0 - angleFrom12
+            //g.rotate((float)angleFrom12, (int)absCX, (int)absCY);
+
+            /*canvas.drawLine(
+                (cX + Math.cos(angleFrom3) * (r - 2.dip)).toFloat(),
+                (cY - Math.sin(angleFrom3) * (r - 2.dip)).toFloat(),
+                (cX + Math.cos(angleFrom3) * (r - medTickLen - 2.dip)).toFloat(),
+                (cY - Math.sin(angleFrom3) * (r - medTickLen - 2.dip)).toFloat(), paint
+            ) */
+
+            val numStr = "" + i
+            textPaint.getTextBounds(numStr, 0, numStr.length, rect)
+            val charWidth = rect.width()
+            val charHeight = rect.height().toFloat()
+            val tx = (cX + Math.cos(angleFrom3) * (r - longTickLen - 8.dip)).toInt()
+            val ty = (cY - Math.sin(angleFrom3) * (r - longTickLen - 8.dip)).toInt()
+
+            canvas.drawText(numStr, (tx - charWidth / 2).toFloat(), ty + charHeight / 3, textPaint)
+        }
 
         // find thumb start position
         mThumbStartX = (mCircleCenterX + mCircleRadius * Math.cos(mAngleStart)).toInt()
@@ -346,7 +374,16 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
         val drawStart = toDrawingAngle(mAngleStart)
         val drawEnd = toDrawingAngle(mAngleEnd)
-
+        val shader = LinearGradient(
+            0f,
+            0f,
+            0f,
+            height.toFloat(),
+            Color.BLACK,
+            if (mArcColor === 0) Color.RED else mArcColor,
+            Shader.TileMode.CLAMP
+        )
+        mLinePaint.shader = shader
         canvas.drawArc(arcRectF, drawStart, (360 + drawEnd - drawStart) % 360, false, mLinePaint)
 
         mPaint.style = Paint.Style.FILL
@@ -368,6 +405,14 @@ class TimeSliderRangePicker @JvmOverloads constructor(
         )
 
         var mThumbSize = startThumbSize
+        mPaint.color = mStartThumbColor
+        mPaint.style = Paint.Style.FILL
+        canvas.drawCircle(
+            mThumbStartX.toFloat(),
+            mThumbStartY.toFloat(),
+            (mThumbSize / 2).toFloat(),
+            mPaint
+        )
         if (mStartThumbImage != null) {
             // draw png
             mStartThumbImage!!.setBounds(
@@ -377,7 +422,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 mThumbStartY + mThumbSize / 2
             )
             mStartThumbImage!!.draw(canvas)
-        } else {
+        } /*else {
             // draw colored circle
             mPaint.color = mStartThumbColor
             mPaint.style = Paint.Style.FILL
@@ -392,9 +437,17 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             //mLinePaint.setStrokeWidth(5);
             //canvas.drawText(String.format(Locale.US, "%.1f", drawStart), mThumbStartX - 20, mThumbStartY, mLinePaint);
             //canvas.drawText(String.format(Locale.US, "%.1f", drawEnd), mThumbEndX - 20, mThumbEndY, mLinePaint);
-        }
+        }*/
 
         mThumbSize = endThumbSize
+        mPaint.style = Paint.Style.FILL
+        mPaint.color = mEndThumbColor
+        canvas.drawCircle(
+            mThumbEndX.toFloat(),
+            mThumbEndY.toFloat(),
+            (mThumbSize / 2).toFloat(),
+            mPaint
+        )
         if (mEndThumbImage != null) {
             // draw png
             mEndThumbImage!!.setBounds(
@@ -404,7 +457,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 mThumbEndY + mThumbSize / 2
             )
             mEndThumbImage!!.draw(canvas)
-        } else {
+        }/* else {
             mPaint.style = Paint.Style.FILL
             mPaint.color = mEndThumbColor
             canvas.drawCircle(
@@ -413,7 +466,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 (mThumbSize / 2).toFloat(),
                 mPaint
             )
-        }
+        }*/
 
 
     }
@@ -625,7 +678,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             return resources.displayMetrics.density.times(this)
         }
 
-    public interface OnSliderRangeMovedListener{
-        fun onChange(start: Calendar,end: Calendar)
+    public interface OnSliderRangeMovedListener {
+        fun onChange(start: Calendar, end: Calendar)
     }
 }
