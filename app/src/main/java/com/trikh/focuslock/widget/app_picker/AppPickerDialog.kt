@@ -1,60 +1,32 @@
 package com.trikh.focuslock.widget.app_picker
 
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import java.util.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import com.trikh.focuslock.R
 
 
 class AppPickerDialog : DialogFragment() {
 
-    private val packageManager: PackageManager by lazy { activity!!.packageManager }
-    private var blockAppsSet: Set<String>? = null
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return LayoutInflater.from(context).inflate(R.layout.app_picker_dialog, container)
+    }
 
-    val applicationListObservable = Observable.fromCallable {
-        packageManager.getInstalledApplications(0)
-    }.subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.computation())
-        .filter { installedApps ->
-            /*for (app in installedApps) {
-                val appName: String
-                val packageName: String
-                val icon: Drawable
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-                if (app.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-                    appName = packageManager.getApplicationLabel(app) as String
-                    packageName = app.packageName
-                    icon = app.loadIcon(packageManager)
-                    blockAppsSet?.let {
-                        if (it.contains(packageName)) {
-                            appInfoList.add(AppInfo(appName, icon, true, packageName))
-                        } else {
-                            appInfoList.add(AppInfo(appName, icon, false, packageName))
-                        }
-                    }
+        AndroidViewModelFactory.getInstance(activity!!.application)
+            .create(AppListViewModel::class.java)
+            .getAppInfoList()
+            .observe(this, Observer { appList ->
+                appList.forEach {
+                    Log.d("appName", it.name)
                 }
-            }*/
-            if (it.contains(packageName)) {
-                appInfoList.add(AppInfo(appName, icon, true, packageName))
-            } else {
-                appInfoList.add(AppInfo(appName, icon, false, packageName))
-            }
-        }.sorted { o1, o2 ->
-            o1.getAppName().compareToIgnoreCase(o1.getAppName())
-        }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+            })
     }
 }
