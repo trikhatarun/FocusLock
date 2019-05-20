@@ -1,4 +1,4 @@
-package com.trikh.focuslock.widget.extensions
+package com.trikh.focuslock.utils.extensions
 
 import android.content.res.Resources
 

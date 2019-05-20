@@ -1,10 +1,10 @@
-package com.trikh.focuslock.ui.schedule
+package com.trikh.focuslock.utils.extensions
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.trikh.focuslock.widget.extensions.px
+import com.trikh.focuslock.utils.extensions.px
 
 class AutoFitGridLayoutManager(context: Context, columnWidth: Int) : GridLayoutManager(context, 1) {
 

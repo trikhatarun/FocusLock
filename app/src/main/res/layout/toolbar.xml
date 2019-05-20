@@ -14,7 +14,7 @@
         app:titleEnabled="false"
         app:toolbarId="@+id/toolbar">
 
-        <com.trikh.focuslock.widget.ArcToolbarView
+        <com.trikh.focuslock.widget.arctoolbar.ArcToolbarView
             android:id="@+id/arcToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

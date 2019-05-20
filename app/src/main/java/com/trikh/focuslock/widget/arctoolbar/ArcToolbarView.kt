@@ -23,7 +23,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.trikh.focuslock.widget
+package com.trikh.focuslock.widget.arctoolbar
 
 import android.content.Context
 import android.graphics.Canvas

@@ -8,7 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
 import com.trikh.focuslock.ui.settting.SettingsFragment
-import com.trikh.focuslock.widget.extensions.setAppBarLayout
+import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 

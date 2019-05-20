@@ -23,10 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.trikh.focuslock.widget.extensions
+package com.trikh.focuslock.widget.arctoolbar
 
 import com.google.android.material.appbar.AppBarLayout
-import com.trikh.focuslock.widget.ArcToolbarView
+import com.trikh.focuslock.widget.arctoolbar.ArcToolbarView
 
 fun ArcToolbarView.setAppBarLayout(appbar: AppBarLayout) {
     appbar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {

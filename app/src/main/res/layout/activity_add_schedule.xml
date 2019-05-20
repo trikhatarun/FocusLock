@@ -119,7 +119,7 @@
                             app:layout_constraintGuide_percent="0.5" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.trikh.focuslock.widget.TimeSliderRangePicker
+                    <com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
                         android:id="@+id/time_picker"
                         android:layout_width="300dp"
                         android:layout_height="300dp"

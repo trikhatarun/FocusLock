@@ -1,4 +1,4 @@
-package com.trikh.focuslock.widget
+package com.trikh.focuslock.widget.timepicker
 
 import android.content.Context
 import android.graphics.*
