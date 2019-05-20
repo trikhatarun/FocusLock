@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.app_list_item.view.*
 
-class AppsAdapter(private val applicationList: List<AppInfo>) : RecyclerView.Adapter<AppsAdapter.ApplicationViewHolder>() {
+class AppsAdapter(private var applicationList: List<AppInfo>) : RecyclerView.Adapter<AppsAdapter.ApplicationViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplicationViewHolder {
         return ApplicationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.app_list_item, parent, false))
     }
@@ -17,6 +17,11 @@ class AppsAdapter(private val applicationList: List<AppInfo>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: ApplicationViewHolder, position: Int) {
         holder.bind(applicationList[position])
+    }
+
+    fun updateList(applicationList: List<AppInfo>) {
+        this.applicationList = applicationList
+        notifyDataSetChanged()
     }
 
     class ApplicationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
