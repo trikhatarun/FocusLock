@@ -33,10 +33,12 @@ class AddScheduleActivity : AppCompatActivity() {
             }
         })
 
-        time_picker.setOnTouchListener { v, event ->
+        time_picker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)
             false
         }
+
+        blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
