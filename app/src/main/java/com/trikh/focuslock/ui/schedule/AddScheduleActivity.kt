@@ -24,7 +24,7 @@ class AddScheduleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
         val viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
-        binding.viewModel = viewModel
+        binding.viewmodel = viewModel
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)

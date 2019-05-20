@@ -645,18 +645,18 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
                 if (isThumbStartPressed) {
                     mIsThumbSelected = true
-                    updateSliderState(x, y,
-                        Thumb.START
-                    )
+                    updateSliderState(x, y, Thumb.START)
+                    invalidate()
+                    return true
                 } else if (isThumbEndPressed) {
                     mIsThumbEndSelected = true
-                    updateSliderState(x, y,
-                        Thumb.END
-                    )
-                } else {
+                    updateSliderState(x, y, Thumb.END)
+                    invalidate()
+                    return true
+                }/* else {
                     oldX = x
                     oldY = y
-                }
+                }*/
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -664,20 +664,20 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 if (mIsThumbSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y,
-                        Thumb.START
-                    )
+                    updateSliderState(x, y, Thumb.START)
+                    invalidate()
+                    return true
                 } else if (mIsThumbEndSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y,
-                        Thumb.END
-                    )
-                } else {
+                    updateSliderState(x, y, Thumb.END)
+                    invalidate()
+                    return true
+                }/* else {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
                     updateSliderState(x, y)
-                }
+                }*/
             }
 
             MotionEvent.ACTION_UP -> {
@@ -685,8 +685,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 mIsThumbEndSelected = false
             }
         }
-        invalidate()
-        return true
+        return false
     }
 
     companion object {
