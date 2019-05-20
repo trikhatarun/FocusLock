@@ -3,9 +3,12 @@ package com.trikh.focuslock.ui.schedule
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.widget.timepicker.OnSliderRangeMovedListener
+import com.trikh.focuslock.databinding.ActivityAddScheduleBinding
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -15,10 +18,13 @@ import java.util.*
 class AddScheduleActivity : AppCompatActivity() {
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
+    private lateinit var binding: ActivityAddScheduleBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_schedule)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
+        val viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
+        binding.viewModel = viewModel
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
