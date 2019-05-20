@@ -296,7 +296,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/blocked_apps_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -312,9 +312,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:padding="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintBottom_toBottomOf="@id/blocked_apps_title"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintTop_toTopOf="@id/blocked_apps_title"
                         app:srcCompat="@drawable/ic_edit" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -329,8 +329,8 @@
                         android:layout_marginBottom="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/imageView"
-                        app:layout_constraintStart_toStartOf="@id/textView4"
-                        app:layout_constraintTop_toBottomOf="@id/textView4" />
+                        app:layout_constraintStart_toStartOf="@id/blocked_apps_title"
+                        app:layout_constraintTop_toBottomOf="@id/blocked_apps_title" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

@@ -13,6 +13,8 @@ import java.util.*
 
 class AddScheduleActivity : AppCompatActivity() {
 
+    private lateinit var blockedAppsAdapter: BlockedAppsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_schedule)
@@ -39,6 +41,9 @@ class AddScheduleActivity : AppCompatActivity() {
         }
 
         blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
+        blockedAppsAdapter = BlockedAppsAdapter(emptyList())
+        blocked_apps_rv.adapter = blockedAppsAdapter
+        blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

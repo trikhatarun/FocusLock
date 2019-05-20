@@ -3,7 +3,7 @@
     <string name="schedule">Schedule</string>
     <string name="sleep_time">Sleep Time</string>
     <string name="awake_time">Awake Time</string>
-    <string name="blocked_apps">Blocked apps</string>
+    <string name="blocked_apps">Blocked apps (%d)</string>
     <string name="more_button_content_description">More options button for current schedule</string>
     <string name="set_schedule">Set Schedule</string>
     <string name="set_your_sleep_time">Set your Sleep time</string>
