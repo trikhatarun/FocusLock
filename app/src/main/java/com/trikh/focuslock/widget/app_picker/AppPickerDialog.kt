@@ -9,11 +9,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import com.trikh.focuslock.R
-import com.trikh.focuslock.utils.extensions.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import kotlinx.android.synthetic.main.app_picker_dialog.*
 
 
-class AppPickerDialog : DialogFragment() {
+class AppPickerDialog() : DialogFragment() {
 
     private val applicationListAdapter = AppsAdapter(ArrayList())
 

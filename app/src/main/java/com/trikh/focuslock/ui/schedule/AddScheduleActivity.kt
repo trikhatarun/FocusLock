@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.trikh.focuslock.R
-import com.trikh.focuslock.utils.extensions.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.widget.timepicker.OnSliderRangeMovedListener
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_add_schedule.*
@@ -42,8 +42,7 @@ class AddScheduleActivity : AppCompatActivity() {
             false
         }
 
-        blocked_apps_rv.layoutManager =
-            AutoFitGridLayoutManager(this, 48)
+        blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
         blockedAppsAdapter = BlockedAppsAdapter(emptyList())
         blocked_apps_rv.adapter = blockedAppsAdapter
         blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
