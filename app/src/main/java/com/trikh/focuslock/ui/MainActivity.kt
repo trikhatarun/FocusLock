@@ -10,6 +10,7 @@ import com.trikh.focuslock.ui.schedule.ScheduleFragment
 import com.trikh.focuslock.ui.settting.SettingsFragment
 import com.trikh.focuslock.widget.extensions.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
     SettingsFragment.OnFragmentInteractionListener {
