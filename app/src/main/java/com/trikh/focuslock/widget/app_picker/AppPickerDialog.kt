@@ -13,7 +13,7 @@ import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import kotlinx.android.synthetic.main.app_picker_dialog.*
 
 
-class AppPickerDialog() : DialogFragment() {
+class AppPickerDialog(val interactionListener: InteractionListener) : DialogFragment() {
 
     private val applicationListAdapter = AppsAdapter(ArrayList())
 
@@ -33,6 +33,15 @@ class AppPickerDialog() : DialogFragment() {
             .observe(this, Observer { appList ->
                 applicationListAdapter.updateList(appList)
             })
+
+        confirmationButton.setOnClickListener{
+            interactionListener.onConfirm(applicationListAdapter.getSelectedApplicationList())
+            dismiss()
+        }
+
+        cancelButton.setOnClickListener{
+            dismiss()
+        }
     }
 
     override fun onResume() {
@@ -41,5 +50,9 @@ class AppPickerDialog() : DialogFragment() {
         params.width = ConstraintLayout.LayoutParams.MATCH_PARENT
         params.height = ConstraintLayout.LayoutParams.MATCH_PARENT
         dialog.window!!.attributes = params as android.view.WindowManager.LayoutParams
+    }
+
+    public interface InteractionListener {
+        fun onConfirm(applicationList: List<AppInfo>)
     }
 }

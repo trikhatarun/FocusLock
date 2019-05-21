@@ -16,16 +16,10 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.extensions.px
 import kotlinx.android.synthetic.main.app_list_item.view.*
 
-class AppsAdapter(private var applicationList: List<AppInfo>) :
-    RecyclerView.Adapter<AppsAdapter.ApplicationViewHolder>() {
+class AppsAdapter(private var applicationList: List<AppInfo>) : RecyclerView.Adapter<AppsAdapter.ApplicationViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplicationViewHolder {
-        return ApplicationViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.app_list_item,
-                parent,
-                false
-            )
-        )
+        return ApplicationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.app_list_item, parent, false))
     }
 
     override fun getItemCount() = applicationList.size
@@ -38,6 +32,17 @@ class AppsAdapter(private var applicationList: List<AppInfo>) :
     fun updateList(applicationList: List<AppInfo>) {
         this.applicationList = applicationList
         notifyDataSetChanged()
+    }
+
+    fun getSelectedApplicationList(): List<AppInfo> {
+        val selectedAppsList = ArrayList<AppInfo>()
+        applicationList.forEach{
+            if (it.blocked) {
+                selectedAppsList.add(it)
+            }
+        }
+
+        return selectedAppsList
     }
 
     inner class ApplicationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
