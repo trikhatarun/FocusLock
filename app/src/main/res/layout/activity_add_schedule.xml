@@ -102,22 +102,22 @@
                                 app:layout_constraintEnd_toEndOf="parent" />
 
                             <TextView
-                                android:text="@{viewModel.timeFormat.format(viewModel.endTime.getTime())}"
                                 android:id="@+id/sleep_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:layout_marginBottom="6dp"
+                                android:text="@{viewModel.getSleepTime(viewModel.endTime.getTime(),0)}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="@id/textView"
                                 app:layout_constraintTop_toBottomOf="@id/textView"
                                 tools:text="11:00 PM" />
 
                             <TextView
-                                android:text="@{viewModel.timeFormat.format(viewModel.startTime.getTime())}"
                                 android:id="@+id/awake_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@{viewModel.getAwakeTime(viewModel.startTime.getTime(),0)}"
                                 app:layout_constraintBaseline_toBaselineOf="@id/sleep_time_tv"
                                 app:layout_constraintStart_toStartOf="@id/textView2"
                                 tools:text="08:30 AM" />
@@ -235,7 +235,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
                             android:lineSpacingExtra="3dp"
-                            android:text="@string/level_message"
+                            android:text="@{@string/level_message(viewModel.getSleepTime(viewModel.endTime.getTime(),1),viewModel.getAwakeTime(viewModel.startTime.getTime(),1))}"
                             app:layout_constraintBottom_toBottomOf="@id/level_one_rb"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/guideline2"
@@ -257,7 +257,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
                             android:lineSpacingExtra="3dp"
-                            android:text="@string/level_message"
+                            android:text="@{@string/level_message(viewModel.getSleepTime(viewModel.endTime.getTime(),2),viewModel.getAwakeTime(viewModel.startTime.getTime(),2))}"
                             app:layout_constraintBottom_toBottomOf="@id/level_two_rb"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/guideline2"
@@ -281,7 +281,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
                             android:lineSpacingExtra="3dp"
-                            android:text="@string/level_message"
+                            android:text="@{@string/level_message(viewModel.getSleepTime(viewModel.endTime.getTime(),3),viewModel.getAwakeTime(viewModel.startTime.getTime(),3))}"
                             app:layout_constraintBottom_toBottomOf="@id/level_three_rb"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/guideline2"
