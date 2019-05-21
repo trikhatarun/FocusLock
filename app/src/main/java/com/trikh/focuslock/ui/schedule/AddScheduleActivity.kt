@@ -12,7 +12,6 @@ import com.trikh.focuslock.databinding.ActivityAddScheduleBinding
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddScheduleActivity : AppCompatActivity() {
@@ -22,26 +21,16 @@ class AddScheduleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
         val viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
         toolbar_title.text = getString(R.string.set_schedule)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        sleep_time_tv.text = timeFormat.format(time_picker.start.time)
-        awake_time_tv.text = timeFormat.format(time_picker.end.time)
-
-        time_picker.setOnChangeListener(object :
-            OnSliderRangeMovedListener {
-            override fun onChange(start: Calendar, end: Calendar) {
-                sleep_time_tv.text = timeFormat.format(start.time)
-                awake_time_tv.text = timeFormat.format(end.time)
-            }
-        })
 
         time_picker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)

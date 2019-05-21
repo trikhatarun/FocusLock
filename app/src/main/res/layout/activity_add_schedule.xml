@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.trikh.focuslock.ui.schedule.AddScheduleViewModel" />
     </data>
 
@@ -102,6 +102,7 @@
                                 app:layout_constraintEnd_toEndOf="parent" />
 
                             <TextView
+                                android:text="@{viewModel.timeFormat.format(viewModel.start.getTime())}"
                                 android:id="@+id/sleep_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -113,6 +114,7 @@
                                 tools:text="11:00 PM" />
 
                             <TextView
+                                android:text="@{viewModel.timeFormat.format(viewModel.end.getTime())}"
                                 android:id="@+id/awake_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -135,6 +137,8 @@
                             android:layout_marginTop="30dp"
                             android:layout_marginBottom="30dp"
                             android:padding="14dp"
+                            app:startTime="@{viewModel.start}"
+                            app:endTime="@{viewModel.end}"
                             app:arc_color_am="@color/colorArcGradient"
                             app:arc_color_pm="@color/colorArcGradient"
                             app:arc_dash_size="16dp"
@@ -148,6 +152,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+                            app:onChange="@{viewModel.onTimeChangedListener}"
                             app:start_thumb_color="@color/colorPrimaryText"
                             app:start_thumb_image_am="@drawable/ic_moon"
                             app:start_thumb_image_pm="@drawable/ic_moon"

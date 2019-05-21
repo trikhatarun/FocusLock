@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.BindingAdapter
 import com.trikh.focuslock.R
 import java.util.*
 
@@ -620,7 +621,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      *
      * @param listener Instance of the slider range moved listener, or null when removing it
      */
-    fun setOnChangeListener(listener: OnSliderRangeMovedListener) {
+    fun setOnChange(listener: OnSliderRangeMovedListener) {
         mListener = listener
     }
 
