@@ -1,12 +1,16 @@
 package com.trikh.focuslock.widget.app_picker
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.extensions.px
@@ -54,42 +58,16 @@ class AppsAdapter(private var applicationList: List<AppInfo>) :
             if (!block) {
                 itemView.appIcon.elevation = 0.0f
                 if (itemView.selectedAppIcon.visibility != View.GONE) {
-                    val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0f, 0.5f)
-                    val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0f, 0.5f)
-                    val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, 1.0f, 0.0f)
-
-                    val unblockAppSelectorAnimation = ObjectAnimator.ofPropertyValuesHolder(
-                        itemView.selectedAppIcon,
-                        scaleX,
-                        scaleY,
-                        alpha
-                    ).apply {
-                        interpolator = OvershootInterpolator()
-                        duration = 400
-                    }
-                    unblockAppSelectorAnimation.doOnEnd {
-                        itemView.selectedAppIcon.visibility = View.GONE
-                    }
-
+                    val unblockAppSelectorAnimation: AnimatorSet = AnimatorInflater.loadAnimator(itemView.context, R.animator.hide_app_select_icon_animator) as AnimatorSet
+                    unblockAppSelectorAnimation.setTarget(itemView.selectedAppIcon)
+                    unblockAppSelectorAnimation.doOnEnd { itemView.selectedAppIcon.visibility = View.GONE }
                     unblockAppSelectorAnimation.start()
                 }
             } else {
-                itemView.selectedAppIcon.elevation = 2.px.toFloat()
+                itemView.appIcon.elevation = 2.px.toFloat()
                 itemView.selectedAppIcon.visibility = View.VISIBLE
-                val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 0.5f, 1.0f)
-                val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.5f, 1.0f)
-                val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, 0.0f, 1.0f)
-
-                val unblockAppSelectorAnimation = ObjectAnimator.ofPropertyValuesHolder(
-                    itemView.selectedAppIcon,
-                    scaleX,
-                    scaleY,
-                    alpha
-                ).apply {
-                    interpolator = OvershootInterpolator()
-                    duration = 400
-                }
-
+                val unblockAppSelectorAnimation: AnimatorSet = AnimatorInflater.loadAnimator(itemView.context, R.animator.show_app_select_icon_animator) as AnimatorSet
+                unblockAppSelectorAnimation.setTarget(itemView.selectedAppIcon)
                 unblockAppSelectorAnimation.start()
             }
         }
