@@ -1,4 +1,4 @@
-package com.trikh.focuslock.utils.extensions
+package com.trikh.focuslock.utils
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
