@@ -5,26 +5,21 @@ import androidx.lifecycle.ViewModel
 import com.trikh.focuslock.widget.timepicker.OnSliderRangeMovedListener
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Calendar.HOUR
 
 class AddScheduleViewModel : ViewModel() {
-    private val currentTime = Date()
-    val start: MutableLiveData<Calendar> = MutableLiveData<Calendar>().apply {
-        val startCalender = Calendar.getInstance()
-        startCalender.time = currentTime
-        value = startCalender
+     val startTime: MutableLiveData<Calendar> = MutableLiveData()
+     val endTime: MutableLiveData<Calendar> = MutableLiveData()
+
+    fun setTime(start: Calendar, end: Calendar) {
+        startTime.value = start
+        endTime.value = end
     }
-    val end: MutableLiveData<Calendar> = MutableLiveData<Calendar>().apply {
-        val endCalender = Calendar.getInstance()
-        endCalender.time = currentTime
-        endCalender.add(HOUR, 8)
-        value = endCalender
-    }
+
     val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
     val onTimeChangedListener = OnSliderRangeMovedListener { start, end ->
-        this@AddScheduleViewModel.start.value = start
-        this@AddScheduleViewModel.end.value = end
+        this@AddScheduleViewModel.endTime.value = start
+        this@AddScheduleViewModel.startTime.value = end
     }
 
 

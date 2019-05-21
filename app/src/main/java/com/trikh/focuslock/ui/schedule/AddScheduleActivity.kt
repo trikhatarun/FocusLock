@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
-import com.trikh.focuslock.utils.AutoFitGridLayoutManager
-import com.trikh.focuslock.widget.timepicker.OnSliderRangeMovedListener
 import com.trikh.focuslock.databinding.ActivityAddScheduleBinding
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -18,12 +17,13 @@ class AddScheduleActivity : AppCompatActivity() {
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityAddScheduleBinding
+    private lateinit var viewModel: AddScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
-        val viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -32,7 +32,15 @@ class AddScheduleActivity : AppCompatActivity() {
         toolbar_title.text = getString(R.string.set_schedule)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        time_picker.setOnTouchListener { _, _ ->
+        val start = Calendar.getInstance()
+        start.set(Calendar.HOUR_OF_DAY, 10)
+        start.set(Calendar.MINUTE, 0)
+        val end = Calendar.getInstance()
+        end.set(Calendar.HOUR_OF_DAY, 2)
+        end.set(Calendar.MINUTE, 0)
+        setTime(start, end)
+
+        timePicker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)
             false
         }
@@ -41,6 +49,12 @@ class AddScheduleActivity : AppCompatActivity() {
         blockedAppsAdapter = BlockedAppsAdapter(emptyList())
         blocked_apps_rv.adapter = blockedAppsAdapter
         blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
+    }
+
+    private fun setTime(start: Calendar, end: Calendar) {
+        timePicker.setStartTime(end)
+        timePicker.setEndTime(start)
+        viewModel.setTime(start, end)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

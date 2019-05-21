@@ -102,7 +102,7 @@
                                 app:layout_constraintEnd_toEndOf="parent" />
 
                             <TextView
-                                android:text="@{viewModel.timeFormat.format(viewModel.start.getTime())}"
+                                android:text="@{viewModel.timeFormat.format(viewModel.startTime.getTime())}"
                                 android:id="@+id/sleep_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                                 tools:text="11:00 PM" />
 
                             <TextView
-                                android:text="@{viewModel.timeFormat.format(viewModel.end.getTime())}"
+                                android:text="@{viewModel.timeFormat.format(viewModel.endTime.getTime())}"
                                 android:id="@+id/awake_time_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -131,14 +131,12 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
-                            android:id="@+id/time_picker"
+                            android:id="@+id/timePicker"
                             android:layout_width="300dp"
                             android:layout_height="300dp"
                             android:layout_marginTop="30dp"
                             android:layout_marginBottom="30dp"
                             android:padding="14dp"
-                            app:startTime="@{viewModel.start}"
-                            app:endTime="@{viewModel.end}"
                             app:arc_color_am="@color/colorArcGradient"
                             app:arc_color_pm="@color/colorArcGradient"
                             app:arc_dash_size="16dp"
@@ -163,10 +161,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="22sp"
-                            app:layout_constraintBottom_toBottomOf="@id/time_picker"
-                            app:layout_constraintEnd_toEndOf="@id/time_picker"
-                            app:layout_constraintStart_toStartOf="@id/time_picker"
-                            app:layout_constraintTop_toTopOf="@id/time_picker"
+                            app:layout_constraintBottom_toBottomOf="@id/timePicker"
+                            app:layout_constraintEnd_toEndOf="@id/timePicker"
+                            app:layout_constraintStart_toStartOf="@id/timePicker"
+                            app:layout_constraintTop_toTopOf="@id/timePicker"
                             tools:text="9 hr 30 min" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.trikh.focuslock.R
+import com.trikh.focuslock.utils.extensions.roundMinutesToFive
 import java.util.*
 
 
@@ -175,6 +176,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      */
     fun setStartTime(time: Calendar) {
         mAngleStart = fromDrawingAngle(timeToDegrees(time))
+        degreesToTime(start, toDrawingAngle(mAngleStart).toDouble())
         invalidate()
     }
 
@@ -186,6 +188,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      */
     fun setEndTime(time: Calendar) {
         mAngleEnd = fromDrawingAngle(timeToDegrees(time))
+        degreesToTime(end,toDrawingAngle(mAngleEnd).toDouble())
         invalidate()
     }
 
@@ -570,7 +573,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
     private fun notifyChanges() {
         if (mListener != null) {
-            mListener!!.onChange(start, end)
+            mListener!!.onChange(start.roundMinutesToFive, end.roundMinutesToFive)
         }
     }
 
@@ -596,8 +599,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
     }
 
     private fun degreesToTime(time: Calendar, degrees: Double) {
-        val nearestDegree = (Math.round(degrees/2.5) * 2.5)
-        val s = nearestDegree / 360
+        val s = degrees / 360
         val sr = 180 + s * 12 * 60
         time.set(Calendar.HOUR, (sr / 60).toInt() % 12)
         time.set(Calendar.MINUTE, (sr % 60).toInt())
