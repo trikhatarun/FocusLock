@@ -12,7 +12,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
-class AppListViewModel(application: Application) : AndroidViewModel(application) {
+class AppListViewModel(application: Application, private val selectedAppsList: List<AppInfo>) : AndroidViewModel(application) {
 
     private val appInfoList = MutableLiveData<List<AppInfo>>()
     private val packageManager = application.packageManager
@@ -23,6 +23,10 @@ class AppListViewModel(application: Application) : AndroidViewModel(application)
             .observeOn(Schedulers.computation())
             .filter { return@filter it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
             .map { it.toAppInfo() }
+            .map {
+                if (selectedAppsList.binarySearch(it, Comparator { o1, o2 -> o1.packageName.compareTo(o2.packageName) }) >= 0) it.blocked = true
+                it
+            }
             .toSortedList { o1, o2 -> o1.name.compareTo(o2.name, true) }
 
     init {
