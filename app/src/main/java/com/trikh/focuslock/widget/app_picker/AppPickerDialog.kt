@@ -7,21 +7,18 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.app_picker_dialog.*
 
 
-class AppPickerDialog(val interactionListener: InteractionListener) : DialogFragment() {
+class AppPickerDialog(private val selectedAppList: List<AppInfo>, private val interactionListener: InteractionListener) : DialogFragment() {
 
     private val applicationListAdapter = AppsAdapter(ArrayList())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.app_picker_dialog, container)
     }
 
@@ -32,8 +29,8 @@ class AppPickerDialog(val interactionListener: InteractionListener) : DialogFrag
         appsRV.layoutManager = AutoFitGridLayoutManager(view.context, 70)
         appsRV.adapter = applicationListAdapter
 
-        AndroidViewModelFactory.getInstance(activity!!.application)
-            .create(AppListViewModel::class.java)
+        ViewModelProviders.of(this, ViewModelFactory(activity!!.application, selectedAppList))
+            .get(AppListViewModel::class.java)
             .getAppInfoList()
             .observe(this, Observer { appList ->
                 applicationListAdapter.updateList(appList)
@@ -54,7 +51,8 @@ class AppPickerDialog(val interactionListener: InteractionListener) : DialogFrag
         val dialog = dialog
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT)
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
     }
 
     public interface InteractionListener {
