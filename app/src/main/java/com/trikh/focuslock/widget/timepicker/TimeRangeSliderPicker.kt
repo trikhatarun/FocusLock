@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.BindingAdapter
 import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.extensions.roundMinutesToFive
 import java.util.*
@@ -188,7 +187,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      */
     fun setEndTime(time: Calendar) {
         mAngleEnd = fromDrawingAngle(timeToDegrees(time))
-        degreesToTime(end,toDrawingAngle(mAngleEnd).toDouble())
+        degreesToTime(end, toDrawingAngle(mAngleEnd).toDouble())
         invalidate()
     }
 
@@ -343,7 +342,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
             mCircleRadius.toFloat(),
             mPaint
         )
-        textPaint.typeface = ResourcesCompat.getFont(context,R.font.muli_regular)
+        textPaint.typeface = ResourcesCompat.getFont(context, R.font.muli_regular)
         textPaint.color = Color.BLACK
         textPaint.textSize = 16.dip
         for (i in 1..12) {
