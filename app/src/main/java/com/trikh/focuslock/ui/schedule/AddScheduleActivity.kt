@@ -56,8 +56,7 @@ class AddScheduleActivity : AppCompatActivity() {
     }
 
     private fun setTime(start: Calendar, end: Calendar) {
-        timePicker.setStartTime(end)
-        timePicker.setEndTime(start)
+        timePicker.setTime(start,end)
         viewModel.setTime(start, end)
     }
 
