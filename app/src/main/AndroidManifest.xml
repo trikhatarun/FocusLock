@@ -49,6 +49,7 @@
             android:name=".ui.instantlock.InstantLockActivity"
             android:label=""
             android:parentActivityName=".ui.MainActivity" />
+
         <activity
             android:name=".ui.appblock.BlockedAppActivity"
             android:excludeFromRecents="true"
@@ -57,6 +58,7 @@
 
         <service android:name=".ui.appblock.AppBlockService" />
         <receiver android:name=".ui.appblock.StartServiceReceiver" />
+        <activity android:name=".widget.videoplayer.VideoPlayerActivity"/>
     </application>
 
 </manifest>
