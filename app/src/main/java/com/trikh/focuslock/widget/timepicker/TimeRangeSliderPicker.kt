@@ -7,7 +7,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.BindingAdapter
 import com.trikh.focuslock.R
+import com.trikh.focuslock.utils.extensions.roundMinutesToFive
 import java.util.*
 
 
@@ -174,6 +176,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      */
     fun setStartTime(time: Calendar) {
         mAngleStart = fromDrawingAngle(timeToDegrees(time))
+        degreesToTime(start, toDrawingAngle(mAngleStart).toDouble())
         invalidate()
     }
 
@@ -185,6 +188,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      */
     fun setEndTime(time: Calendar) {
         mAngleEnd = fromDrawingAngle(timeToDegrees(time))
+        degreesToTime(end,toDrawingAngle(mAngleEnd).toDouble())
         invalidate()
     }
 
@@ -569,7 +573,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
     private fun notifyChanges() {
         if (mListener != null) {
-            mListener!!.onChange(start, end)
+            mListener!!.onChange(start.roundMinutesToFive, end.roundMinutesToFive)
         }
     }
 
@@ -595,8 +599,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
     }
 
     private fun degreesToTime(time: Calendar, degrees: Double) {
-        val nearestDegree = (Math.round(degrees/2.5) * 2.5)
-        val s = nearestDegree / 360
+        val s = degrees / 360
         val sr = 180 + s * 12 * 60
         time.set(Calendar.HOUR, (sr / 60).toInt() % 12)
         time.set(Calendar.MINUTE, (sr % 60).toInt())
@@ -620,7 +623,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
      *
      * @param listener Instance of the slider range moved listener, or null when removing it
      */
-    fun setOnChangeListener(listener: OnSliderRangeMovedListener) {
+    fun setOnChange(listener: OnSliderRangeMovedListener) {
         mListener = listener
     }
 
@@ -645,18 +648,18 @@ class TimeSliderRangePicker @JvmOverloads constructor(
 
                 if (isThumbStartPressed) {
                     mIsThumbSelected = true
-                    updateSliderState(x, y,
-                        Thumb.START
-                    )
+                    updateSliderState(x, y, Thumb.START)
+                    invalidate()
+                    return true
                 } else if (isThumbEndPressed) {
                     mIsThumbEndSelected = true
-                    updateSliderState(x, y,
-                        Thumb.END
-                    )
-                } else {
+                    updateSliderState(x, y, Thumb.END)
+                    invalidate()
+                    return true
+                }/* else {
                     oldX = x
                     oldY = y
-                }
+                }*/
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -664,20 +667,20 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 if (mIsThumbSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y,
-                        Thumb.START
-                    )
+                    updateSliderState(x, y, Thumb.START)
+                    invalidate()
+                    return true
                 } else if (mIsThumbEndSelected) {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
-                    updateSliderState(x, y,
-                        Thumb.END
-                    )
-                } else {
+                    updateSliderState(x, y, Thumb.END)
+                    invalidate()
+                    return true
+                }/* else {
                     val x = ev.x.toInt()
                     val y = ev.y.toInt()
                     updateSliderState(x, y)
-                }
+                }*/
             }
 
             MotionEvent.ACTION_UP -> {
@@ -685,8 +688,7 @@ class TimeSliderRangePicker @JvmOverloads constructor(
                 mIsThumbEndSelected = false
             }
         }
-        invalidate()
-        return true
+        return false
     }
 
     companion object {

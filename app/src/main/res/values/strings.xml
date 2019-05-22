@@ -18,6 +18,6 @@
     <string name="level_1">Level 1</string>
     <string name="level_2">Level 2</string>
     <string name="level_3">Level 3</string>
-    <string name="level_message">Apps will be blocked from\n10:30 PM to 9:30 AM</string>
     <string name="icon_content_description">Application Icon</string>
+    <string name="level_message">App will be block\n%s to %s</string>
 </resources>
