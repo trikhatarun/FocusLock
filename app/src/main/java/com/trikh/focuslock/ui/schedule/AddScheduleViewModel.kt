@@ -1,17 +1,18 @@
 package com.trikh.focuslock.ui.schedule
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.trikh.focuslock.utils.extensions.addOneDay
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddScheduleViewModel : ViewModel() {
+    // do not make them private they are used by data binding
     val startTime: MutableLiveData<Calendar> = MutableLiveData()
     val endTime: MutableLiveData<Calendar> = MutableLiveData()
-    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-    val logTimeFormat = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
+    private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
     fun setTime(start: Calendar, end: Calendar) {
         startTime.value = start
         endTime.value = end
@@ -32,21 +33,17 @@ class AddScheduleViewModel : ViewModel() {
     }
 
     fun calculateDuration(startTime: Calendar, endTime: Calendar): String {
-        Log.d("startTime:", logTimeFormat.format(endTime.time))
-        Log.d("endTime", logTimeFormat.format(startTime.time))
-        val sleepTime = endTime.timeInMillis
-        var awakeTime = startTime.timeInMillis
-        if (sleepTime > awakeTime) {
-            awakeTime += 1000 * 60 * 60 * 24
-        }
+        val sleepTime = startTime.timeInMillis
+        val awakeTime = endTime.timeInMillis
+        if (sleepTime > awakeTime) awakeTime.addOneDay
         val difference = (awakeTime - sleepTime) / 60000 // in minutes
         val hours = difference / 60
-        val minutes = difference.rem(60)
+        val minutes = Math.round(difference.rem(60) / 10f) * 10
         return "$hours hr $minutes min"
     }
 
     val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
-        this@AddScheduleViewModel.endTime.value = start
-        this@AddScheduleViewModel.startTime.value = end
+        this@AddScheduleViewModel.endTime.value = end
+        this@AddScheduleViewModel.startTime.value = start
     }
 }

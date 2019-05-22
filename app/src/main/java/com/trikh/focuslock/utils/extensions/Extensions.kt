@@ -13,3 +13,8 @@ val Calendar.roundMinutesToFive: Calendar
         set(Calendar.MINUTE, roundedMinutes)
         return this
     }
+
+val Long.addOneDay: Long
+    get() {
+        return this.plus(86400000)
+    }

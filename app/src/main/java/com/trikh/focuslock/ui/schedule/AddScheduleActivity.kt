@@ -32,17 +32,16 @@ class AddScheduleActivity : AppCompatActivity() {
         toolbar_title.text = getString(R.string.set_schedule)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /* Replace this code and get start and end from intents instead*/
-
+        //Replace this code and get start and end from intents instead
+        /***********************************/
         val start = Calendar.getInstance()
-        start.set(Calendar.HOUR_OF_DAY, 10)
+        start.set(Calendar.HOUR_OF_DAY, 2)
         start.set(Calendar.MINUTE, 0)
         val end = Calendar.getInstance()
-        end.set(Calendar.HOUR_OF_DAY, 2)
+        end.set(Calendar.HOUR_OF_DAY, 10)
         end.set(Calendar.MINUTE, 0)
         setTime(start, end)
-
-        /***********************************************************/
+        /**********************************/
 
         timePicker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)
@@ -56,7 +55,7 @@ class AddScheduleActivity : AppCompatActivity() {
     }
 
     private fun setTime(start: Calendar, end: Calendar) {
-        timePicker.setTime(start,end)
+        timePicker.setTime(start, end)
         viewModel.setTime(start, end)
     }
 
