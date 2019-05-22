@@ -2,14 +2,17 @@ package com.trikh.focuslock.ui.schedule
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.trikh.focuslock.widget.timepicker.OnSliderRangeMovedListener
+import com.trikh.focuslock.utils.extensions.addOneDay
+import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddScheduleViewModel : ViewModel() {
+    // do not make them private they are used by data binding
     val startTime: MutableLiveData<Calendar> = MutableLiveData()
     val endTime: MutableLiveData<Calendar> = MutableLiveData()
-    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
     fun setTime(start: Calendar, end: Calendar) {
         startTime.value = start
         endTime.value = end
@@ -29,9 +32,18 @@ class AddScheduleViewModel : ViewModel() {
         return timeFormat.format(awakeTime.time)
     }
 
-    // This listener is an exception, do not keep any listener in viewmodel instead use data binding and bind functions as listeners
-    val onTimeChangedListener = OnSliderRangeMovedListener { start, end ->
-        this@AddScheduleViewModel.endTime.value = start
-        this@AddScheduleViewModel.startTime.value = end
+    fun calculateDuration(startTime: Calendar, endTime: Calendar): String {
+        val sleepTime = startTime.timeInMillis
+        val awakeTime = endTime.timeInMillis
+        if (sleepTime > awakeTime) awakeTime.addOneDay
+        val difference = (awakeTime - sleepTime) / 60000 // in minutes
+        val hours = difference / 60
+        val minutes = Math.round(difference.rem(60) / 10f) * 10
+        return "$hours hr $minutes min"
+    }
+
+    val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
+        this@AddScheduleViewModel.endTime.value = end
+        this@AddScheduleViewModel.startTime.value = start
     }
 }
