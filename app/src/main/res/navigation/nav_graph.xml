@@ -23,21 +23,12 @@
 >>>>>>> feat(video): add video linking to navgraph
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/videoFragment"
-        android:name="com.trikh.focuslock.ui.schedule.ScheduleFragment"
-        android:label="fragment_video"
-        tools:layout="@layout/fragment_schedule" >
-        <action
-            android:id="@+id/action_videoFragment_to_videoPlayerActivity2"
-            app:destination="@id/videoPlayerActivity2" />
-    </fragment>
     <activity
         android:id="@+id/addScheduleActivity2"
         android:name="com.trikh.focuslock.ui.schedule.AddScheduleActivity"
         android:label="AddScheduleActivity" />
     <activity
-        android:id="@+id/videoPlayerActivity2"
+        android:id="@+id/videoPlayerActivity"
         android:name="com.trikh.focuslock.widget.videoplayer.VideoPlayerActivity"
         android:label="activity_video_player"
         tools:layout="@layout/activity_video_player" >
@@ -45,4 +36,13 @@
             android:name="videoId"
             app:argType="string" />
     </activity>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.trikh.focuslock.ui.video.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" >
+        <action
+            android:id="@+id/action_videoFragment_to_videoPlayerActivity"
+            app:destination="@id/videoPlayerActivity" />
+    </fragment>
 </navigation>

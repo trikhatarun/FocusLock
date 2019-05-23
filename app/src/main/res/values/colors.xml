@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1458ea</color>
     <color name="colorPrimaryDark">#2c45d9</color>
-    <color name="colorAccent">#1458ea</color>
+    <color name="colorAccent">#1458EA</color>
     <color name="colorPrimaryText">#222222</color>
     <color name="colorSecondaryText">#9B9B9B</color>
     <color name="colorDisabled">#888888</color>
@@ -19,6 +19,7 @@
     <color name="colorLine">#f1f1f1</color>
     <color name="buttonGrey">#e1e1e1</color>
     <color name="buttonTextColor">#4a4a4a</color>
+    <color name="videoPlayerDivider">#32FFFFFF</color>
     <color name="colorDarkBlue">#191970</color>
     <color name="colorPink">#ff2d55</color>
 </resources>

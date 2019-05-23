@@ -55,5 +55,7 @@
     <string name="usage_permission_request_message">App needs usage stats permission to function.</string>
     <string name="grant">Grant Permission</string>
     <string name="deny">Deny</string>
-
+    <string name="setting_invite_text_1">Invite your friends</string>
+    <string name="setting_invite_text_2">&amp; make their life more productive</string>
+    <string name="share_message">Share with friends</string>
 </resources>
