@@ -20,5 +20,5 @@ interface ScheduleDao {
     fun removeSchedule(id: Int)
 
     @Query("SELECT * FROM schedule")
-    fun getSchedules(): Observable<Schedule>
+    fun getSchedules(): Observable<List<Schedule>>
 }
