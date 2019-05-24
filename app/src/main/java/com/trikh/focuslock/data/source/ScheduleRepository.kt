@@ -8,5 +8,9 @@ class ScheduleRepository {
 
     fun addSchedule(schedule: Schedule) = scheduleLocalRepository.addSchedule(schedule)
 
+    fun updateSchedule(schedule: Schedule) = scheduleLocalRepository.updateSchedule(schedule)
+
+    fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
+
     fun getSchedules() = scheduleLocalRepository.getSchedules()
 }

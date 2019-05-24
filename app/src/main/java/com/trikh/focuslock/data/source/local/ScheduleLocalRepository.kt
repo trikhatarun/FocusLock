@@ -16,6 +16,18 @@ class ScheduleLocalRepository(context: Context) {
             .subscribe()
     }
 
+    fun updateSchedule(schedule: Schedule) {
+        Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    fun removeSchedule(scheduleId: Int) {
+        Observable.fromCallable { scheduleDao.removeSchedule(scheduleId) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
     fun getSchedules() = scheduleDao.getSchedules()
 
     companion object {
