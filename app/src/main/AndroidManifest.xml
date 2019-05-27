@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.trikh.focuslock">
 
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -23,7 +24,9 @@
         </activity>
         <activity
             android:name=".ui.schedule.AddScheduleActivity"
-            android:exported="true"
+            android:label="" />
+        <activity
+            android:name=".ui.instantlock.InstantLockActivity"
             android:label="" />
     </application>
 
