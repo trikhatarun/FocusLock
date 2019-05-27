@@ -27,8 +27,7 @@
             android:label="" />
         <activity
             android:name=".ui.instantlock.InstantLockActivity"
-            android:label=""
-            android:exported="true" />
+            android:label="" />
     </application>
 
 </manifest>
