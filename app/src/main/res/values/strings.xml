@@ -8,8 +8,9 @@
     <string name="set_schedule">Set Schedule</string>
     <string name="set_your_sleep_time">Set your Sleep time</string>
     <string name="set_your_wake_up_time">Set your Wakeup time</string>
-    <string name="quick_lock">Quick Lock</string>
-    <string name="quick_block_title">Block app till next</string>
+    <string name="instant_lock">Quick Lock</string>
+    <string name="instant_lock_title">Block app till next</string>
+    <string name="instant_lock_message">You can instantly block your apps</string>
     <string name="search">Search</string>
     <string name="video">Video</string>
     <string name="settings">Settings</string>
@@ -20,4 +21,6 @@
     <string name="level_3">Level 3</string>
     <string name="icon_content_description">Application Icon</string>
     <string name="level_message">App will be block\n%s to %s</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
 </resources>

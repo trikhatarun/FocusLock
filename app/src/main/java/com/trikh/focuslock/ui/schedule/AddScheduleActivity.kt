@@ -60,7 +60,7 @@ class AddScheduleActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add_schedule_menu, menu)
+        menuInflater.inflate(R.menu.save_option_menu, menu)
         return true
     }
 }
