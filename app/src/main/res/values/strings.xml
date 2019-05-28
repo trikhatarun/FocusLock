@@ -20,6 +20,7 @@
     <string name="level_1">Level 1</string>
     <string name="level_2">Level 2</string>
     <string name="level_3">Level 3</string>
+    <string name="level_n">Level %d</string>
     <string name="icon_content_description">Application Icon</string>
     <string name="level_message">App will be block\n%s to %s</string>
     <string name="hours">Hours</string>

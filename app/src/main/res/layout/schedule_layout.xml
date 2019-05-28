@@ -3,17 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/levelTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_banner"
         android:elevation="3dp"
+        android:fontFamily="@font/muli_semibold"
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cardView" />
+        app:layout_constraintTop_toTopOf="@id/cardView"
+        tools:text="@string/level_1" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -102,7 +112,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
-                    android:id="@+id/sleep_time_tv"
+                    android:id="@+id/sleepTimeTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -113,10 +123,10 @@
                     tools:text="11:00 PM" />
 
                 <TextView
-                    android:id="@+id/awake_time_tv"
+                    android:id="@+id/awakeTimeTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBaseline_toBaselineOf="@id/sleep_time_tv"
+                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeTv"
                     app:layout_constraintStart_toStartOf="@id/textView2"
                     tools:text="08:30 AM" />
 
@@ -134,10 +144,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/sleep_time_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/sleepTimeTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sleep_time_tv"
+                    app:layout_constraintTop_toTopOf="@id/sleepTimeTv"
                     app:srcCompat="@drawable/ic_arrow" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -157,7 +167,7 @@
                 app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/blocked_apps_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -174,8 +184,8 @@
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/textView3"
-                app:layout_constraintTop_toBottomOf="@id/textView3" />
+                app:layout_constraintStart_toStartOf="@id/blocked_apps_title"
+                app:layout_constraintTop_toBottomOf="@id/blocked_apps_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
