@@ -36,7 +36,8 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.fabMenu?.visibility = View.VISIBLE
 
-        schedulesRv.adapter = ScheduleAdapter(getMockSchedules());
+        schedulesRv.isNestedScrollingEnabled = false
+        schedulesRv.adapter = ScheduleAdapter(getMockSchedules())
     }
 
     override fun onDetach() {
@@ -51,6 +52,9 @@ class ScheduleFragment : Fragment() {
         val endTime = Calendar.getInstance()
         endTime.add(Calendar.HOUR,8)
         val schedule = Schedule(101,startTime,endTime,3,false)
+        list.add(schedule)
+        list.add(schedule)
+        list.add(schedule)
         list.add(schedule)
         list.add(schedule)
         list.add(schedule)
