@@ -29,6 +29,7 @@
         app:menu_colorPressed="@color/colorPrimary">
 
         <com.github.clans.fab.FloatingActionButton
+            android:onClick="onAddScheduleClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_schedule"
@@ -38,6 +39,7 @@
             app:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
+            android:onClick="onInstantLockClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_instant_lock"
