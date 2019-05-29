@@ -3,50 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
     tools:context=".ui.schedule.ScheduleFragment">
 
-    <!--<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/flexible_cardview"
+        <include
+            android:id="@+id/instantLock"
+            layout="@layout/instant_lock_schedule" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/schedulesRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="4dp"
-            app:contentPaddingBottom="16dp"
-            app:contentPaddingLeft="16dp"
-            app:contentPaddingRight="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="25dp">
-
-                <TextView
-                    android:id="@+id/video_title"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="Hi This is a semi sized heading" />
-
-                <TextView
-                    android:id="@+id/video_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:lineSpacingExtra="8dp"
-                    android:text="Behind the scene of Welcome To Taj - Timelapse, First Timelapse film on Taj by Timestance.com\n\nWelcome to Taj - Timelapse : https://vimeo.com/168108548\n\nRead full story here:  http://timestance.com/welcome-to-taj-timelaspe/\n\nOurs is the first attempt to showcase Taj with Timelapses. Our effort to show Taj Mahal via timelapse was an exciting challenge for us. Earlier we have shot timelapses in cities and in wilderness. But our timelapse knowledge and experience was put to test while planning for the shoot.\n\nA person who visits Taj Mahal can only witness few of the colors of Taj. We wanted to cover Taj in every lighting condition and from all possible angles in our 4 minutes clip.\n\nWe also realised the Taj mahal is more than an architecture marvel, it captures peoples emotions, of awe, wonder, surprise and most importantly Love. And there are all walks of people who come to witness this Wonder of world. Our film would not be complete without including emotions and feelings of all those people.\n\nThe main focus of Welcome to Taj – Timelaspe is not only on the monument itself but it shows the entire Taj Complex  as majestically dazzling as it looks from the main gateway along with the glorious views of the mosque on the sides, the four minarets, tourist movement, their expressions, the richly carved designs, fountains, birds and its beautiful gardens which complement the grandeur of the entire structure with subtleness.\n\nOur film will leave you with memories of Taj if you have visited, and if you haven’t, it will leave you carving to visit Taj. For us making this film gave fresh perspective to follow our passion. And such close interaction with Taj Mahal marked the marvel of human spirit deep in our hearts. \n\nWe got enormous support from our Family and Friends for this project, we deeply thank each and everyone for their constant support and encouragement.\n\nWelcome to Taj – Timelapse film was screened during Taj Mahotsav 2016, this year marked 25th anniversary Taj Mahotsav Festival.\n\t\n\tEquipment Used \n\tSlider : 6 feet Dynamic Perception Stage Zero\n\tMotion Controller : eMotimo TB3 Black Pan-Tilt\n\tCameras : Canon 5D Mark II &amp; III, Sony A7s, GoPro Hero 4\n\tLenses Used : Canon 16-35mm f/2.8, 50mm f/1.4, 24-70mm f/4, 70-200mm f/2.8, 100-400mm and Tamron 150-600mm\n\tSoftwares used for editing : LRTimelapse, Adobe Lightroom, Premiere CC, AfterEffects CC, Photoshop CC, Mocha Pro\n\tApps used: Starwalk iOS App, PhotoPills iOS App\n\nfb: facebook.com/timestance\nweb: timestance.com\n4K Footage available on request"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>-->
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/schedule_layout" />
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

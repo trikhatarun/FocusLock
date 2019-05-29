@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.trikh.focuslock.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * A simple [Fragment] subclass.
@@ -22,12 +23,13 @@ import com.trikh.focuslock.R
 class SettingsFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.fabMenu?.visibility = View.GONE
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -40,7 +42,7 @@ class SettingsFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

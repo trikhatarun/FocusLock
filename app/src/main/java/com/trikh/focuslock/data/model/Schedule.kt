@@ -2,7 +2,9 @@ package com.trikh.focuslock.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.trikh.focuslock.widget.app_picker.AppInfo
 import java.util.*
 
 @Entity(tableName = "schedule")
