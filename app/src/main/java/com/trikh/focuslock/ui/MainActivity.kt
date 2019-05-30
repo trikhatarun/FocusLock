@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
+
         SettingsFragment.OnFragmentInteractionListener{
 
     override fun onFragmentInteraction(uri: Uri) {
