@@ -20,8 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
-
-        SettingsFragment.OnFragmentInteractionListener{
+    SettingsFragment.OnFragmentInteractionListener{
 
     override fun onFragmentInteraction(uri: Uri) {
 
@@ -35,7 +34,11 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
         bottomNavigationBar.itemIconTintList = null
         bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
-        CustomDialog().show(supportFragmentManager, "")
+
+
+        CustomDialog(R.string.unblock_apps_message,{
+            Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
+        }).show(supportFragmentManager, "")
     }
 
     fun onAddScheduleClick(v: View) {

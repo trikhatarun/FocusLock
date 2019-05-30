@@ -6,19 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import com.trikh.focuslock.R
-import kotlinx.android.synthetic.main.custom_dialog_layout.view.*
+import kotlinx.android.synthetic.main.custom_dialog_layout.*
 
 class CustomDialog(
-    @StringRes val titleText: Int = R.string.dialog_message,
-    @StringRes val noButtonText: Int = R.string.dialog_no_button,
-    @StringRes val yesButtonText: Int = R.string.dialog_yes_button
+    @StringRes val titleText: Int,
+    private val onPositiveButtonClick: () -> Unit,
+    @StringRes val yesButtonText: Int = R.string.dialog_yes_button,
+    @StringRes val noButtonText: Int = R.string.dialog_no_button
+
 ) : DialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.custom_dialog_layout, container, false)
     }
 
@@ -26,26 +31,16 @@ class CustomDialog(
         super.onViewCreated(view, savedInstanceState)
 
         dialog.setCanceledOnTouchOutside(false)
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        val colorDrawable = ColorDrawable(Color.TRANSPARENT)
-        dialog?.window?.setBackgroundDrawable(colorDrawable)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        view.titleTextView.setText(titleText)
-        view.noButton.setText(noButtonText)
-        view.yesButton.setText(yesButtonText)
+        titleTv.setText(titleText)
+        negativeBtn.setText(noButtonText)
+        positiveBtn.setText(yesButtonText)
 
-        view.noButton.setOnClickListener {
+        negativeBtn.setOnClickListener { dismiss() }
+        positiveBtn.setOnClickListener {
+            onPositiveButtonClick()
             dismiss()
         }
-
-        view.yesButton.setOnClickListener {
-            val dialogListener = activity as DialogListener?
-            dialogListener!!.onSelectYes()
-            dismiss()
-        }
-    }
-
-    interface DialogListener {
-        fun onSelectYes()
     }
 }
