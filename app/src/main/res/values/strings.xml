@@ -27,4 +27,7 @@
     <string name="minutes">Minutes</string>
     <string name="display_time">%02d:%02d hr</string>
     <string name="quick_lock_activated_message">Apps Blocked till next</string>
+    <string name="dialog_message">Are you really want to unblock the apps.</string>
+    <string name="dialog_yes_button">YES</string>
+    <string name="dialog_no_button">NO</string>
 </resources>
