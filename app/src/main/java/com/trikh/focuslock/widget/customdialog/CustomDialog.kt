@@ -16,7 +16,6 @@ class CustomDialog(
     private val onPositiveButtonClick: () -> Unit,
     @StringRes val yesButtonText: Int = R.string.dialog_yes_button,
     @StringRes val noButtonText: Int = R.string.dialog_no_button
-
 ) : DialogFragment() {
 
     override fun onCreateView(
@@ -42,5 +41,13 @@ class CustomDialog(
             onPositiveButtonClick()
             dismiss()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+
     }
 }

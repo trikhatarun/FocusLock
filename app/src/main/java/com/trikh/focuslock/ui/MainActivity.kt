@@ -35,10 +35,9 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         bottomNavigationBar.itemIconTintList = null
         bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
 
-
-        CustomDialog(R.string.unblock_apps_message,{
+       /* CustomDialog(R.string.unblock_apps_message,{
             Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
-        }).show(supportFragmentManager, "")
+        }).show(supportFragmentManager, "")*/
     }
 
     fun onAddScheduleClick(v: View) {
