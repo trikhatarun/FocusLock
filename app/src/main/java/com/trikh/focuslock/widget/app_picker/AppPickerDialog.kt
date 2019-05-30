@@ -30,11 +30,11 @@ class AppPickerDialog(private val selectedAppList: List<AppInfo>, private val in
         appsRV.adapter = applicationListAdapter
 
         ViewModelProviders.of(this, ViewModelFactory(activity!!.application, selectedAppList))
-            .get(AppListViewModel::class.java)
-            .getAppInfoList()
-            .observe(this, Observer { appList ->
-                applicationListAdapter.updateList(appList)
-            })
+                .get(AppListViewModel::class.java)
+                .getAppInfoList()
+                .observe(this, Observer { appList ->
+                    applicationListAdapter.updateList(appList)
+                })
 
         confirmationButton.setOnClickListener {
             interactionListener.onConfirm(applicationListAdapter.getSelectedApplicationList())
@@ -50,8 +50,8 @@ class AppPickerDialog(private val selectedAppList: List<AppInfo>, private val in
         super.onResume()
         val dialog = dialog
         dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
         )
     }
 
