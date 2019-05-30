@@ -1,4 +1,4 @@
-package com.trikh.focuslock.ui.settting
+package com.trikh.focuslock.ui.setting
 
 import android.content.Context
 import android.net.Uri
@@ -7,9 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.appbar.AppBarLayout
 
 import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.toolbar.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -30,11 +36,38 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.fabMenu?.visibility = View.GONE
+        activity?.mainTv1?.visibility = View.VISIBLE
+        activity?.mainTv2?.visibility = View.VISIBLE
+
+        activity?.findViewById<AppBarLayout>(R.id.appbar)?.toolbar_title?.text = context?.resources?.getString(R.string.settings)
+//        view.toolbar_title.text = "Settings"
+        initRecyclerView()
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
+    }
+
+    private fun initRecyclerView(){
+        val settingList: ArrayList<SettingModel> = ArrayList()
+        settingList.add(SettingModel(R.drawable.ic_emergency,
+                R.string.setting_title_emergency,
+                R.drawable.ic_info))
+        settingList.add(SettingModel(R.drawable.ic_feedback,
+                R.string.setting_title_feedback,
+                R.drawable.ic_info))
+        settingList.add(SettingModel(R.drawable.ic_about,
+                R.string.setting_title_about,
+                R.drawable.ic_info))
+        settingsRv.adapter = SettingRecyclerViewAdapter(settingList)
+        context?.resources?.getDrawable(R.drawable.line_divider)?.let {
+            DividerItemDecoration(
+                it
+            )
+        }?.let { settingsRv.addItemDecoration(it) }
+
+
     }
 
     override fun onAttach(context: Context) {
