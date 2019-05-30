@@ -28,4 +28,10 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="AppTheme.Dialog.Custom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
 </resources>
