@@ -1,8 +1,14 @@
 package com.trikh.focuslock.ui.instantlock
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.ActivityInstantLockBinding
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.widget.app_picker.AppInfo
@@ -20,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_add_schedule.blocked_apps_rv
 import kotlinx.android.synthetic.main.activity_add_schedule.blocked_apps_title
 import kotlinx.android.synthetic.main.activity_instant_lock.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.*
 
 class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
 
@@ -60,6 +68,12 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.save_option_menu, menu)
         return true
+    }
+
+    private fun startAlarm(calender: Calendar) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, Intent(this, StartServiceReceiver::class.java), 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calender.timeInMillis, pendingIntent)
     }
 
     override fun onConfirm(applicationList: List<AppInfo>) {
