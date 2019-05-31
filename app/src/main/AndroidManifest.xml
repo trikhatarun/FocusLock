@@ -32,6 +32,11 @@
             android:name=".ui.instantlock.InstantLockActivity"
             android:label=""
             android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.blockedapp.BlockedAppActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent"/>
     </application>
 
 </manifest>
