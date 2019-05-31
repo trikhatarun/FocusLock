@@ -9,8 +9,11 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.trikh.focuslock.R
+import com.trikh.focuslock.utils.Constants.Companion.DAILY_SCHEDULE
+import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
 import com.trikh.focuslock.utils.Constants.Companion.NOTIFICATION_CHANNEL_ID
 import com.trikh.focuslock.utils.Constants.Companion.PACKAGE_NAME
+import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
 import com.trikh.focuslock.utils.Constants.Companion.SERVICE_ID
 import com.trikh.focuslock.utils.Constants.Companion.TIME_INTERVAL
 import io.reactivex.Observable
@@ -29,6 +32,15 @@ class AppBlockService : Service() {
             .build()
         startForeground(SERVICE_ID, notification)
 
+        when (intent?.getIntExtra(SCHEDULE_TYPE,-1)) {
+            INSTANT_LOCK -> {
+                // do not fetch from database instead get schedule from intent
+            }
+            DAILY_SCHEDULE -> {
+                // fetch all schedule to be started now
+            }
+            else -> stopSelf()
+        }
         disposable = Observable.interval(TIME_INTERVAL, TimeUnit.MILLISECONDS)
             .map { getForegroundApp() }
             .filter { it == "com.android.chrome" && it != packageName }

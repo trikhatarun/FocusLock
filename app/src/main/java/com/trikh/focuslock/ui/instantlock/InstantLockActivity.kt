@@ -6,10 +6,8 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,13 +17,12 @@ import com.trikh.focuslock.databinding.ActivityInstantLockBinding
 import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
+import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_add_schedule.*
-import kotlinx.android.synthetic.main.activity_add_schedule.blocked_apps_rv
-import kotlinx.android.synthetic.main.activity_add_schedule.blocked_apps_title
-import kotlinx.android.synthetic.main.activity_instant_lock.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
@@ -49,14 +46,17 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
         viewModel.appPicker.observe(this, Observer {
             if (!it.hasBeenHandled) {
-                AppPickerDialog(viewModel.applicationList.value!!, this).show(supportFragmentManager, "appPicker")
+                AppPickerDialog(
+                    viewModel.applicationList.value!!,
+                    this
+                ).show(supportFragmentManager, "appPicker")
                 it.getContentIfNotHandled()
             }
         })
 
         viewModel.applicationList.observe(this, Observer {
             blockedAppsAdapter.updateList(it)
-            blocked_apps_title.text = getString(R.string.blocked_apps,it.size)
+            blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
         })
 
         blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
@@ -70,9 +70,15 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         return true
     }
 
-    private fun startAlarm(calender: Calendar) {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return true
+    }
+
+    private fun startAlarm(calender: Calendar, type: Int) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, Intent(this, StartServiceReceiver::class.java), 0)
+        val intent = Intent(this, StartServiceReceiver::class.java)
+        //intent.putExtra(SCHEDULE_TYPE, )
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calender.timeInMillis, pendingIntent)
     }
 

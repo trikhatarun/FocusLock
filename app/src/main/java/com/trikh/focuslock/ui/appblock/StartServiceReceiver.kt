@@ -9,6 +9,7 @@ class StartServiceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val serviceIntent = Intent(context, AppBlockService::class.java)
+        serviceIntent.putExtras(intent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)
         } else {
