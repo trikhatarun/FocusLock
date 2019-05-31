@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="32dp"
-    android:paddingEnd="32dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -14,21 +14,21 @@
         app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <TextView
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/colorPrimary"
-                android:drawableStart="@drawable/ic_lock"
+                android:drawableStart="@drawable/ic_lock_round"
                 android:drawablePadding="16dp"
                 android:fontFamily="@font/muli_bold"
                 android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:text="@string/app_name"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -49,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:textColor="@color/colorPrimaryText"
                 android:fontFamily="@font/muli_semibold"
                 app:layout_constraintStart_toEndOf="@id/appIconIv"
                 app:layout_constraintTop_toTopOf="@id/appIconIv"
@@ -61,16 +62,16 @@
                 android:fontFamily="@font/muli_light"
                 android:text="@string/app_blocked_message"
                 android:textSize="12sp"
+                android:textColor="@color/colorSecondaryText"
                 app:layout_constraintStart_toStartOf="@id/appNameTv"
                 app:layout_constraintTop_toBottomOf="@id/appNameTv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:background="@color/backgroundColor"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appIconIv">
@@ -103,18 +104,18 @@
                     tools:text="Alexis Ohanian" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="@id/constraintLayout"
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_bold"
+                android:letterSpacing="0.02"
                 android:text="@string/close"
-                android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

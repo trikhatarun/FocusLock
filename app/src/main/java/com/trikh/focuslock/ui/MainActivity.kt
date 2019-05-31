@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
+import com.trikh.focuslock.ui.blockedapp.BlockedAppActivity
 import com.trikh.focuslock.ui.instantlock.InstantLockActivity
 import com.trikh.focuslock.ui.schedule.AddScheduleActivity
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
        /* CustomDialog(R.string.unblock_apps_message,{
             Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
         }).show(supportFragmentManager, "")*/
+        startActivity(Intent(this, BlockedAppActivity::class.java))
     }
 
     fun onAddScheduleClick(v: View) {
