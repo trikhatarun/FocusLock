@@ -4,8 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -15,12 +13,11 @@ import com.trikh.focuslock.ui.schedule.AddScheduleActivity
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
 import com.trikh.focuslock.ui.settting.SettingsFragment
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
-import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
-    SettingsFragment.OnFragmentInteractionListener{
+    SettingsFragment.OnFragmentInteractionListener {
 
     override fun onFragmentInteraction(uri: Uri) {
 
@@ -35,9 +32,9 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         bottomNavigationBar.itemIconTintList = null
         bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
 
-       /* CustomDialog(R.string.unblock_apps_message,{
-            Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
-        }).show(supportFragmentManager, "")*/
+        /* CustomDialog(R.string.unblock_apps_message,{
+             Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
+         }).show(supportFragmentManager, "")*/
     }
 
     fun onAddScheduleClick(v: View) {

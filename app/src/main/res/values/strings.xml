@@ -32,4 +32,6 @@
     <string name="dialog_no_button">NO</string>
     <string name="setting_invite_text_1">Invite your friends</string>
     <string name="setting_invite_text_2">&amp; make their life more productive</string>
+    <string name="app_blocked_message">This app is currently blocked.</string>
+    <string name="close">Close</string>
 </resources>

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.trikh.focuslock">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -32,6 +34,14 @@
             android:name=".ui.instantlock.InstantLockActivity"
             android:label=""
             android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.appblock.BlockedAppActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent" />
+
+        <service android:name=".ui.appblock.AppBlockService" />
+        <receiver android:name=".ui.appblock.StartServiceReceiver" />
     </application>
 
 </manifest>

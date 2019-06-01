@@ -29,9 +29,13 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="AppTheme.Dialog.Custom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowMinWidthMajor">100%</item>
-        <item name="android:windowMinWidthMinor">100%</item>
+    <style name="Theme.Transparent" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="windowFixedWidthMajor">100%</item>
+        <item name="windowFixedWidthMinor">100%</item>
     </style>
 </resources>
