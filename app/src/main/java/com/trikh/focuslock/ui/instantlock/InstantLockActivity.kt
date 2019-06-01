@@ -13,11 +13,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.databinding.ActivityInstantLockBinding
+import com.trikh.focuslock.ui.appblock.AppBlockService
 import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants.Companion.BLOCKED_PACKAGE_LIST
 import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
+import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
@@ -47,8 +51,8 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         viewModel.appPicker.observe(this, Observer {
             if (!it.hasBeenHandled) {
                 AppPickerDialog(
-                    viewModel.applicationList.value!!,
-                    this
+                        viewModel.applicationList.value!!,
+                        this
                 ).show(supportFragmentManager, "appPicker")
                 it.getContentIfNotHandled()
             }
@@ -71,6 +75,15 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.saveSchedule -> {
+                val schedule = viewModel.createInstantLockSchedule()
+                val serviceIntent = Intent(this, AppBlockService::class.java)
+                serviceIntent.putExtra(SCHEDULE, schedule)
+                startService(serviceIntent)
+                finish()
+            }
+        }
         return true
     }
 
