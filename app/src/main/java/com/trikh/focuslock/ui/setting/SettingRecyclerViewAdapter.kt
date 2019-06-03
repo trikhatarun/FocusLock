@@ -1,6 +1,5 @@
 package com.trikh.focuslock.ui.setting
 
-import android.app.ActionBar
 import android.content.Context
 import android.graphics.Typeface
 import android.view.Gravity
@@ -8,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +15,10 @@ import com.trikh.focuslock.utils.setToastOffsets
 import kotlinx.android.synthetic.main.emergency_toast_layout.view.*
 import kotlinx.android.synthetic.main.setting_layout.view.*
 
-class SettingRecyclerViewAdapter(private val items: ArrayList<SettingModel>) :
+class SettingRecyclerViewAdapter(
+    private val items: ArrayList<SettingModel>,
+    private val onItemClicked: (adapterPosition: Int) -> Unit
+) :
     RecyclerView.Adapter<SettingRecyclerViewAdapter.ViewHolder>() {
 
 
@@ -32,7 +32,7 @@ class SettingRecyclerViewAdapter(private val items: ArrayList<SettingModel>) :
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], onItemClicked)
     }
 
 
@@ -40,35 +40,31 @@ class SettingRecyclerViewAdapter(private val items: ArrayList<SettingModel>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(s: SettingModel) {
+        fun bind(s: SettingModel, onItemClicked: (adapterPosition: Int) -> Unit) {
             val context: Context = itemView.context
-            when (adapterPosition) {
-                0 -> {
-                    itemView.infoImg?.visibility = View.VISIBLE
-                    itemView.infoImg.setImageResource(s.info)
-                    itemView.titleTv?.typeface =
-                        Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
-                    itemView.titleTv?.setTextColor(context.resources.getColor(R.color.colorPink))
-                }
-                else -> {
-                    itemView.infoImg?.visibility = View.GONE
-                }
+            if (adapterPosition == 0) {
+
+                itemView.titleTv?.typeface =
+                    Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
+                itemView.titleTv?.setTextColor(context.resources.getColor(R.color.colorPink))
             }
+
+
 
             itemView.iconImg.setImageResource(s.image)
             itemView.titleTv.setText(s.title)
 
-            itemView.infoImg.setOnClickListener {
-                if (itemView.infoImg.visibility == View.VISIBLE) {
-                    val list = setToastOffsets(it)
-                    setEmergencyToast(context, itemView.infoLl as ViewGroup, list as Array<Int>)
-                }
+            itemView.setOnClickListener {
+
+                onItemClicked(adapterPosition)
+
+
             }
 
 
         }
 
-        private fun setEmergencyToast(context: Context, mView: ViewGroup, list: Array<Int>) {
+        /*private fun setEmergencyToast(context: Context, mView: ViewGroup, list: Array<Int>) {
 
             //val inflater: LayoutInflater
             val layout =
@@ -78,13 +74,13 @@ class SettingRecyclerViewAdapter(private val items: ArrayList<SettingModel>) :
                 setGravity(Gravity.NO_GRAVITY, list[0], list[1])
                 duration = Toast.LENGTH_LONG
                 val params = layout.layoutParams as LinearLayout.LayoutParams
-                params.setMargins(74,0,80,0)
+                params.setMargins(74, 0, 80, 0)
                 layout.layoutParams = params
                 view = layout
-                view.layoutParams=params
+                view.layoutParams = params
                 show()
             }
-        }
+        }*/
     }
 
 

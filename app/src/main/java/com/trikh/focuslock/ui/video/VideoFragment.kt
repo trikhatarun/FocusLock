@@ -31,8 +31,8 @@ class VideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.mainTv1?.visibility = View.GONE
-        activity?.mainTv2?.visibility = View.GONE
+        /*activity?.mainTv1?.visibility = View.GONE
+        activity?.mainTv2?.visibility = View.GONE*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event

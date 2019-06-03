@@ -35,8 +35,8 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.fabMenu?.visibility = View.VISIBLE
-        activity?.mainTv1?.visibility = View.GONE
-        activity?.mainTv2?.visibility = View.GONE
+        /*activity?.mainTv1?.visibility = View.GONE
+        activity?.mainTv2?.visibility = View.GONE*/
 
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter = ScheduleAdapter(getMockSchedules())

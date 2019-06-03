@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
     >
 
     <ImageView
@@ -34,20 +35,7 @@
         app:layout_constraintStart_toEndOf="@+id/iconImg"
         app:layout_constraintTop_toTopOf="@+id/iconImg"
         tools:text="Emergency" />
-<LinearLayout
-    android:id="@+id/infoLl"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="22dp"
-    android:layout_marginEnd="22dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-    <ImageView
-        android:id="@+id/infoImg"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        tools:src="@drawable/ic_info" />
-</LinearLayout>
+
 
     <View
         android:visibility="gone"
