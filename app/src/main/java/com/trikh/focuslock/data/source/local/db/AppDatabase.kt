@@ -16,6 +16,8 @@ import com.trikh.focuslock.data.utils.StringListConverter
 @TypeConverters(CalendarTypeConverters::class,StringListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun scheduleDao(): ScheduleDao
+    abstract fun instantLockDao() : InstantLockDao
+    abstract fun applicationsDao(): ApplicationsDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

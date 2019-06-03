@@ -4,22 +4,23 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "instant_lock")
 class InstantLockSchedule(
-        @PrimaryKey(autoGenerate = true) val id: Int = 0,
-        val endTime: Calendar,
-        val blockedApps: List<String>
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val endTime: Long,
+    val blockedApps: List<String>
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
-            parcel.readInt(),
-            TODO("endTime"),
-            parcel.createStringArrayList()) {
-    }
+        parcel.readInt(),
+        parcel.readLong(),
+        parcel.createStringArrayList()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
+        parcel.writeLong(endTime)
         parcel.writeStringList(blockedApps)
     }
 
