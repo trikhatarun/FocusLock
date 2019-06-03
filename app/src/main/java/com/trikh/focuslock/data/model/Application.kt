@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "Application", foreignKeys = [ForeignKey(
+    tableName = "application", foreignKeys = [ForeignKey(
         entity = Schedule::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("scheduleId"),

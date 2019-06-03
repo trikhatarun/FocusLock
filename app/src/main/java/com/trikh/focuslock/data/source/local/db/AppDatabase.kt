@@ -6,14 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.trikh.focuslock.data.model.Application
+import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.local.db.DbConstants.Companion.DB_NAME
 import com.trikh.focuslock.data.utils.CalendarTypeConverters
+import com.trikh.focuslock.data.utils.StringListConverter
 
-@Database(entities = [Schedule::class, Application::class], version = 1)
-@TypeConverters(CalendarTypeConverters::class)
+@Database(entities = [Schedule::class, Application::class, InstantLockSchedule::class], version = 1)
+@TypeConverters(CalendarTypeConverters::class,StringListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun scheduleDao(): ScheduleDao
+    abstract fun instantLockDao() : InstantLockDao
+    abstract fun applicationsDao(): ApplicationsDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

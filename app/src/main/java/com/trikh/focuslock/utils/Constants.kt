@@ -9,5 +9,6 @@ interface Constants {
         const val SCHEDULE_TYPE = "schedule_type"
         const val INSTANT_LOCK = 1
         const val DAILY_SCHEDULE = 2
+        const val SCHEDULE = "schedule"
     }
 }
