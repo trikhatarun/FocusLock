@@ -10,5 +10,8 @@ interface Constants {
         const val INSTANT_LOCK = 1
         const val DAILY_SCHEDULE = 2
         const val SCHEDULE = "schedule"
+        const val FEEDBACK_EMAIL = "trikha.tarun01@gmail.com"
+        const val PLAIN_TEXT = "text/plain"
+        const val SHARE_FOCUS_LOCK = "Share Focus Lock"
     }
 }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.StringRes
 
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
@@ -17,51 +18,29 @@ import kotlinx.android.synthetic.main.setting_layout.view.*
 
 class SettingRecyclerViewAdapter(
     private val items: ArrayList<SettingModel>,
-    private val onItemClicked: (adapterPosition: Int) -> Unit
-) :
-    RecyclerView.Adapter<SettingRecyclerViewAdapter.ViewHolder>() {
+    val listener: AdapterInteractionListener
+) : RecyclerView.Adapter<SettingRecyclerViewAdapter.ViewHolder>() {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.setting_layout, parent, false))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            : ViewHolder = ViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.setting_layout,
-            parent,
-            false
-        )
-    )
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], onItemClicked)
-    }
-
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(s: SettingModel, onItemClicked: (adapterPosition: Int) -> Unit) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(s: SettingModel) {
             val context: Context = itemView.context
-            if (adapterPosition == 0) {
 
-                itemView.titleTv?.typeface =
-                    Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
+            if (adapterPosition == 0) {
+                itemView.titleTv?.typeface = Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
                 itemView.titleTv?.setTextColor(context.resources.getColor(R.color.colorPink))
             }
-
-
 
             itemView.iconImg.setImageResource(s.image)
             itemView.titleTv.setText(s.title)
 
-            itemView.setOnClickListener {
-
-                onItemClicked(adapterPosition)
-
-
-            }
-
-
+            itemView.setOnClickListener { listener.onItemClick(s.title) }
         }
 
         /*private fun setEmergencyToast(context: Context, mView: ViewGroup, list: Array<Int>) {
@@ -83,5 +62,7 @@ class SettingRecyclerViewAdapter(
         }*/
     }
 
-
+    interface AdapterInteractionListener{
+        fun onItemClick(@StringRes item : Int)
+    }
 }
