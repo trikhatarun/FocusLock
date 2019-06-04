@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.trikh.focuslock.ui.schedule.AddScheduleViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context=".ui.schedule.CustomScheduleActivity">
+
+        <include layout="@layout/toolbar" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:behavior_overlapTop="90dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="6dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:background="@drawable/black_gradient"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/guideline"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="3dp"
+                                android:layout_height="0dp"
+                                android:background="@color/colorPrimaryText"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:background="@drawable/yellow_gradient"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/guideline"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="3dp"
+                                android:layout_height="0dp"
+                                android:background="@color/colorYellow"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="6dp"
+                                android:text="@string/sleep_time"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:text="@string/awake_time"
+                                app:layout_constraintBaseline_toBaselineOf="@id/textView"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <TextView
+                                android:id="@+id/sleep_time_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:text="@{viewModel.getSleepTime(viewModel.startTime.getTime(),0)}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/textView"
+                                app:layout_constraintTop_toBottomOf="@id/textView"
+                                tools:text="11:00 PM" />
+
+                            <TextView
+                                android:id="@+id/awake_time_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.getAwakeTime(viewModel.endTime.getTime(),0)}"
+                                app:layout_constraintBaseline_toBaselineOf="@id/sleep_time_tv"
+                                app:layout_constraintStart_toStartOf="@id/textView2"
+                                tools:text="08:30 AM" />
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.5" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
+                            android:id="@+id/timePicker"
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="30dp"
+                            android:padding="14dp"
+                            app:arc_color_am="@color/colorDarkBlue"
+                            app:arc_color_pm="@color/colorDarkBlue"
+                            app:arc_dash_size="16dp"
+                            app:background_color="@color/colorClockBackground"
+                            app:border_color="@color/colorClockBorder"
+                            app:border_thickness="4dp"
+                            app:end_thumb_color="@color/colorYellow"
+                            app:end_thumb_image_am="@drawable/ic_sun"
+                            app:end_thumb_image_pm="@drawable/ic_sun"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+                            app:onChange="@{viewModel.onTimeChangedListener}"
+                            app:start_thumb_color="@color/colorPrimaryText"
+                            app:start_thumb_image_am="@drawable/ic_moon"
+                            app:start_thumb_image_pm="@drawable/ic_moon"
+                            app:thumb_size="30dp" />
+
+                        <TextView
+                            android:id="@+id/time_duration_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.calculateDuration(viewModel.startTime,viewModel.endTime)}"
+                            android:textSize="22sp"
+                            app:layout_constraintBottom_toBottomOf="@id/timePicker"
+                            app:layout_constraintEnd_toEndOf="@id/timePicker"
+                            app:layout_constraintStart_toStartOf="@id/timePicker"
+                            app:layout_constraintTop_toTopOf="@id/timePicker"
+                            tools:text="9 hr 30 min" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="6dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/repeatTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginEnd="20dp"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:fontFamily="@font/muli_semibold"
+                            android:text="@string/Repeat_text"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <CheckBox
+                            android:id="@+id/sundayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="26dp"
+                            android:layout_marginBottom="20dp"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(0)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,0)}"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Sunday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/mondayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/repeatTv" />
+
+                        <CheckBox
+                            android:id="@+id/mondayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(1)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,1)}"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Monday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/sundayCb"
+                            app:layout_constraintEnd_toStartOf="@+id/tuesdayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/sundayCb"
+                            app:layout_constraintTop_toTopOf="@+id/sundayCb" />
+
+                        <CheckBox
+                            android:id="@+id/tuesdayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(2)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,2)}"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Tuesday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/mondayCb"
+                            app:layout_constraintEnd_toStartOf="@+id/wednesdayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/mondayCb"
+                            app:layout_constraintTop_toTopOf="@+id/mondayCb" />
+
+                        <CheckBox
+                            android:id="@+id/wednesdayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(3)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,3)}"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Wednesday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tuesdayCb"
+                            app:layout_constraintEnd_toStartOf="@+id/thursdayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/tuesdayCb"
+                            app:layout_constraintTop_toTopOf="@+id/tuesdayCb" />
+
+                        <CheckBox
+                            android:id="@+id/thursdayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(4)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,4)}"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Thursday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/wednesdayCb"
+                            app:layout_constraintEnd_toStartOf="@+id/fridayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/wednesdayCb"
+                            app:layout_constraintTop_toTopOf="@+id/wednesdayCb" />
+
+                        <CheckBox
+                            android:id="@+id/fridayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked( 5)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,5)}"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Friday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/thursdayCb"
+                            app:layout_constraintEnd_toStartOf="@+id/saturdayCb"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/thursdayCb"
+                            app:layout_constraintTop_toTopOf="@+id/thursdayCb" />
+
+                        <CheckBox
+                            android:id="@+id/saturdayCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp"
+                            android:background="@drawable/week_selector"
+                            android:button="@null"
+                            android:checked="@{viewModel.isChecked(0)}"
+                            android:fontFamily="@font/muli_semibold"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,6)}"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="10dp"
+                            android:text="@string/Saturday_checkbox_text"
+                            android:textColor="@color/text_selector"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/fridayCb"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/fridayCb"
+                            app:layout_constraintTop_toTopOf="@+id/fridayCb" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="6dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/blocked_apps_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/muli_semibold"
+                            android:text="@string/blocked_apps"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="@id/blocked_apps_title"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/blocked_apps_title"
+                            app:srcCompat="@drawable/ic_edit" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/blocked_apps_rv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/imageView"
+                            app:layout_constraintStart_toStartOf="@id/blocked_apps_title"
+                            app:layout_constraintTop_toBottomOf="@id/blocked_apps_title"
+                            tools:listitem="@layout/blocked_app_list_item" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

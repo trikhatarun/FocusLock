@@ -32,6 +32,7 @@
     <string name="dialog_no_button">NO</string>
     <string name="app_blocked_message">This app is currently blocked.</string>
     <string name="close">Close</string>
+
     <string name="setting_bottom_message_1">Invite your friends</string>
     <string name="setting_bottom_message_2">&amp; make their life more productive</string>
     <string name="setting_title_emergency">Emergency</string>
@@ -55,9 +56,19 @@
     <string name="usage_permission_request_message">App needs usage stats permission to function.</string>
     <string name="grant">Grant Permission</string>
     <string name="deny">Deny</string>
+
     <string name="setting_invite_text_1">Invite your friends</string>
     <string name="setting_invite_text_2">&amp; make their life more productive</string>
     <string name="share_message">Share with friends</string>
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
+    <string name="Sunday_checkbox_text">S</string>
+    <string name="Monday_checkbox_text">M</string>
+    <string name="Tuesday_checkbox_text">T</string>
+    <string name="Wednesday_checkbox_text">W</string>
+    <string name="Thursday_checkbox_text">T</string>
+    <string name="Friday_checkbox_text">F</string>
+    <string name="Saturday_checkbox_text">S</string>
+    <string name="Repeat_text">Repeat</string>
+
 </resources>
