@@ -11,12 +11,34 @@ class AddScheduleViewModel : ViewModel() {
     // do not make them private they are used by data binding
     val startTime: MutableLiveData<Calendar> = MutableLiveData()
     val endTime: MutableLiveData<Calendar> = MutableLiveData()
+    private val checkedIds: MutableLiveData<MutableList<Boolean>> = MutableLiveData()
     private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
     fun setTime(start: Calendar, end: Calendar) {
         startTime.value = start
         endTime.value = end
+        for (i in 0..6) {
+            checkedIds.value?.add(false)
+        }
     }
+
+    fun onChecked(check: Boolean, id: Int) {
+
+        checkedIds.value?.let {
+            it[id] = check
+        }
+
+    }
+
+    fun isChecked(id: Int): Boolean {
+
+        checkedIds.value?.let {
+            return it[id]
+        }
+        return false
+
+    }
+
 
     fun getSleepTime(time: Date, level: Int): String? {
         val sleepTime = Calendar.getInstance()

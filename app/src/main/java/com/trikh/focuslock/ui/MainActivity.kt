@@ -14,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.instantlock.InstantLockActivity
 import com.trikh.focuslock.ui.schedule.AddScheduleActivity
+import com.trikh.focuslock.ui.schedule.CustomScheduleActivity
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
 
 import com.trikh.focuslock.ui.settings.SettingsFragment
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
     }
 
     fun onAddScheduleClick(v: View) {
-        startActivity(Intent(this, AddScheduleActivity::class.java))
+        startActivity(Intent(this, CustomScheduleActivity::class.java))
         fabMenu.toggle(true)
     }
 
