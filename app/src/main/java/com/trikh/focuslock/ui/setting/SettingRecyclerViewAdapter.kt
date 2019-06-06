@@ -22,7 +22,13 @@ class SettingRecyclerViewAdapter(
 ) : RecyclerView.Adapter<SettingRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.setting_layout, parent, false))
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.setting_layout,
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
 
@@ -33,7 +39,8 @@ class SettingRecyclerViewAdapter(
             val context: Context = itemView.context
 
             if (adapterPosition == 0) {
-                itemView.titleTv?.typeface = Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
+                itemView.titleTv?.typeface =
+                    Typeface.createFromAsset(context.assets, "font/muli_bold.ttf")
                 itemView.titleTv?.setTextColor(context.resources.getColor(R.color.colorPink))
             }
 
@@ -62,7 +69,7 @@ class SettingRecyclerViewAdapter(
         }*/
     }
 
-    interface AdapterInteractionListener{
-        fun onItemClick(@StringRes item : Int)
+    interface AdapterInteractionListener {
+        fun onItemClick(@StringRes item: Int)
     }
 }

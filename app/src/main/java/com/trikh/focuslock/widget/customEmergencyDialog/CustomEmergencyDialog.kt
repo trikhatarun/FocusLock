@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.custom_about_dialog_layout.*
 import kotlinx.android.synthetic.main.custom_emergency_dialog_layout.*
 
 
-class CustomEmergencyDialog(private val onBlock: (block: Boolean) -> Unit) : DialogFragment() {
+class CustomEmergencyDialog(private val listener: DialogListener) : DialogFragment() {
 
 
     override fun onCreateView(
@@ -36,12 +36,11 @@ class CustomEmergencyDialog(private val onBlock: (block: Boolean) -> Unit) : Dia
 
 
         noBtn.setOnClickListener {
-            onBlock(false)
             dismiss()
         }
 
         yesBtn.setOnClickListener {
-            onBlock(true)
+            listener.onBlock()
             dismiss()
         }
 
@@ -53,6 +52,11 @@ class CustomEmergencyDialog(private val onBlock: (block: Boolean) -> Unit) : Dia
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+    }
+
+
+    interface DialogListener {
+        fun onBlock()
     }
 
 

@@ -13,7 +13,7 @@ import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.custom_feedback_dialog_layout.*
 
 class CustomFeedbackDialog(
-    private val onSubmit: (name: String, title: String, description: String) -> Unit
+    private val listener: DialogListener
 
 ) : DialogFragment() {
 
@@ -50,7 +50,7 @@ class CustomFeedbackDialog(
                 cancel = false
             }
             if (!cancel) {
-                onSubmit(userName!!, userTitle!!, userDescription!!)
+                listener.onSubmit(userName!!, userTitle!!, userDescription!!)
                 dismiss()
             } else {
                 //focusView?.requestFocus()
@@ -70,6 +70,10 @@ class CustomFeedbackDialog(
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+    }
+
+    interface DialogListener {
+        fun onSubmit(name: String, title: String, description: String)
     }
 
 

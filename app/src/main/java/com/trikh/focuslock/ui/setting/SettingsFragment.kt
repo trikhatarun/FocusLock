@@ -20,10 +20,25 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteractionListener {
+class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteractionListener,
+    CustomEmergencyDialog.DialogListener, CustomFeedbackDialog.DialogListener {
+
+
+    override fun onBlock() {
+        //TODO perform task when user don't want to disable all schedules
+    }
+
+    override fun onSubmit(name: String, title: String, description: String) {
+        onSendingMail(name, title, description)
+    }
+
     private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -74,30 +89,26 @@ class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteracti
 
         settingsRv.adapter = SettingRecyclerViewAdapter(settingList, this)
 
-        resources.getDrawable(R.drawable.line_divider)?.let { DividerItemDecoration(it) }?.let { settingsRv.addItemDecoration(it) }
+        resources.getDrawable(R.drawable.line_divider)?.let { DividerItemDecoration(it) }
+            ?.let { settingsRv.addItemDecoration(it) }
     }
 
     override fun onItemClick(item: Int) {
         when (item) {
-            R.string.setting_title_emergency -> CustomEmergencyDialog(onBlock = {
-                    if (it) {
-                        //TODO perform task when user don't want to disable all schedules
-                        //Toast.makeText(context,"block : yes",Toast.LENGTH_LONG).show()
-                    } else {
-                        //TODO perform task when user wants to disable all schedules
-                        //Toast.makeText(context,"block : no",Toast.LENGTH_LONG).show()
-                    }
-                }).show(activity?.supportFragmentManager, null)
+            R.string.setting_title_emergency -> CustomEmergencyDialog(this).show(
+                activity?.supportFragmentManager,
+                null
+            )
 
-            R.string.setting_title_feedback -> CustomFeedbackDialog(onSubmit = { name, title, description ->
-                    onSendingMail(name, title, description)
-                    /*Toast.makeText(
-                        context,
-                        "$name $title $description", Toast.LENGTH_SHORT
-                    ).show()*/
-                }).show(activity?.supportFragmentManager, null)
+            R.string.setting_title_feedback -> CustomFeedbackDialog(this).show(
+                activity?.supportFragmentManager,
+                null
+            )
 
-            R.string.setting_title_about -> CustomAboutDialog().show(activity?.supportFragmentManager, null)
+            R.string.setting_title_about -> CustomAboutDialog().show(
+                activity?.supportFragmentManager,
+                null
+            )
         }
     }
 
