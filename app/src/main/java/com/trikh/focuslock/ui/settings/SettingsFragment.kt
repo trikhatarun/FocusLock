@@ -1,4 +1,4 @@
-package com.trikh.focuslock.ui.setting
+package com.trikh.focuslock.ui.settings
 
 import android.content.Context
 import android.content.Intent
@@ -82,12 +82,12 @@ class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteracti
     }
 
     private fun initRecyclerView() {
-        val settingList: ArrayList<SettingModel> = ArrayList()
-        settingList.add(SettingModel(R.drawable.ic_emergency, R.string.setting_title_emergency))
-        settingList.add(SettingModel(R.drawable.ic_feedback, R.string.setting_title_feedback))
-        settingList.add(SettingModel(R.drawable.ic_about, R.string.setting_title_about))
+        val settingsList: ArrayList<SettingsModel> = ArrayList()
+        settingsList.add(SettingsModel(R.drawable.ic_emergency, R.string.setting_title_emergency))
+        settingsList.add(SettingsModel(R.drawable.ic_feedback, R.string.setting_title_feedback))
+        settingsList.add(SettingsModel(R.drawable.ic_about, R.string.setting_title_about))
 
-        settingsRv.adapter = SettingRecyclerViewAdapter(settingList, this)
+        settingsRv.adapter = SettingRecyclerViewAdapter(settingsList, this)
 
         resources.getDrawable(R.drawable.line_divider)?.let { DividerItemDecoration(it) }
             ?.let { settingsRv.addItemDecoration(it) }

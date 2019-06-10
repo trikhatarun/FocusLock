@@ -54,12 +54,7 @@ class CustomFeedbackDialog(
                 dismiss()
             } else {
                 //focusView?.requestFocus()
-                Toast.makeText(
-                    context,
-                    "Please enter either title or description.",
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.e("OnClickLIisteners", " Please enter either title or description. ")
+                Toast.makeText(context, "Please enter either title or description.", Toast.LENGTH_LONG).show()
             }
         }
     }

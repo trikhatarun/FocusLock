@@ -33,8 +33,6 @@ class CustomEmergencyDialog(private val listener: DialogListener) : DialogFragme
         dialog.setCanceledOnTouchOutside(false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
-
         noBtn.setOnClickListener {
             dismiss()
         }

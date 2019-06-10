@@ -32,13 +32,11 @@ class CustomAboutDialog() : DialogFragment() {
         dialog.setCanceledOnTouchOutside(false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
-        versionTv.text = "Version " + BuildConfig.VERSION_NAME
+        versionTv.text = getString(R.string.app_version,BuildConfig.VERSION_NAME)
 
         okTv.setOnClickListener {
             dismiss()
         }
-
     }
 
     override fun onResume() {

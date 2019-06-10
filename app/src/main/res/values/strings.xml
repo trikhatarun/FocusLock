@@ -51,7 +51,6 @@
     <string name="emergency_dialog_text_1">Emergency mode is a mode where all the schedules will be disabled in case of a emergency. Please use this mode in emergency cases only.</string>
     <string name="emergency_dialog_text_2">Are you sure about disabling all the schedules?</string>
     <string name="app_current_Period">2018"-"2019 FocusLock.Inc</string>
-
-
+    <string name="app_version">Version %s</string>
 
 </resources>

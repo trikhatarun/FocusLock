@@ -1,23 +1,18 @@
-package com.trikh.focuslock.ui.setting
+package com.trikh.focuslock.ui.settings
 
 import android.content.Context
 import android.graphics.Typeface
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.annotation.StringRes
 
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
-import com.trikh.focuslock.utils.setToastOffsets
-import kotlinx.android.synthetic.main.emergency_toast_layout.view.*
 import kotlinx.android.synthetic.main.setting_layout.view.*
 
 class SettingRecyclerViewAdapter(
-    private val items: ArrayList<SettingModel>,
+    private val items: ArrayList<SettingsModel>,
     val listener: AdapterInteractionListener
 ) : RecyclerView.Adapter<SettingRecyclerViewAdapter.ViewHolder>() {
 
@@ -35,7 +30,7 @@ class SettingRecyclerViewAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(s: SettingModel) {
+        fun bind(s: SettingsModel) {
             val context: Context = itemView.context
 
             if (adapterPosition == 0) {

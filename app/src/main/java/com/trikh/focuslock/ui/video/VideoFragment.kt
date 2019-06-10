@@ -29,12 +29,6 @@ class VideoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /*activity?.mainTv1?.visibility = View.GONE
-        activity?.mainTv2?.visibility = View.GONE*/
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
@@ -69,5 +63,4 @@ class VideoFragment : Fragment() {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
-
 }

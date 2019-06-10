@@ -1,4 +1,4 @@
-package com.trikh.focuslock.ui.setting
+package com.trikh.focuslock.ui.settings
 
 import android.graphics.Canvas
 import android.graphics.Rect
