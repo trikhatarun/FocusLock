@@ -30,8 +30,27 @@
     <string name="unblock_apps_message">Are you really want to unblock the apps.</string>
     <string name="dialog_yes_button">YES</string>
     <string name="dialog_no_button">NO</string>
-    <string name="setting_invite_text_1">Invite your friends</string>
-    <string name="setting_invite_text_2">&amp; make their life more productive</string>
     <string name="app_blocked_message">This app is currently blocked.</string>
     <string name="close">Close</string>
+    <string name="setting_bottom_message_1">Invite your friends</string>
+    <string name="setting_bottom_message_2">&amp; make their life more productive</string>
+    <string name="setting_title_emergency">Emergency</string>
+    <string name="setting_title_feedback">Feedback</string>
+    <string name="setting_title_about">About Us</string>
+    <string name="emergency_toast">Use it only in Emergency case for disabling all the schedules.</string>
+    <string name="feedback_dialog_message">Your words are valuable for us</string>
+    <string name="name_hint_text">Name</string>
+    <string name="title_hint_text">Title</string>
+    <string name="description_hint_text">Description</string>
+    <string name="submit_text">Submit</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="app_link">empty</string>
+    <string name="about_text">About FocusLock</string>
+    <string name="about_dialog_message_1">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"'"s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</string>
+    <string name="about_dialog_message_2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </string>
+    <string name="emergency_dialog_text_1">Emergency mode is a mode where all the schedules will be disabled in case of a emergency. Please use this mode in emergency cases only.</string>
+    <string name="emergency_dialog_text_2">Are you sure about disabling all the schedules?</string>
+    <string name="app_current_Period">2018"-"2019 FocusLock.Inc</string>
+    <string name="app_version">Version %s</string>
+
 </resources>

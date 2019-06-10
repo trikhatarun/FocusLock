@@ -8,6 +8,7 @@
     <color name="colorDisabled">#888888</color>
     <color name="backgroundColor">#f5f5f5</color>
     <color name="translucentBackgroundColor">#73D8D8D8</color>
+    <color name="borderColor">#d8d8d8</color>
     <color name="colorIcon">#8a000000</color>
     <color name="translucentColor">#19ffffff</color>
     <color name="white">#FFFFFF</color>
@@ -16,5 +17,8 @@
     <color name="colorClockBorder">#F5F5F5</color>
     <color name="colorArcGradient">#f9c947</color>
     <color name="colorLine">#f1f1f1</color>
+    <color name="buttonGrey">#e1e1e1</color>
+    <color name="buttonTextColor">#4a4a4a</color>
     <color name="colorDarkBlue">#191970</color>
+    <color name="colorPink">#ff2d55</color>
 </resources>

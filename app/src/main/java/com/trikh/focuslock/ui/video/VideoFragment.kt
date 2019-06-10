@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.trikh.focuslock.R
+import kotlinx.android.synthetic.main.activity_main.*
+
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -61,5 +63,4 @@ class VideoFragment : Fragment() {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
-
 }
