@@ -12,11 +12,12 @@ import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.utils.Event
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
+import io.reactivex.rxkotlin.subscribeBy
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddScheduleViewModel : ViewModel(), ScheduleRepository.ScheduleCallBacks {
+class AddScheduleViewModel : ViewModel(){
 
 
 
@@ -39,8 +40,8 @@ class AddScheduleViewModel : ViewModel(), ScheduleRepository.ScheduleCallBacks {
     }
 
     init {
-        scheduleRepository.getSchedules()?.subscribe {
-            scheduleList?.postValue(it)
+        scheduleRepository.getSchedules().subscribeBy{
+            scheduleList.postValue(it)
         }
     }
 
@@ -101,31 +102,23 @@ class AddScheduleViewModel : ViewModel(), ScheduleRepository.ScheduleCallBacks {
     }
 
     fun createSchedule(): Schedule {
+        val list: ArrayList<String> = ArrayList()
+        applicationList.value?.forEach {
+            list.add( it.packageName)
+        }
+
         val schedule = Schedule(
             endTime = endTime.value!!,
             startTime = startTime.value!!,
-            selectedWeekDays = checkedIds.value
+            selectedWeekDays = checkedIds.value,
+            appList = list as List<String>
         )
         Log.e("Schedule ","Start Time: "+ startTime.value!!.timeInMillis+" End Time: "+endTime.value!!.timeInMillis)
-        scheduleRepository.addSchedule(schedule, this)
+        scheduleRepository.addSchedule(schedule)
 
 
         return schedule
     }
 
-    private fun createApplicationList(id: Int) {
 
-        val list: MutableList<Application> = ArrayList()
-        applicationList.value?.forEach {
-            list.add(Application(scheduleId = id, packageName = it.packageName))
-        }
-        //TODO remove toast while pushin
-        Log.e("Schedule", "Blocked application list : " + list.size)
-        scheduleRepository.addApplicationList(list)
-
-    }
-
-    override fun onScheduleAdded(id: Int) {
-        createApplicationList(id)
-    }
 }

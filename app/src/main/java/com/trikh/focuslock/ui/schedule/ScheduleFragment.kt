@@ -52,16 +52,17 @@ class ScheduleFragment : Fragment() {
 
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter = ScheduleAdapter(getMockSchedules())
-        viewModel.scheduleList.observe(this, androidx.lifecycle.Observer {
+        viewModel.scheduleList.observe(this, androidx.lifecycle.Observer { it ->
             schedulesRv.adapter = ScheduleAdapter(it)
-            /*if(it.isNotEmpty()){it[it.size - 1].let {
-                Log.e(
-                    "Schedule Fragment : ",
-                    "Start Time: ${com.trikh.focuslock.utils.TimeUtils.getAwakeTime(it.startTime.time,
-                        it.level!!
-                    )}"
-                )
-            }}*/
+
+            if (it.isNotEmpty()) {
+                it[it.size - 1].let {
+                    Log.e(
+                        "Schedule Fragment : ",
+                        "last Package Name: ${it.appList.last()}"
+                    )
+                }
+            }
         })
 
 
@@ -75,10 +76,12 @@ class ScheduleFragment : Fragment() {
     @VisibleForTesting
     fun getMockSchedules(): ArrayList<Schedule> {
         val list = ArrayList<Schedule>()
+        val appList: List<String> = emptyList()
         val startTime = Calendar.getInstance()
         val endTime = Calendar.getInstance()
         endTime.add(Calendar.HOUR, 8)
-        val schedule = Schedule(101, startTime, endTime, level = 3, active = false)
+        val schedule =
+            Schedule(101, startTime, endTime, level = 3, active = false, appList = appList)
         list.add(schedule)
         return list
     }

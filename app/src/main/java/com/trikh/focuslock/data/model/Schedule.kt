@@ -17,12 +17,15 @@ data class Schedule(
     @ColumnInfo(name = "end_time") val endTime: Calendar,
     @ColumnInfo(name = "selected_week_days") val selectedWeekDays: Array<Boolean>? = null,
     val level: Int? = null,
-    val active: Boolean? = null
+    val active: Boolean? = null,
+    val appList: List<String>
 ) {
     @Ignore
-    var appList: ArrayList<AppInfo> = ArrayList()
+    var appInfoList: ArrayList<AppInfo> = ArrayList()
 
-    constructor(
+
+
+   /* constructor(
         id: Int,
         startTime: Calendar,
         endTime: Calendar,
@@ -46,5 +49,5 @@ data class Schedule(
                     icon = appInfo.loadIcon(instance.packageManager),
                     blocked = true))
         }
-    }
+    }*/
 }
