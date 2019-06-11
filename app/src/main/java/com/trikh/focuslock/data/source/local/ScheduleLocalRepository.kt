@@ -14,26 +14,24 @@ import io.reactivex.schedulers.Schedulers
 class ScheduleLocalRepository(context: Context) {
     private val scheduleDao = AppDatabase.getInstance(context).scheduleDao()
     private val instantLockDao = AppDatabase.getInstance(context).instantLockDao()
-    private val applicationDao = AppDatabase.getInstance(context).applicationsDao()
+    //private val applicationDao = AppDatabase.getInstance(context).applicationsDao()
 
-    fun addSchedule(schedule: Schedule, callbacks: ScheduleRepository.ScheduleCallBacks) {
+    fun addSchedule(schedule: Schedule) {
         var id: Long? = null
         Observable.fromCallable { id = scheduleDao.addSchedule(schedule) }
-            .flatMap {
-                Observable.fromCallable { callbacks.onScheduleAdded(scheduleDao.getMaxId()) }.subscribeOn(Schedulers.io())
-            }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
 
-    fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
+    // Not Yet Used May Be Used In Future
+    /*fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
         Observable.fromCallable { applicationDao.insertApplicationList(list) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
 
     fun getAllApplicationList(id: Int) = applicationDao.getApplicationsByScheduleId(id)
-
+*/
 
 
     fun updateSchedule(schedule: Schedule) {

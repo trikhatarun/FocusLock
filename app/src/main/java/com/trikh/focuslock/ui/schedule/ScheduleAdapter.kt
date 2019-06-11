@@ -4,9 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.TimeUtils
+import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.schedule_layout.view.*
 import java.sql.Time
 
@@ -66,6 +69,10 @@ class ScheduleAdapter(private val scheduleList: List<Schedule>) :
                 itemView.levelTv.visibility = View.GONE
                 itemView.blocked_apps_title.text =
                     itemView.context.getString(R.string.blocked_apps, 0)
+
+                itemView.blockedAppsRv.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
+                itemView.blockedAppsRv.adapter = BlockedAppsAdapter(schedule.appInfoList)
+                itemView.blocked_apps_title.text = Application.instance.getString(R.string.blocked_apps, schedule.appList.size)
             }
         }
     }
