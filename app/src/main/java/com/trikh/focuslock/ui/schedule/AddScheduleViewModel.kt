@@ -1,43 +1,74 @@
 package com.trikh.focuslock.ui.schedule
 
 import android.util.Log
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import android.widget.Toast
+import com.trikh.focuslock.data.model.Application
+import com.trikh.focuslock.data.model.InstantLockSchedule
+import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.data.source.ScheduleRepository
+import com.trikh.focuslock.utils.Event
+import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class AddScheduleViewModel : ViewModel() {
+class AddScheduleViewModel : ViewModel(), ScheduleRepository.ScheduleCallBacks {
+
+
+
+
+    val scheduleList: MutableLiveData<List<Schedule>> = MutableLiveData()
     // do not make them private they are used by data binding
     val startTime: MutableLiveData<Calendar> = MutableLiveData()
     val endTime: MutableLiveData<Calendar> = MutableLiveData()
-    private val checkedIds: MutableLiveData<MutableList<Boolean>> = MutableLiveData()
+    val checkedIds: MutableLiveData<Array<Boolean>> =
+        MutableLiveData<Array<Boolean>>().apply {
+            value = arrayOf(false, false, false, false, false, false, false)
+        }
     private val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    val applicationList: MutableLiveData<List<AppInfo>> =
+        MutableLiveData<List<AppInfo>>().apply { value = emptyList() }
+    val appPicker: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val scheduleRepository = ScheduleRepository()
+    fun showAppPicker() {
+        appPicker.postValue(Event(Unit))
+    }
+
+    init {
+        scheduleRepository.getSchedules()?.subscribe {
+            scheduleList?.postValue(it)
+        }
+    }
+
 
     fun setTime(start: Calendar, end: Calendar) {
+
         startTime.value = start
         endTime.value = end
-        for (i in 0..6) {
-            checkedIds.value?.add(false)
-        }
+
     }
 
     fun onChecked(check: Boolean, id: Int) {
 
-        checkedIds.value?.let {
-            it[id] = check
-        }
+        checkedIds.value?.set(id, check)
 
+        //TODO remove toast while pushing
+        Toast.makeText(
+            com.trikh.focuslock.Application.instance,
+            checkedIds.value.toString(),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
-    fun isChecked(id: Int): Boolean {
+    /*fun isChecked(id: Int): Boolean {
 
-        checkedIds.value?.let {
-            return it[id]
-        }
-        return false
+        return checkedIds.value?.get(id)!!
 
-    }
+    }*/
 
 
     fun getSleepTime(time: Date, level: Int): String? {
@@ -67,5 +98,34 @@ class AddScheduleViewModel : ViewModel() {
     val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
         this@AddScheduleViewModel.endTime.value = end
         this@AddScheduleViewModel.startTime.value = start
+    }
+
+    fun createSchedule(): Schedule {
+        val schedule = Schedule(
+            endTime = endTime.value!!,
+            startTime = startTime.value!!,
+            selectedWeekDays = checkedIds.value
+        )
+        Log.e("Schedule ","Start Time: "+ startTime.value!!.timeInMillis+" End Time: "+endTime.value!!.timeInMillis)
+        scheduleRepository.addSchedule(schedule, this)
+
+
+        return schedule
+    }
+
+    private fun createApplicationList(id: Int) {
+
+        val list: MutableList<Application> = ArrayList()
+        applicationList.value?.forEach {
+            list.add(Application(scheduleId = id, packageName = it.packageName))
+        }
+        //TODO remove toast while pushin
+        Log.e("Schedule", "Blocked application list : " + list.size)
+        scheduleRepository.addApplicationList(list)
+
+    }
+
+    override fun onScheduleAdded(id: Int) {
+        createApplicationList(id)
     }
 }

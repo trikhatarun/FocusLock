@@ -9,11 +9,12 @@ import com.trikh.focuslock.data.model.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.local.db.DbConstants.Companion.DB_NAME
+import com.trikh.focuslock.data.utils.BooleanListConverter
 import com.trikh.focuslock.data.utils.CalendarTypeConverters
 import com.trikh.focuslock.data.utils.StringListConverter
 
 @Database(entities = [Schedule::class, Application::class, InstantLockSchedule::class], version = 1)
-@TypeConverters(CalendarTypeConverters::class,StringListConverter::class)
+@TypeConverters(CalendarTypeConverters::class, StringListConverter::class, BooleanListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun scheduleDao(): ScheduleDao
     abstract fun instantLockDao() : InstantLockDao

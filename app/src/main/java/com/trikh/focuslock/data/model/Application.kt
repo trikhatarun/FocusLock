@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
     )]
 )
 data class Application(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
     val scheduleId: Int,
     val packageName: String
 )

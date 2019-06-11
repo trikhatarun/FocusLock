@@ -1,22 +1,40 @@
 package com.trikh.focuslock.data.source.local
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.data.source.local.db.AppDatabase
+import com.trikh.focuslock.data.source.local.db.ApplicationsDao
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
 class ScheduleLocalRepository(context: Context) {
     private val scheduleDao = AppDatabase.getInstance(context).scheduleDao()
     private val instantLockDao = AppDatabase.getInstance(context).instantLockDao()
+    private val applicationDao = AppDatabase.getInstance(context).applicationsDao()
 
-    fun addSchedule(schedule: Schedule) {
-        Observable.fromCallable { scheduleDao.addSchedule(schedule) }
+    fun addSchedule(schedule: Schedule, callbacks: ScheduleRepository.ScheduleCallBacks) {
+        var id: Long? = null
+        Observable.fromCallable { id = scheduleDao.addSchedule(schedule) }
+            .flatMap {
+                Observable.fromCallable { callbacks.onScheduleAdded(scheduleDao.getMaxId()) }.subscribeOn(Schedulers.io())
+            }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
+
+    fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
+        Observable.fromCallable { applicationDao.insertApplicationList(list) }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    fun getAllApplicationList(id: Int) = applicationDao.getApplicationsByScheduleId(id)
+
+
 
     fun updateSchedule(schedule: Schedule) {
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
