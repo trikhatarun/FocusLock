@@ -3,27 +3,22 @@ package com.trikh.focuslock.ui.schedule
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.util.TimeUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
-import com.trikh.focuslock.widget.app_picker.AppInfo
-import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.lang.RuntimeException
 import java.util.*
-import java.util.logging.Level
 import kotlin.collections.ArrayList
 
 class ScheduleFragment : Fragment() {
-    private lateinit var viewModel: AddScheduleViewModel
+    private lateinit var viewModel: ScheduleViewModel
 
     private var listener: OnFragmentInteractionListener? = null
     override fun onCreateView(
@@ -31,7 +26,7 @@ class ScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 

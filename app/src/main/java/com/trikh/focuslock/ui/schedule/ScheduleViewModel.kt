@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddScheduleViewModel : ViewModel(){
+class ScheduleViewModel : ViewModel(){
 
 
 
@@ -57,19 +57,9 @@ class AddScheduleViewModel : ViewModel(){
 
         checkedIds.value?.set(id, check)
 
-        //TODO remove toast while pushing
-        Toast.makeText(
-            com.trikh.focuslock.Application.instance,
-            checkedIds.value.toString(),
-            Toast.LENGTH_LONG
-        ).show()
+
     }
 
-    /*fun isChecked(id: Int): Boolean {
-
-        return checkedIds.value?.get(id)!!
-
-    }*/
 
 
     fun getSleepTime(time: Date, level: Int): String? {
@@ -97,8 +87,8 @@ class AddScheduleViewModel : ViewModel(){
     }
 
     val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
-        this@AddScheduleViewModel.endTime.value = end
-        this@AddScheduleViewModel.startTime.value = start
+        this@ScheduleViewModel.endTime.value = end
+        this@ScheduleViewModel.startTime.value = start
     }
 
     fun createSchedule(): Schedule {

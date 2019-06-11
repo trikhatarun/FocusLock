@@ -21,13 +21,13 @@ class AddScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityAddScheduleBinding
-    private lateinit var viewModel: AddScheduleViewModel
+    private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
-        viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
