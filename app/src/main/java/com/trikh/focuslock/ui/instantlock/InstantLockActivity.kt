@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -16,9 +17,11 @@ import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
 import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
+import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
+import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -67,12 +70,16 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.saveSchedule -> {
-                val schedule = viewModel.createInstantLockSchedule()
-                val serviceIntent = Intent(this, AppBlockService::class.java)
-                serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
-                serviceIntent.putExtra(SCHEDULE, schedule)
-                startService(serviceIntent)
-                finish()
+                if (hasUsageStatsPermission){
+                    val schedule = viewModel.createInstantLockSchedule()
+                    val serviceIntent = Intent(this, AppBlockService::class.java)
+                    serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
+                    serviceIntent.putExtra(SCHEDULE, schedule)
+                    startService(serviceIntent)
+                    finish()
+                }else{
+
+                }
             }
         }
         return true
