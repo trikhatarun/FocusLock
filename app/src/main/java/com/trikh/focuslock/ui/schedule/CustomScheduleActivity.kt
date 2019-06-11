@@ -13,11 +13,6 @@ import com.trikh.focuslock.databinding.ActivityCustomScheduleBinding
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import androidx.lifecycle.Observer
 import com.trikh.focuslock.ui.MainActivity
-import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
-import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE
-import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
-import com.trikh.focuslock.ui.appblock.AppBlockService
-import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
@@ -30,13 +25,13 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityCustomScheduleBinding
-    private lateinit var viewModel: AddScheduleViewModel
+    private lateinit var viewModel: ScheduleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_custom_schedule)
-        viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
