@@ -52,5 +52,8 @@
     <string name="emergency_dialog_text_2">Are you sure about disabling all the schedules?</string>
     <string name="app_current_Period">2018"-"2019 FocusLock.Inc</string>
     <string name="app_version">Version %s</string>
+    <string name="usage_permission_request_message">App needs usage stats permission to function.</string>
+    <string name="grant">Grant Permission</string>
+    <string name="deny">Deny</string>
 
 </resources>
