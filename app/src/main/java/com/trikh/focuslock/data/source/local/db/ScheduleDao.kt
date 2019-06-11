@@ -11,10 +11,13 @@ import io.reactivex.Observable
 interface ScheduleDao {
 
     @Insert
-    fun addSchedule(schedule: Schedule)
+    fun addSchedule(schedule: Schedule): Long
 
     @Update
     fun updateSchedule(schedule: Schedule)
+
+    @Query("SELECT MAX(id) from schedule")
+    fun getMaxId(): Int
 
     @Query("DELETE FROM schedule where id = :id")
     fun removeSchedule(id: Int)

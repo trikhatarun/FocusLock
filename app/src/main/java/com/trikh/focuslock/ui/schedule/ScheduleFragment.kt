@@ -2,11 +2,15 @@ package com.trikh.focuslock.ui.schedule
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.util.TimeUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.widget.app_picker.AppInfo
@@ -15,19 +19,27 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.lang.RuntimeException
 import java.util.*
+import java.util.logging.Level
 import kotlin.collections.ArrayList
 
 class ScheduleFragment : Fragment() {
+    private lateinit var viewModel: AddScheduleViewModel
+
     private var listener: OnFragmentInteractionListener? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel = ViewModelProviders.of(this).get(AddScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener){
+        if (context is OnFragmentInteractionListener) {
             listener = context
-        }else{
+        } else {
             throw RuntimeException("${context?.packageName} must implement interaction listener")
         }
     }
@@ -40,6 +52,19 @@ class ScheduleFragment : Fragment() {
 
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter = ScheduleAdapter(getMockSchedules())
+        viewModel.scheduleList.observe(this, androidx.lifecycle.Observer {
+            schedulesRv.adapter = ScheduleAdapter(it)
+            /*if(it.isNotEmpty()){it[it.size - 1].let {
+                Log.e(
+                    "Schedule Fragment : ",
+                    "Start Time: ${com.trikh.focuslock.utils.TimeUtils.getAwakeTime(it.startTime.time,
+                        it.level!!
+                    )}"
+                )
+            }}*/
+        })
+
+
     }
 
     override fun onDetach() {
@@ -48,22 +73,17 @@ class ScheduleFragment : Fragment() {
     }
 
     @VisibleForTesting
-    fun getMockSchedules(): List<Schedule>{
+    fun getMockSchedules(): ArrayList<Schedule> {
         val list = ArrayList<Schedule>()
         val startTime = Calendar.getInstance()
         val endTime = Calendar.getInstance()
-        endTime.add(Calendar.HOUR,8)
-        val schedule = Schedule(101,startTime,endTime,3,false)
-        list.add(schedule)
-        list.add(schedule)
-        list.add(schedule)
-        list.add(schedule)
-        list.add(schedule)
+        endTime.add(Calendar.HOUR, 8)
+        val schedule = Schedule(101, startTime, endTime, level = 3, active = false)
         list.add(schedule)
         return list
     }
 
-    interface OnFragmentInteractionListener{
+    interface OnFragmentInteractionListener {
 
     }
 }
