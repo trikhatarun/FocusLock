@@ -11,7 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 
 class VideoViewModel : ViewModel() {
     private val videoRepository = VideoRepository()
-    private val videoId = videoRepository.getVideoId()
+    val videoId = videoRepository.getVideoId()
     private val compositeDisposable = CompositeDisposable()
     val videoDetailsLiveData = MutableLiveData<Pair<String, String>>()
     val imageUrlLiveData = MutableLiveData<String>()

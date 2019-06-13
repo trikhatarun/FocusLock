@@ -80,6 +80,7 @@
         tools:text="Lucifer" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/shareBtn"
         style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
