@@ -16,11 +16,8 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-<<<<<<< HEAD
+
         android:name="com.trikh.focuslock.ui.settings.SettingsFragment"
-=======
-        android:name="com.trikh.focuslock.ui.setting.SettingsFragment"
->>>>>>> feat(video): add video linking to navgraph
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <activity

@@ -14,14 +14,14 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintDimensionRatio="3:2"
+        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorArcGradient" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/view3"
+        android:layout_marginTop="64dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/video_thumbnail_overlay"
