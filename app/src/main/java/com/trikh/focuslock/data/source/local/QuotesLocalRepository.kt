@@ -21,7 +21,7 @@ class QuotesLocalRepository() {
         }
     }
 
-    fun getAQuote(): Quote = quotes.random()
+    fun getQuote(): Quote = quotes.random()
 
     private fun getAssetJsonData(fileName: String): String? {
         var json: String? = null
