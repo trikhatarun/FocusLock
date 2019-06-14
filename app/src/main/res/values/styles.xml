@@ -38,4 +38,8 @@
         <item name="windowFixedWidthMajor">100%</item>
         <item name="windowFixedWidthMinor">100%</item>
     </style>
+
+    <style name="AppTheme.VideoPlayerTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/black</item>
+    </style>
 </resources>

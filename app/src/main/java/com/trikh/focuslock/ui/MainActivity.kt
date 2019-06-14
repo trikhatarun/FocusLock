@@ -15,6 +15,7 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.instantlock.InstantLockActivity
 import com.trikh.focuslock.ui.schedule.AddScheduleActivity
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
+
 import com.trikh.focuslock.ui.settings.SettingsFragment
 import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout

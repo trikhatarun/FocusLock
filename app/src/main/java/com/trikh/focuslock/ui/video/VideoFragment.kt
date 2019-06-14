@@ -1,66 +1,59 @@
 package com.trikh.focuslock.ui.video
 
-import android.content.Context
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import com.trikh.focuslock.R
+import com.trikh.focuslock.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_video.*
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [VideoFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- *
- */
 class VideoFragment : Fragment() {
-    private var listener: OnFragmentInteractionListener? = null
+
+    lateinit var viewModel : VideoViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        activity?.fabMenu?.visibility = View.GONE
+
+        viewModel = ViewModelProviders.of(this).get(VideoViewModel::class.java)
+        viewModel.getVideoDetails()
+
+        viewModel.videoDetailsLiveData.observe(this, Observer {
+            videoTitle.text = it.first
+            videoAuthor.text = it.second
+        })
+
+        viewModel.imageUrlLiveData.observe(this, Observer {
+            Picasso.get().load(it).fit().centerCrop().into(videoThumbnail)
+        })
+
+        viewModel.errorLiveData.observe(this, Observer {
+            Snackbar.make(videoThumbnail, it.message!!, Snackbar.LENGTH_SHORT).show()
+        })
         return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        shareBtn.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = Constants.PLAIN_TEXT
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${viewModel.videoId}")
+            startActivity(Intent.createChooser(intent, Constants.SHARE_FOCUS_LOCK))
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 }
