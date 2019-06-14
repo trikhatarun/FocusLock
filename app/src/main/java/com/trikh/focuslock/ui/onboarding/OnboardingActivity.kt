@@ -1,7 +1,7 @@
 package com.trikh.focuslock.ui.onboarding
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.trikh.focuslock.R
 
 class OnboardingActivity : AppCompatActivity() {
