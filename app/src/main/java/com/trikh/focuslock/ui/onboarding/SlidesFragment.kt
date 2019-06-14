@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.fragment_slides.*
-import java.text.FieldPosition
 
 
 class SlidesFragment : Fragment() {
@@ -25,10 +25,8 @@ class SlidesFragment : Fragment() {
             }
 
             override fun onGetStartedClick() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                findNavController().navigate(SlidesFragmentDirections.actionNext())
             }
         })
     }
-
-
 }

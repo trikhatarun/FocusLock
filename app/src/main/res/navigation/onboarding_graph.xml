@@ -11,7 +11,7 @@
         android:label="fragment_slides"
         tools:layout="@layout/fragment_slides" >
         <action
-            android:id="@+id/action_slidesFragment_to_timePickerFragment"
+            android:id="@+id/action_next"
             app:destination="@id/timePickerFragment" />
     </fragment>
     <fragment
