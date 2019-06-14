@@ -342,6 +342,7 @@ public class TimeSliderRangePicker extends View {
         if (mListener != null) {
             roundTo5(start);
             roundTo5(end);
+            end.set(Calendar.DATE,start.get(Calendar.DATE));
             mListener.onChange(start, end);
         }
     }

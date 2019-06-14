@@ -1,8 +1,8 @@
 package com.trikh.focuslock.ui.schedule
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.trikh.focuslock.utils.extensions.addOneDay
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,8 +34,8 @@ class AddScheduleViewModel : ViewModel() {
 
     fun calculateDuration(startTime: Calendar, endTime: Calendar): String {
         val sleepTime = startTime.timeInMillis
-        val awakeTime = endTime.timeInMillis
-        if (sleepTime > awakeTime) awakeTime.addOneDay
+        var awakeTime = endTime.timeInMillis
+        if (sleepTime > awakeTime) awakeTime +=  86400000
         val difference = (awakeTime - sleepTime) / 60000 // in minutes
         val hours = difference / 60
         val minutes = Math.round(difference.rem(60) / 10f) * 10

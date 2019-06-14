@@ -23,11 +23,6 @@ val Calendar.roundMinutesToFive: Calendar
         return this
     }
 
-val Long.addOneDay: Long
-    get() {
-        return this.plus(86400000)
-    }
-
 val Context.hasUsageStatsPermission: Boolean
     get() {
         var granted = false
