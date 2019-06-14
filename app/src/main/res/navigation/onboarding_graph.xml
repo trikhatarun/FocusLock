@@ -20,12 +20,8 @@
         android:label="fragment_time_picker"
         tools:layout="@layout/fragment_time_picker" >
         <action
-            android:id="@+id/action_timePickerFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/action_next"
+            app:destination="@id/nav_graph" />
     </fragment>
-    <activity
-        tools:layout="@layout/activity_main"
-        android:id="@+id/mainActivity"
-        android:name="com.trikh.focuslock.ui.MainActivity"
-        android:label="MainActivity" />
+    <include app:graph="@navigation/nav_graph" />
 </navigation>

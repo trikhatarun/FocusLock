@@ -12,17 +12,18 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.Constants.Companion.TIME_INTERVAL
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_slides.*
 import java.util.concurrent.TimeUnit
 
 
 class SlidesFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+
+    private val compositeDisposable = CompositeDisposable()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_slides, container, false)
     }
 
@@ -37,9 +38,14 @@ class SlidesFragment : Fragment() {
             findNavController().navigate(SlidesFragmentDirections.actionNext())
         }
 
-        Observable.intervalRange(1,2, 2000,2000,TimeUnit.MILLISECONDS)
+        compositeDisposable += Observable.intervalRange(1,2, 2000,2000,TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread()).subscribeBy {
             slidesPager.currentItem = it.toInt()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }

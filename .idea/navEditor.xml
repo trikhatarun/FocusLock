@@ -96,13 +96,13 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="mainActivity">
+                  <entry key="nav_graph">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="626" />
-                            <option name="y" value="200" />
+                            <option name="x" value="646" />
+                            <option name="y" value="265" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -137,15 +137,6 @@
                             <option name="x" value="362" />
                             <option name="y" value="198" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_timePickerFragment_to_mainActivity">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
