@@ -59,4 +59,7 @@
     <string name="setting_invite_text_2">&amp; make their life more productive</string>
     <string name="share_message">Share with friends</string>
     <string name="next">Next</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
