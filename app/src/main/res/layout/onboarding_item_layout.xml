@@ -39,17 +39,4 @@
         android:textColor="@color/colorDisabled"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="Study session? Going to bed? Activate a block by pressing it’s blue lock, or use. a widget!" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="@font/muli_bold"
-        android:text="@string/next"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

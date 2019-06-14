@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager.widget.ViewPager
 import com.trikh.focuslock.R
+import com.trikh.focuslock.utils.Constants.Companion.LAST_PAGE
 import kotlinx.android.synthetic.main.fragment_slides.*
 
 
@@ -19,14 +21,11 @@ class SlidesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        slidesPager.adapter = OnboardingAdapter(object : OnboardingAdapter.InteractionListener{
-            override fun onNextClick(position: Int) {
-                slidesPager.currentItem = position+1
-            }
+        slidesPager.adapter = OnboardingAdapter()
+        tabLayout.setupWithViewPager(slidesPager)
 
-            override fun onGetStartedClick() {
-                findNavController().navigate(SlidesFragmentDirections.actionNext())
-            }
-        })
+        getStartedBtn.setOnClickListener {
+            findNavController().navigate(SlidesFragmentDirections.actionNext())
+        }
     }
 }

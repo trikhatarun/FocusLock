@@ -8,7 +8,7 @@ import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.onboarding_item_layout.view.*
 
-class OnboardingAdapter(val listener: InteractionListener) : PagerAdapter() {
+class OnboardingAdapter() : PagerAdapter() {
 
     val onboardingTitles = arrayListOf(
         "Start a block at any time",
@@ -38,7 +38,7 @@ class OnboardingAdapter(val listener: InteractionListener) : PagerAdapter() {
         view.description.text = onboardingDescriptions[position]
         view.image.setImageResource(onBoardingImages[position])
         container.addView(view)
-        if (position == 2){
+        /*if (position == 2){
             view.nextBtn.text = Application.instance.getString(R.string.get_started)
         }else{
             view.nextBtn.text = Application.instance.getString(R.string.next)
@@ -51,7 +51,7 @@ class OnboardingAdapter(val listener: InteractionListener) : PagerAdapter() {
 
                 listener.onNextClick(position)
             }
-        }
+        }*/
         return view
     }
 
@@ -60,9 +60,4 @@ class OnboardingAdapter(val listener: InteractionListener) : PagerAdapter() {
     }
 
     override fun getCount() = onboardingTitles.size
-
-    interface InteractionListener {
-        fun onNextClick(position: Int)
-        fun onGetStartedClick()
-    }
 }
