@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_graph"
+    app:startDestination="@id/slidesFragment">
+
+    <fragment
+        android:id="@+id/slidesFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.SlidesFragment"
+        android:label="fragment_slides"
+        tools:layout="@layout/fragment_slides" >
+        <action
+            android:id="@+id/action_next"
+            app:destination="@id/timePickerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timePickerFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.TimePickerFragment"
+        android:label="fragment_time_picker"
+        tools:layout="@layout/fragment_time_picker" >
+        <action
+            android:id="@+id/action_next"
+            app:destination="@id/nav_graph" />
+    </fragment>
+    <include app:graph="@navigation/nav_graph" />
+</navigation>
