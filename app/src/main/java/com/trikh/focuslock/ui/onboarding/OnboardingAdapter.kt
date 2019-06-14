@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import kotlinx.android.synthetic.main.onboarding_item_layout.view.*
 
-class OnboardingAdapter : PagerAdapter() {
+class OnboardingAdapter(val listener: InteractionListener) : PagerAdapter() {
 
     val onboardingTitles = arrayListOf(
         "Start a block at any time",
@@ -37,6 +38,20 @@ class OnboardingAdapter : PagerAdapter() {
         view.description.text = onboardingDescriptions[position]
         view.image.setImageResource(onBoardingImages[position])
         container.addView(view)
+        if (position == 2){
+            view.nextBtn.text = Application.instance.getString(R.string.get_started)
+        }else{
+            view.nextBtn.text = Application.instance.getString(R.string.next)
+        }
+        view.nextBtn.setOnClickListener {
+            if (position == 2) {
+
+                listener.onGetStartedClick()
+            } else {
+
+                listener.onNextClick(position)
+            }
+        }
         return view
     }
 
@@ -45,4 +60,9 @@ class OnboardingAdapter : PagerAdapter() {
     }
 
     override fun getCount() = onboardingTitles.size
+
+    interface InteractionListener {
+        fun onNextClick(position: Int)
+        fun onGetStartedClick()
+    }
 }
