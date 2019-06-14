@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.onboarding.SlidesFragment">
 
-    <androidx.viewpager.widget.ViewPager
+    <com.trikh.focuslock.widget.customviewpager.ViewPagerCustomDuration
         android:id="@+id/slidesPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,28 +14,28 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:background="@color/backgroundColor"
+        app:layout_constraintBottom_toTopOf="@id/getStartedBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabBackground="@drawable/ic_tab_background"
         app:tabGravity="center"
         app:tabIndicator="@null"
-        android:background="@color/backgroundColor"
-        app:tabBackground="@drawable/ic_tab_background"
-        android:layout_width="wrap_content"
-        app:tabPaddingStart="3dp"
         app:tabPaddingEnd="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/getStartedBtn"
-        android:layout_marginBottom="18dp"/>
+        app:tabPaddingStart="3dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedBtn"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:padding="16dp"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/muli_bold"
+        android:padding="16dp"
         android:text="@string/get_started"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
