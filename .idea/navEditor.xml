@@ -64,7 +64,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_videoFragment_to_videoPlayerActivity">
+                            <entry key="action_play_video">
                               <value>
                                 <LayoutPositions />
                               </value>
