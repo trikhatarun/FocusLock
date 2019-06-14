@@ -8,13 +8,13 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="addScheduleActivity2">
+                  <entry key="appPickerDialog">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="343" />
-                            <option name="y" value="50" />
+                            <option name="x" value="-211" />
+                            <option name="y" value="-7" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -29,15 +29,6 @@
                             <option name="y" value="40" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_scheduleFragment_to_addScheduleActivity2">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -46,8 +37,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="42" />
-                            <option name="y" value="689" />
+                            <option name="x" value="41" />
+                            <option name="y" value="334" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -59,28 +50,7 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="40" />
-                            <option name="y" value="361" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_videoFragment_to_videoPlayerActivity">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="videoPlayerActivity">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="343" />
-                            <option name="y" value="364" />
+                            <option name="y" value="630" />
                           </Point>
                         </option>
                       </LayoutPositions>
