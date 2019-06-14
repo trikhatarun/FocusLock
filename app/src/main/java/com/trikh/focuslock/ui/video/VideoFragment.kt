@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.trikh.focuslock.R
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_video.*
 
 class VideoFragment : Fragment() {
 
-    lateinit var viewModel : VideoViewModel
+    lateinit var viewModel: VideoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +52,16 @@ class VideoFragment : Fragment() {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = Constants.PLAIN_TEXT
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${viewModel.videoId}")
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                "https://www.youtube.com/watch?v=${viewModel.videoId}"
+            )
             startActivity(Intent.createChooser(intent, Constants.SHARE_FOCUS_LOCK))
+        }
+
+        playVideoBtn.setOnClickListener {
+            val playAction = VideoFragmentDirections.actionPlayVideo(viewModel.videoId)
+            findNavController().navigate(playAction)
         }
     }
 

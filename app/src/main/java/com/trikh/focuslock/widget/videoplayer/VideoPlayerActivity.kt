@@ -3,6 +3,8 @@ package com.trikh.focuslock.widget.videoplayer
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.navigation.navArgs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
@@ -13,22 +15,20 @@ import kotlinx.android.synthetic.main.activity_video_player.*
 class VideoPlayerActivity : AppCompatActivity() {
 
     private lateinit var fullScreenHelper: FullScreenHelper
+    private val args: VideoPlayerActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_player)
 
         fullScreenHelper = FullScreenHelper(this)
-
         videoPlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.loadOrCueVideo(
                     lifecycle,
-                    /*intent.getStringExtra("")*/
-                    "MrX9DjtkqGE",
+                    args.videoId,
                     0f
                 )
-
                 addFullScreenListenerToPlayer()
             }
         })
