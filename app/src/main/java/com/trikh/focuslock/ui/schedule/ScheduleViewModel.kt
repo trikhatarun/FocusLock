@@ -17,9 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ScheduleViewModel : ViewModel(){
-
-
+class ScheduleViewModel : ViewModel() {
 
 
     val scheduleList: MutableLiveData<List<Schedule>> = MutableLiveData()
@@ -40,7 +38,7 @@ class ScheduleViewModel : ViewModel(){
     }
 
     init {
-        scheduleRepository.getSchedules().subscribeBy{
+        scheduleRepository.getSchedules().subscribeBy {
             scheduleList.postValue(it)
         }
     }
@@ -55,11 +53,17 @@ class ScheduleViewModel : ViewModel(){
 
     fun onChecked(check: Boolean, id: Int) {
 
-        checkedIds.value?.set(id, check)
+        val selectedIds = checkedIds.value!!
+        selectedIds.set(id, check)
+        checkedIds.postValue(selectedIds)
 
 
     }
 
+    /*fun setChecked(id: Int): Boolean {
+
+       return checkedIds.value?.get(id)!!
+    }*/
 
 
     fun getSleepTime(time: Date, level: Int): String? {
@@ -86,6 +90,13 @@ class ScheduleViewModel : ViewModel(){
         return "$hours hr $minutes min"
     }
 
+    /*fun getScheduleById(scheduleId: Int){
+        val schedule = scheduleId.let {scheduleRepository.getScheduleById(it) }
+        checkedIds.value = schedule.selectedWeekDays
+        applicationList.value = schedule.appInfoList
+    }*/
+
+
     val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
         this@ScheduleViewModel.endTime.value = end
         this@ScheduleViewModel.startTime.value = start
@@ -94,7 +105,7 @@ class ScheduleViewModel : ViewModel(){
     fun createSchedule(): Schedule {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
-            list.add( it.packageName)
+            list.add(it.packageName)
         }
 
         val schedule = Schedule(
@@ -103,12 +114,43 @@ class ScheduleViewModel : ViewModel(){
             selectedWeekDays = checkedIds.value,
             appList = list as List<String>
         )
-        Log.e("Schedule ","Start Time: "+ startTime.value!!.timeInMillis+" End Time: "+endTime.value!!.timeInMillis)
+        Log.e(
+            "Schedule ",
+            "Start Time: " + startTime.value!!.timeInMillis + " End Time: " + endTime.value!!.timeInMillis
+        )
         scheduleRepository.addSchedule(schedule)
 
 
         return schedule
     }
+
+    fun updateSchedule() {
+        val list: ArrayList<String> = ArrayList()
+        applicationList.value?.forEach {
+            list.add(it.packageName)
+        }
+
+        val schedule = Schedule(
+            endTime = endTime.value!!,
+            startTime = startTime.value!!,
+            selectedWeekDays = checkedIds.value,
+            appList = list as List<String>
+        )
+        Log.e(
+            "Schedule ",
+            "Start Time: " + startTime.value!!.timeInMillis + " End Time: " + endTime.value!!.timeInMillis
+        )
+        scheduleRepository.updateSchedule(schedule)
+
+    }
+
+
+    fun enableOrDisableSchedule(schedule: Schedule) {
+        Log.e("ScheduleViewModel: "," $schedule")
+        scheduleRepository.updateSchedule(schedule)
+    }
+
+    fun removeSchedule(id: Int) = scheduleRepository.removeSchedule(id)
 
 
 }

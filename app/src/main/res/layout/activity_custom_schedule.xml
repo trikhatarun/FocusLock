@@ -83,7 +83,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/textView"
+                                android:id="@+id/sleepTimeLabelTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
@@ -93,12 +93,12 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/textView2"
+                                android:id="@+id/awakeTimeLabelTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="20dp"
                                 android:text="@string/awake_time"
-                                app:layout_constraintBaseline_toBaselineOf="@id/textView"
+                                app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
                                 app:layout_constraintEnd_toEndOf="parent" />
 
                             <TextView
@@ -109,8 +109,8 @@
                                 android:layout_marginBottom="6dp"
                                 android:text="@{viewModel.getSleepTime(viewModel.startTime.getTime(),0)}"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/textView"
-                                app:layout_constraintTop_toBottomOf="@id/textView"
+                                app:layout_constraintStart_toStartOf="@id/sleepTimeLabelTv"
+                                app:layout_constraintTop_toBottomOf="@id/sleepTimeLabelTv"
                                 tools:text="11:00 PM" />
 
                             <TextView
@@ -119,7 +119,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@{viewModel.getAwakeTime(viewModel.endTime.getTime(),0)}"
                                 app:layout_constraintBaseline_toBaselineOf="@id/sleep_time_tv"
-                                app:layout_constraintStart_toStartOf="@id/textView2"
+                                app:layout_constraintStart_toStartOf="@id/awakeTimeLabelTv"
                                 tools:text="08:30 AM" />
 
                             <androidx.constraintlayout.widget.Guideline
@@ -190,7 +190,7 @@
                             android:layout_marginEnd="20dp"
                             android:drawableEnd="@drawable/ic_calendar"
                             android:fontFamily="@font/muli_semibold"
-                            android:text="@string/Repeat_text"
+                            android:text="@string/repeat_text"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -210,7 +210,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,0)}"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Sunday_checkbox_text"
+                            android:text="@string/sunday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -229,7 +229,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,1)}"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Monday_checkbox_text"
+                            android:text="@string/monday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/sundayCb"
@@ -248,7 +248,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,2)}"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Tuesday_checkbox_text"
+                            android:text="@string/tuesday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/mondayCb"
@@ -267,7 +267,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,3)}"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Wednesday_checkbox_text"
+                            android:text="@string/wednesday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/tuesdayCb"
@@ -286,7 +286,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,4)}"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Thursday_checkbox_text"
+                            android:text="@string/thursday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/wednesdayCb"
@@ -305,7 +305,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,5)}"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Friday_checkbox_text"
+                            android:text="@string/friday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/thursdayCb"
@@ -325,7 +325,7 @@
                             android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,6)}"
                             android:paddingHorizontal="14dp"
                             android:paddingVertical="10dp"
-                            android:text="@string/Saturday_checkbox_text"
+                            android:text="@string/saturday_checkbox_text"
                             android:textColor="@color/text_selector"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/fridayCb"

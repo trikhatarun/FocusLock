@@ -42,7 +42,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/sleepTimeLabelTv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
@@ -62,12 +62,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
                             android:fontFamily="@font/muli_bold"
-                            app:layout_constraintBaseline_toBaselineOf="@id/textView"
-                            app:layout_constraintEnd_toEndOf="@id/textView"
+                            app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
+                            app:layout_constraintEnd_toEndOf="@id/sleepTimeLabelTv"
                             tools:text="02:10 hr" />
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/awakeTimeLabelTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="28dp"
@@ -76,7 +76,7 @@
                             android:textColor="@color/colorSecondaryText"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textView" />
+                            app:layout_constraintTop_toBottomOf="@id/sleepTimeLabelTv" />
 
                         <TextView
                             android:id="@+id/textView3"
@@ -84,8 +84,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:text="@string/hours"
-                            app:layout_constraintStart_toStartOf="@id/textView2"
-                            app:layout_constraintTop_toBottomOf="@id/textView2" />
+                            app:layout_constraintStart_toStartOf="@id/awakeTimeLabelTv"
+                            app:layout_constraintTop_toBottomOf="@id/awakeTimeLabelTv" />
 
                         <SeekBar
                             android:id="@+id/hourSeekBar"

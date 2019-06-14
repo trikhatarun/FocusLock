@@ -33,7 +33,11 @@ class CustomDialog(
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         titleTv.setText(titleText)
-        negativeBtn.setText(noButtonText)
+        if (resources.getString(noButtonText).equals("")) {
+            negativeBtn.visibility = View.GONE
+        } else {
+            negativeBtn.setText(noButtonText)
+        }
         positiveBtn.setText(yesButtonText)
 
         negativeBtn.setOnClickListener { dismiss() }

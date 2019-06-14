@@ -40,6 +40,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
+
         toolbar_title.text = getString(R.string.instant_lock)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -81,6 +82,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
                 }
             }
+
         }
         return true
     }
