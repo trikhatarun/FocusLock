@@ -109,9 +109,11 @@ class ScheduleViewModel : ViewModel() {
         }
 
         val schedule = Schedule(
+            level = -1,
             endTime = endTime.value!!,
             startTime = startTime.value!!,
             selectedWeekDays = checkedIds.value,
+            active = true,
             appList = list as List<String>
         )
         Log.e(
@@ -124,13 +126,16 @@ class ScheduleViewModel : ViewModel() {
         return schedule
     }
 
-    fun updateSchedule() {
+    fun updateSchedule(id: Int, level: Int, active: Boolean) {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
         }
 
         val schedule = Schedule(
+            id = id,
+            active = active,
+            level = level,
             endTime = endTime.value!!,
             startTime = startTime.value!!,
             selectedWeekDays = checkedIds.value,

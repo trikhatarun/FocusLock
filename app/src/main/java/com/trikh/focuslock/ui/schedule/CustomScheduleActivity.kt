@@ -161,7 +161,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
                     if (type == 1) {
 
-                        viewModel.updateSchedule()
+                        viewModel.updateSchedule(schedule.id, schedule.level!!, schedule.active!!)
                         Toast.makeText(
                             this,
                             "Schedule Updated",
