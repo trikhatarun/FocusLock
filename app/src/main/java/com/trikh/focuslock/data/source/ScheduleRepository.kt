@@ -1,5 +1,6 @@
 package com.trikh.focuslock.data.source
 
+import android.util.Log
 import com.trikh.focuslock.data.model.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
@@ -16,16 +17,40 @@ class ScheduleRepository {
         scheduleLocalRepository.addSchedule(schedule)
 
     //fun addApplicationList(list: List<Application>) =
-        //scheduleLocalRepository.addApplicationList(list)
+    //scheduleLocalRepository.addApplicationList(list)
 
     //fun getAllApplicationList(id: Int) = scheduleLocalRepository.getAllApplicationList(id)
 
-    fun updateSchedule(schedule: Schedule) = scheduleLocalRepository.updateSchedule(schedule)
+    fun updateSchedule(schedule: Schedule) {
+        Log.e("ScheduleRepository: ", " $schedule")
+        scheduleLocalRepository.updateSchedule(schedule)
+    }
 
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
 
     fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap {
         return@flatMap withDrawableAndLabel(it)
+    }
+
+    fun getScheduleById(id: Int) =
+        scheduleWithAppInfoList(scheduleLocalRepository.getScheduleById(id))
+
+    private fun scheduleWithAppInfoList(schedule: Schedule): Schedule {
+        val localAppList: ArrayList<AppInfo> = ArrayList()
+        schedule.appList?.forEach {
+            val pkgManager = com.trikh.focuslock.Application.instance.packageManager
+            val appInfo = pkgManager.getApplicationInfo(it, 0)
+            localAppList.add(
+                AppInfo(
+                    name = pkgManager.getApplicationLabel(appInfo).toString(),
+                    icon = appInfo.loadIcon(pkgManager),
+                    blocked = true,
+                    packageName = it
+                )
+            )
+        }
+        schedule.appInfoList = localAppList
+        return schedule
     }
 
     private fun withDrawableAndLabel(schedules: List<Schedule>): Observable<List<Schedule>> {
@@ -34,7 +59,7 @@ class ScheduleRepository {
 
             schedules.forEach {
                 val localAppList: ArrayList<AppInfo> = ArrayList()
-                it.appList.forEach {
+                it.appList?.forEach {
                     val pkgManager = com.trikh.focuslock.Application.instance.packageManager
                     val appInfo = pkgManager.getApplicationInfo(it, 0)
                     localAppList.add(
@@ -44,10 +69,11 @@ class ScheduleRepository {
                             blocked = true,
                             packageName = it
                         )
-                    ) }
-                it.appInfoList =localAppList
+                    )
+                }
+                it.appInfoList = localAppList
             }
-                schedules
+            schedules
         }.subscribeOn(Schedulers.io())
     }
 
@@ -55,6 +81,7 @@ class ScheduleRepository {
         scheduleLocalRepository.insertInstantLock(schedule)
 
     fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock()
+
 
     fun getInstantLock() = scheduleLocalRepository.getInstantLock()
 

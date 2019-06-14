@@ -19,7 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/unblock_apps_message" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/negativeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +31,8 @@
         app:layout_constraintEnd_toStartOf="@id/positiveBtn"
         tools:text="@string/dialog_no_button" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/positiveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

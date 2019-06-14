@@ -70,5 +70,17 @@
     <string name="Friday_checkbox_text">F</string>
     <string name="Saturday_checkbox_text">S</string>
     <string name="Repeat_text">Repeat</string>
+    <string name="sunday_checkbox_text">S</string>
+    <string name="monday_checkbox_text">M</string>
+    <string name="tuesday_checkbox_text">T</string>
+    <string name="wednesday_checkbox_text">W</string>
+    <string name="thursday_checkbox_text">T</string>
+    <string name="friday_checkbox_text">F</string>
+    <string name="saturday_checkbox_text">S</string>
+    <string name="repeat_text">Repeat</string>
+    <string name="required_dialog_text">You have to select at least one weekday to repeat and one app to block</string>
+    <string name="ok_text">OK</string>
+    <string name="empty_string"></string>
+    <string name="remove_schedule">Are you sure want to delete the schedule</string>
 
 </resources>

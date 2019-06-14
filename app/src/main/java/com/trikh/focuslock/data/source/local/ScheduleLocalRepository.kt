@@ -2,6 +2,7 @@ package com.trikh.focuslock.data.source.local
 
 import android.content.ComponentCallbacks
 import android.content.Context
+import android.util.Log
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
@@ -23,6 +24,8 @@ class ScheduleLocalRepository(context: Context) {
             .subscribe()
     }
 
+    fun getScheduleById(id: Int) = scheduleDao.getScheduleById(id)
+
     // Not Yet Used May Be Used In Future
     /*fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
         Observable.fromCallable { applicationDao.insertApplicationList(list) }
@@ -35,6 +38,7 @@ class ScheduleLocalRepository(context: Context) {
 
 
     fun updateSchedule(schedule: Schedule) {
+        Log.e("LocalRepository: "," $schedule")
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()

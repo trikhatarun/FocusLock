@@ -3,6 +3,7 @@ package com.trikh.focuslock.ui.schedule
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -12,11 +13,16 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.ActivityCustomScheduleBinding
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import androidx.lifecycle.Observer
+import com.trikh.focuslock.Application
+import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.utils.IconsUtils
+import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
-import kotlinx.android.synthetic.main.activity_add_schedule.*
+import com.trikh.focuslock.widget.customdialog.CustomDialog
+import kotlinx.android.synthetic.main.activity_custom_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
@@ -26,14 +32,47 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityCustomScheduleBinding
     private lateinit var viewModel: ScheduleViewModel
+    private var weekFlag = false
+    private var appListFlag = false
+    private var type = 0
+    private lateinit var schedule: Schedule
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        type = intent.getIntExtra("type", 0)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_custom_schedule)
         viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        if (type > 0) {
+            schedule = intent.getBundleExtra("bundle").getParcelable("schedule")
+            Log.e("Schedule Data: ", "${schedule.appList.toString()}")
+//            TODO("Error is here in retrieving the drawables from the package manager")
+            schedule = IconsUtils(this).getIconsFromPackageManager(schedule)
+            val appInfoList = schedule.appInfoList
+            Log.e("CustomSchedule: ", "AppInfoList Size: ${appInfoList.size}")
+            Log.e(
+                "CustomSchedule: ",
+                "AppInfoList Size: ${TimeUtils.getSleepTime(schedule.startTime.time, 0)}"
+            )
+
+            setTime(schedule.startTime, schedule.endTime)
+            viewModel.applicationList.postValue(appInfoList)
+            viewModel.checkedIds.postValue(schedule.selectedWeekDays)
+            setWeekDays(schedule.selectedWeekDays!!)
+
+
+        } else {
+            val start = Calendar.getInstance()
+            start.set(Calendar.HOUR_OF_DAY, 2)
+            start.set(Calendar.MINUTE, 0)
+            val end = Calendar.getInstance()
+            end.set(Calendar.HOUR_OF_DAY, 10)
+            end.set(Calendar.MINUTE, 0)
+            setTime(start, end)
+        }
 
 
 
@@ -44,13 +83,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
         //Replace this code and get start and end from intents instead
         /***********************************/
-        val start = Calendar.getInstance()
-        start.set(Calendar.HOUR_OF_DAY, 2)
-        start.set(Calendar.MINUTE, 0)
-        val end = Calendar.getInstance()
-        end.set(Calendar.HOUR_OF_DAY, 10)
-        end.set(Calendar.MINUTE, 0)
-        setTime(start, end)
+
         /**********************************/
 
 
@@ -61,10 +94,23 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
 
         viewModel.checkedIds.observe(this, Observer {
-            Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+            var flag = false
+            Log.e(
+                "CustomScheduleActivity:",
+                "selectedWeeks: ${it[0]} ${it[1]} ${it[2]} ${it[3]} ${it[4]} ${it[5]} ${it[6]} "
+            )
+            for (i in 0 until it.size) {
+                if (it[i]) {
+                    flag = true
+                }
+            }
+            weekFlag = flag
         })
 
         viewModel.applicationList.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                appListFlag = true
+            }
             blockedAppsAdapter.updateList(it)
             blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
         })
@@ -77,11 +123,25 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             }
         })
 
+
+
         blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
         blockedAppsAdapter = BlockedAppsAdapter(emptyList())
         blocked_apps_rv.adapter = blockedAppsAdapter
         blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
     }
+
+
+    private fun setWeekDays(ids: Array<Boolean>) {
+        sundayCb.isChecked = ids[0]
+        mondayCb.isChecked = ids[1]
+        tuesdayCb.isChecked = ids[2]
+        wednesdayCb.isChecked = ids[3]
+        thursdayCb.isChecked = ids[4]
+        fridayCb.isChecked = ids[5]
+        saturdayCb.isChecked = ids[6]
+    }
+
 
     private fun setTime(start: Calendar, end: Calendar) {
         timePicker.setTime(start, end)
@@ -97,11 +157,40 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         when (item?.itemId) {
 
             R.id.saveSchedule -> {
-                viewModel.createSchedule()
-                Toast.makeText(this, viewModel.checkedIds.value.toString(), Toast.LENGTH_LONG)
-                    .show()
-                val serviceIntent = Intent(this, MainActivity::class.java)
-                startActivity(serviceIntent)
+                if (weekFlag and appListFlag) {
+
+                    if (type == 1) {
+
+                        viewModel.updateSchedule()
+                        Toast.makeText(
+                            this,
+                            "Schedule Updated",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    } else {
+
+                        viewModel.createSchedule()
+                        Toast.makeText(
+                            this,
+                            viewModel.checkedIds.value.toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    }
+                    val serviceIntent = Intent(this, MainActivity::class.java)
+                    startActivity(serviceIntent)
+                } else {
+                    CustomDialog(
+                        R.string.required_dialog_text,
+                        {},
+                        R.string.ok_text,
+                        R.string.empty_string
+                    ).show(supportFragmentManager, "")
+                }
+            }
+            android.R.id.home -> {
+                onBackPressed()
             }
 
         }
