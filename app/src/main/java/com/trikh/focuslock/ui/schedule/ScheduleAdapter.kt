@@ -11,6 +11,10 @@ import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants.Companion.CUSTOM_SCHEDULE
+import com.trikh.focuslock.utils.Constants.Companion.DAILY_SCHEDULE
+import com.trikh.focuslock.utils.Constants.Companion.END_TIME
+import com.trikh.focuslock.utils.Constants.Companion.START_TIME
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.utils.WeekDaysUtils
 import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
@@ -22,27 +26,19 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
     var context: Context? = null
 
     override fun getItemViewType(position: Int): Int {
-        if (scheduleList[position].level == -1) {
-            return 0;
-        } else return 1;
+        return if (scheduleList[position].level == -1) CUSTOM_SCHEDULE else DAILY_SCHEDULE
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val inflater = LayoutInflater.from(parent.context)
         context = parent.context
 
         return when (viewType) {
-            0 -> CustomScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
-            else -> ScheduleViewHolder(
-                inflater.inflate(
-                    R.layout.schedule_layout,
-                    parent,
-                    false
-                )
-            )
+            CUSTOM_SCHEDULE -> CustomScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
+            DAILY_SCHEDULE -> ScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
+            else -> null
         }
     }
-
     //fun addList(list: ArrayList<Schedule>){this.scheduleList.addAll(list)}
 
     override fun getItemCount() = scheduleList.size
@@ -50,8 +46,8 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ScheduleViewHolder) {
             holder.bind(scheduleList[position])
-        } else {
-            (holder as CustomScheduleViewHolder).bind(scheduleList[position])
+        } else if (holder is CustomScheduleViewHolder) {
+            holder.bind(scheduleList[position])
         }
     }
 
@@ -62,20 +58,16 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, level!!)
                 itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, level)
                 itemView.levelTv.text = itemView.context.getString(R.string.level_n, level)
-                itemView.blocked_apps_title.text =
-                    itemView.context.getString(R.string.blocked_apps, 0)
+                itemView.blocked_apps_title.text = itemView.context.getString(R.string.blocked_apps, 0)
 
                 itemView.options_iv.setOnClickListener {
-
                     context?.let {
                         val builder = MenuBuilder(it)
                         MenuInflater(it).inflate(R.menu.schedule_popup_menu, builder)
                         CustomSchedulePopup(it, builder, itemView.options_iv) {
                             listener.onPopupItemClicked(it, adapterPosition)
-                            //onPopupItemClicked(it, this)
                         }.show()
                     }
-
                 }
             }
         }
@@ -91,45 +83,33 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         fun bind(schedule: Schedule) {
             schedule.run {
 
-                itemView.awakeTimeLabelTv.text = "Start Time"
-                itemView.sleepTimeLabelTv.text = "End Time"
+                itemView.awakeTimeLabelTv.text = END_TIME
+                itemView.sleepTimeLabelTv.text = START_TIME
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
                 itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, 0)
-                //Log.e("CustomScheduleHolder: ", "Calendar: ${dayOfWeek}")
 
-                itemView.levelTv.text =
-                    selectedWeekDays?.let { it1 -> WeekDaysUtils.getNextWeek(it1, endTime) }
+                itemView.levelTv.text = selectedWeekDays?.let { it1 -> WeekDaysUtils.getNextWeek(it1, endTime) }
 
-
-                itemView.blocked_apps_title.text =
-                    itemView.context.getString(R.string.blocked_apps, 0)
+                itemView.blocked_apps_title.text = itemView.context.getString(R.string.blocked_apps, 0)
                 itemView.options_iv.setOnClickListener {
-
                     context?.let {
                         val builder = MenuBuilder(it)
                         MenuInflater(it).inflate(R.menu.custom_schedule_popup_menu, builder)
                         CustomSchedulePopup(it, builder, itemView.options_iv) {
                             listener.onPopupItemClicked(it, adapterPosition)
-                            //onPopupItemClicked(it, this)
                         }.show()
                     }
-
                 }
 
-
-                itemView.blockedAppsRv.layoutManager =
-                    AutoFitGridLayoutManager(Application.instance, 48)
+                itemView.blockedAppsRv.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
                 itemView.blockedAppsRv.adapter = BlockedAppsAdapter(schedule.appInfoList)
-                itemView.blocked_apps_title.text =
-                    Application.instance.getString(R.string.blocked_apps, schedule.appList?.size)
+                itemView.blocked_apps_title.text = Application.instance.getString(R.string.blocked_apps, schedule.appList?.size)
             }
         }
 
-
     }
 
-    fun onItemClicked(type: Int, schedule: Schedule) {
-
+   /* fun onItemClicked(type: Int, schedule: Schedule) {
         val intent  = Intent(context, CustomScheduleActivity::class.java)
             //intent.putExtra("scheduleId", scheduleId)
         intent.putExtra("type",type)
@@ -138,11 +118,10 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         intent.putParcelableArrayListExtra("appInfoList",schedule.appInfoList)
         intent.putExtra("bundle", bundle)
         context?.startActivity(intent)
-
-    }
+    }*/
 
     interface PopupCallBacks{
-        fun onPopupItemClicked(type: Int, adpaterPos: Int)
+        fun onPopupItemClicked(type: Int, adapterPos: Int)
     }
 
 }

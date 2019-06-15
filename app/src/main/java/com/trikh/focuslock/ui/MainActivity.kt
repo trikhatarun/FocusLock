@@ -9,6 +9,8 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
@@ -39,11 +41,6 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
         bottomNavigationBar.itemIconTintList = null
         bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
-
-       /* CustomDialog(R.string.unblock_apps_message,{
-            Toast.makeText(this, "Yes is Clicked", Toast.LENGTH_SHORT).show()
-        }).show(supportFragmentManager, "")*/
-
     }
 
     override fun onResume() {
@@ -62,16 +59,16 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
     }
 
     fun onAddScheduleClick(v: View) {
-        startActivity(Intent(this, CustomScheduleActivity::class.java))
+        findNavController(R.id.container).navigate(R.id.customSchedule)
         fabMenu.toggle(true)
     }
 
     fun onInstantLockClick(v: View) {
-        startActivity(Intent(this, InstantLockActivity::class.java))
+        findNavController(R.id.container).navigate(R.id.instantLock)
         fabMenu.toggle(true)
     }
 
-    fun requestUsagePermission(){
+    private fun requestUsagePermission(){
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }
