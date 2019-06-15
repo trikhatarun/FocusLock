@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.trikh.focuslock.ui.schedule.ScheduleViewModel" />
+            type="com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundColor"
-        tools:context=".ui.schedule.AddScheduleActivity">
+        tools:context=".ui.schedule.primaryschedule.AddScheduleActivity">
 
         <include layout="@layout/toolbar" />
 

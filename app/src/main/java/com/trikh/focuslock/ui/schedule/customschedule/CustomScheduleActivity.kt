@@ -1,4 +1,4 @@
-package com.trikh.focuslock.ui.schedule
+package com.trikh.focuslock.ui.schedule.CustomSchedule
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +13,9 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.ActivityCustomScheduleBinding
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import androidx.lifecycle.Observer
-import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
@@ -31,7 +31,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityCustomScheduleBinding
-    private lateinit var viewModel: ScheduleViewModel
+    private lateinit var viewModelCustom: CustomScheduleViewModel
     private var weekFlag = false
     private var appListFlag = false
     private var type = 0
@@ -42,8 +42,8 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         type = intent.getIntExtra("type", 0)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_custom_schedule)
-        viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
-        binding.viewModel = viewModel
+        viewModelCustom = ViewModelProviders.of(this).get(CustomScheduleViewModel::class.java)
+        binding.viewModel
         binding.lifecycleOwner = this
 
         if (type > 0) {
@@ -59,8 +59,8 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             )
 
             setTime(schedule.startTime, schedule.endTime)
-            viewModel.applicationList.postValue(appInfoList)
-            viewModel.checkedIds.postValue(schedule.selectedWeekDays)
+            viewModelCustom.applicationList.postValue(appInfoList)
+            viewModelCustom.checkedIds.postValue(schedule.selectedWeekDays)
             setWeekDays(schedule.selectedWeekDays!!)
 
 
@@ -93,7 +93,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         }
 
 
-        viewModel.checkedIds.observe(this, Observer {
+        viewModelCustom.checkedIds.observe(this, Observer {
             var flag = false
             Log.e(
                 "CustomScheduleActivity:",
@@ -107,7 +107,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             weekFlag = flag
         })
 
-        viewModel.applicationList.observe(this, Observer {
+        viewModelCustom.applicationList.observe(this, Observer {
             if (it.isNotEmpty()) {
                 appListFlag = true
             }
@@ -115,9 +115,9 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
         })
 
-        viewModel.appPicker.observe(this, Observer {
+        viewModelCustom.appPicker.observe(this, Observer {
             if (!it.hasBeenHandled) {
-                AppPickerDialog(viewModel.applicationList.value!!, this)
+                AppPickerDialog(viewModelCustom.applicationList.value!!, this)
                     .show(supportFragmentManager, "appPicker")
                 it.getContentIfNotHandled()
             }
@@ -145,7 +145,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
     private fun setTime(start: Calendar, end: Calendar) {
         timePicker.setTime(start, end)
-        viewModel.setTime(start, end)
+        viewModelCustom.setTime(start, end)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -161,7 +161,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
                     if (type == 1) {
 
-                        viewModel.updateSchedule(schedule.id, schedule.level!!, schedule.active!!)
+                        viewModelCustom.updateSchedule(schedule.id, schedule.level!!, schedule.active!!)
                         Toast.makeText(
                             this,
                             "Schedule Updated",
@@ -170,10 +170,10 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
                     } else {
 
-                        viewModel.createSchedule()
+                        viewModelCustom.createSchedule()
                         Toast.makeText(
                             this,
-                            viewModel.checkedIds.value.toString(),
+                            viewModelCustom.checkedIds.value.toString(),
                             Toast.LENGTH_LONG
                         ).show()
 
@@ -199,6 +199,6 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
 
     override fun onConfirm(applicationList: List<AppInfo>) {
-        viewModel.applicationList.value = applicationList
+        viewModelCustom.applicationList.value = applicationList
     }
 }
