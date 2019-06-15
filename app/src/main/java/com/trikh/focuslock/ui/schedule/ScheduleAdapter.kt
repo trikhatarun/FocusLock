@@ -2,8 +2,6 @@ package com.trikh.focuslock.ui.schedule
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.RecyclerView
@@ -29,16 +27,16 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         return if (scheduleList[position].level == -1) CUSTOM_SCHEDULE else DAILY_SCHEDULE
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         context = parent.context
 
         return when (viewType) {
             CUSTOM_SCHEDULE -> CustomScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
-            DAILY_SCHEDULE -> ScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
-            else -> null
+            else -> ScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
         }
     }
+
     //fun addList(list: ArrayList<Schedule>){this.scheduleList.addAll(list)}
 
     override fun getItemCount() = scheduleList.size
@@ -106,7 +104,6 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 itemView.blocked_apps_title.text = Application.instance.getString(R.string.blocked_apps, schedule.appList?.size)
             }
         }
-
     }
 
    /* fun onItemClicked(type: Int, schedule: Schedule) {
