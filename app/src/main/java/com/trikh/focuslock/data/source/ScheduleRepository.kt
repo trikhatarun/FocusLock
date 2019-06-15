@@ -22,15 +22,13 @@ class ScheduleRepository {
     //fun getAllApplicationList(id: Int) = scheduleLocalRepository.getAllApplicationList(id)
 
     fun updateSchedule(schedule: Schedule) {
-        Log.e("ScheduleRepository: ", " $schedule")
+        Log.d("ScheduleRepository: ", " $schedule")
         scheduleLocalRepository.updateSchedule(schedule)
     }
 
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
 
-    fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap {
-        return@flatMap withDrawableAndLabel(it)
-    }
+    fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap { return@flatMap withDrawableAndLabel(it) }
 
     fun getScheduleById(id: Int) =
         scheduleWithAppInfoList(scheduleLocalRepository.getScheduleById(id))
@@ -55,8 +53,6 @@ class ScheduleRepository {
 
     private fun withDrawableAndLabel(schedules: List<Schedule>): Observable<List<Schedule>> {
         return Observable.fromCallable {
-
-
             schedules.forEach {
                 val localAppList: ArrayList<AppInfo> = ArrayList()
                 it.appList?.forEach {
@@ -73,7 +69,7 @@ class ScheduleRepository {
                 }
                 it.appInfoList = localAppList
             }
-            schedules
+            return@fromCallable schedules
         }.subscribeOn(Schedulers.io())
     }
 
