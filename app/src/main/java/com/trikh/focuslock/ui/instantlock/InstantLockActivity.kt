@@ -78,11 +78,8 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                     serviceIntent.putExtra(SCHEDULE, schedule)
                     startService(serviceIntent)
                     finish()
-                }else{
-
                 }
             }
-
         }
         return true
     }
