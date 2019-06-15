@@ -80,15 +80,7 @@ class ScheduleViewModel : ViewModel() {
         return timeFormat.format(awakeTime.time)
     }
 
-    fun calculateDuration(startTime: Calendar, endTime: Calendar): String {
-        val sleepTime = startTime.timeInMillis
-        var awakeTime = endTime.timeInMillis
-        if (sleepTime > awakeTime) awakeTime +=  86400000
-        val difference = (awakeTime - sleepTime) / 60000 // in minutes
-        val hours = difference / 60
-        val minutes = Math.round(difference.rem(60) / 10f) * 10
-        return "$hours hr $minutes min"
-    }
+
 
     /*fun getScheduleById(scheduleId: Int){
         val schedule = scheduleId.let {scheduleRepository.getScheduleById(it) }
@@ -116,10 +108,7 @@ class ScheduleViewModel : ViewModel() {
             active = true,
             appList = list as List<String>
         )
-        Log.e(
-            "Schedule ",
-            "Start Time: " + startTime.value!!.timeInMillis + " End Time: " + endTime.value!!.timeInMillis
-        )
+
         scheduleRepository.addSchedule(schedule)
 
 
@@ -132,6 +121,12 @@ class ScheduleViewModel : ViewModel() {
             list.add(it.packageName)
         }
 
+        Log.e(
+            "Schedule ",
+            "active: $active  End Time: ${endTime.value!!.timeInMillis}"
+        )
+
+
         val schedule = Schedule(
             id = id,
             active = active,
@@ -141,10 +136,7 @@ class ScheduleViewModel : ViewModel() {
             selectedWeekDays = checkedIds.value,
             appList = list as List<String>
         )
-        Log.e(
-            "Schedule ",
-            "Start Time: " + startTime.value!!.timeInMillis + " End Time: " + endTime.value!!.timeInMillis
-        )
+
         scheduleRepository.updateSchedule(schedule)
 
     }

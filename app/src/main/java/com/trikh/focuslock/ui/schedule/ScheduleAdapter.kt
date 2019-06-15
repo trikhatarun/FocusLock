@@ -2,6 +2,7 @@ package com.trikh.focuslock.ui.schedule
 
 import android.annotation.SuppressLint
 import android.content.Context
+
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +12,16 @@ import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants.Companion.CUSTOM_SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.DAILY_SCHEDULE
-import com.trikh.focuslock.utils.Constants.Companion.END_TIME
-import com.trikh.focuslock.utils.Constants.Companion.START_TIME
+import com.trikh.focuslock.utils.TimeDuration
+
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.utils.WeekDaysUtils
 import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
+import kotlinx.android.synthetic.main.activity_custom_schedule.view.*
 import kotlinx.android.synthetic.main.schedule_layout.view.*
+import kotlinx.android.synthetic.main.schedule_layout.view.awakeTimeLabelTv
+import kotlinx.android.synthetic.main.schedule_layout.view.blocked_apps_title
+import kotlinx.android.synthetic.main.schedule_layout.view.sleepTimeLabelTv
 
 class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: PopupCallBacks) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -71,18 +76,29 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         }
     }
 
-    fun setList(list : List<Schedule>){
+    fun setList(list: List<Schedule>) {
         this.scheduleList = list
         notifyDataSetChanged()
     }
 
     inner class CustomScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+
         @SuppressLint("RestrictedApi")
         fun bind(schedule: Schedule) {
             schedule.run {
+                if (schedule.active!!) {
+                    itemView.backgroundView.visibility = View.GONE
+                } else {
+                    itemView.backgroundView.visibility = View.VISIBLE
+                }
 
-                itemView.awakeTimeLabelTv.text = END_TIME
-                itemView.sleepTimeLabelTv.text = START_TIME
+
+                itemView.awakeTimeLabelTv.text = context?.resources?.getString(R.string.end_time)
+                itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
+                val duration = TimeDuration.calculateDuration(startTime, endTime)
+                //Log.d("ScheduleAdapter:","Time Duration $duration")
+                itemView.hours_tv.text = duration
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
                 itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, 0)
 
@@ -93,6 +109,11 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                     context?.let {
                         val builder = MenuBuilder(it)
                         MenuInflater(it).inflate(R.menu.custom_schedule_popup_menu, builder)
+                         if (schedule.active!!) {
+                            builder.rootMenu.removeItem(R.id.enable)
+                        } else {
+                            builder.rootMenu.removeItem(R.id.disable)
+                        }
                         CustomSchedulePopup(it, builder, itemView.options_iv) {
                             listener.onPopupItemClicked(it, adapterPosition)
                         }.show()
@@ -106,19 +127,10 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         }
     }
 
-   /* fun onItemClicked(type: Int, schedule: Schedule) {
-        val intent  = Intent(context, CustomScheduleActivity::class.java)
-            //intent.putExtra("scheduleId", scheduleId)
-        intent.putExtra("type",type)
-        var bundle = Bundle()
-        bundle.putParcelable("schedule",schedule)
-        intent.putParcelableArrayListExtra("appInfoList",schedule.appInfoList)
-        intent.putExtra("bundle", bundle)
-        context?.startActivity(intent)
-    }*/
 
-    interface PopupCallBacks{
-        fun onPopupItemClicked(type: Int, adapterPos: Int)
+    interface PopupCallBacks {
+        fun onPopupItemClicked(type: Int, adpaterPos: Int)
+
     }
 
 }

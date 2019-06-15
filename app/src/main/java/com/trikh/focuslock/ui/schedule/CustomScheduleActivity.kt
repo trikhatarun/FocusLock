@@ -48,8 +48,8 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
         if (type > 0) {
             schedule = intent.getBundleExtra("bundle").getParcelable("schedule")
-            Log.e("Schedule Data: ", "${schedule.appList.toString()}")
-//            TODO("Error is here in retrieving the drawables from the package manager")
+            val active = schedule.active
+            Log.e("Schedule Data: ", "${schedule.appList.toString()} Active: $active")
             schedule = IconsUtils(this).getIconsFromPackageManager(schedule)
             val appInfoList = schedule.appInfoList
             Log.e("CustomSchedule: ", "AppInfoList Size: ${appInfoList.size}")

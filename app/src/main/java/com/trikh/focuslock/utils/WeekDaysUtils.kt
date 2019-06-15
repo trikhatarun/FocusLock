@@ -1,5 +1,6 @@
 package com.trikh.focuslock.utils
 
+import android.util.Log
 import kotlinx.android.synthetic.main.schedule_layout.view.*
 import java.util.*
 
@@ -7,11 +8,18 @@ object WeekDaysUtils {
 
     fun getNextWeek(selectedWeekDays: Array<Boolean>, endTime: Calendar): String {
         val cal: Calendar = Calendar.getInstance()
-        val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+        val dayOfWeek = if (cal.get(Calendar.DAY_OF_WEEK)<7){
+            (cal.get(Calendar.DAY_OF_WEEK) + 1)
+
+        }else{
+            1
+        }
 
         if (cal.timeInMillis <= endTime.timeInMillis) {
+            Log.e("TimeInMillis: ${cal.timeInMillis} "," EndTime: ${endTime.timeInMillis} dayOfWeek: $dayOfWeek ")
             return "Today"
         } else {
+            Log.e("TimeInMillis: ${cal.timeInMillis} "," EndTime: ${endTime.timeInMillis} dayOfWeek: $dayOfWeek")
             var flag = false
             var weekDay: Int? = null
             for (i in dayOfWeek..7) {

@@ -1,6 +1,7 @@
 package com.trikh.focuslock.widget.app_picker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.ViewModelFactory
@@ -27,8 +29,10 @@ class AppPickerDialog(private val selectedAppList: List<AppInfo>, private val in
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         appsRV.layoutManager = AutoFitGridLayoutManager(view.context, 70)
-        appsRV.adapter = applicationListAdapter
 
+        appsRV.adapter = applicationListAdapter
+        val columns = (appsRV.layoutManager as AutoFitGridLayoutManager).getColumnCountForAccessibility(appsRV.Recycler(), RecyclerView.State())
+        Log.e("AppPickerDialog: ","Columns: $columns")
         ViewModelProviders.of(this, ViewModelFactory(activity!!.application, selectedAppList))
                 .get(AppListViewModel::class.java)
                 .getAppInfoList()
