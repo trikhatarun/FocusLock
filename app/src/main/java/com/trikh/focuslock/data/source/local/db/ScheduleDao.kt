@@ -14,8 +14,8 @@ interface ScheduleDao {
     @Update
     fun updateSchedule(schedule: Schedule)
 
-    @Query("SELECT MAX(id) from schedule")
-    fun getMaxId(): Int
+   /* @Query("SELECT MAX(id) from schedule")
+    fun getMaxId(): Int*/
 
     @Query("DELETE FROM schedule where id = :id")
     fun removeSchedule(id: Int)
@@ -26,7 +26,7 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule")
     fun getSchedules(): Observable<List<Schedule>>
 
-/*    @Query("UPDATE schedule SET start_time = :startTime , end_time = :endTime ,selected_week_days = :selectedWeeks , level = :level , active = :active , appList = :appList  WHERE id LIKE :id")
+/*  @Query("UPDATE schedule SET start_time = :startTime , end_time = :endTime ,selected_week_days = :selectedWeeks , level = :level , active = :active , appList = :appList  WHERE id LIKE :id")
     fun updateSchedule(id: Int,
                        startTime: Calendar,
                        endTime: Calendar,

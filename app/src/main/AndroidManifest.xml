@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.trikh.focuslock">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -20,10 +18,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
         <activity
-            android:name=".ui.schedule.CustomScheduleActivity"
-            android:label=""
-             />
+            android:name=".ui.schedule.CustomScheduleActivity" android:label="" />
+
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask">
@@ -46,14 +44,17 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.schedule.AddScheduleActivity"
             android:label=""
             android:parentActivityName=".ui.MainActivity" />
+
         <activity
             android:name=".ui.instantlock.InstantLockActivity"
             android:label=""
             android:parentActivityName=".ui.MainActivity" />
+
         <activity
             android:name=".ui.appblock.BlockedAppActivity"
             android:excludeFromRecents="true"
@@ -69,7 +70,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.VideoPlayerTheme" />
-        <activity android:name=".ui.onboarding.OnboardingActivity" android:exported="true"/>
-    </application>
 
+        <activity android:name=".ui.onboarding.OnboardingActivity"/>
+    </application>
 </manifest>

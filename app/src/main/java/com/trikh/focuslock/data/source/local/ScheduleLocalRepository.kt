@@ -18,8 +18,7 @@ class ScheduleLocalRepository(context: Context) {
     //private val applicationDao = AppDatabase.getInstance(context).applicationsDao()
 
     fun addSchedule(schedule: Schedule) {
-        var id: Long? = null
-        Observable.fromCallable { id = scheduleDao.addSchedule(schedule) }
+        Observable.fromCallable { scheduleDao.addSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
@@ -36,9 +35,8 @@ class ScheduleLocalRepository(context: Context) {
     fun getAllApplicationList(id: Int) = applicationDao.getApplicationsByScheduleId(id)
 */
 
-
     fun updateSchedule(schedule: Schedule) {
-        Log.e("LocalRepository: "," $schedule")
+        Log.d("LocalRepository: "," $schedule")
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()

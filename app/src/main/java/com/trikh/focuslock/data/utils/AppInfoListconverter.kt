@@ -3,7 +3,7 @@ package com.trikh.focuslock.data.utils
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.trikh.focuslock.widget.app_picker.AppInfo
-
+// Not yet used may be used use in future
 class AppInfoListconverter {
     companion object{
         @JvmStatic
