@@ -20,7 +20,8 @@ import java.lang.RuntimeException
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ScheduleFragment : Fragment(), ScheduleAdapter.PopupCallBacks {
+class ScheduleFragment : Fragment(),
+    ScheduleAdapter.PopupCallBacks {
 
 
     private lateinit var viewModel: ScheduleViewModel
@@ -52,7 +53,8 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.PopupCallBacks {
         activity?.mainTv2?.visibility = View.GONE*/
 
         schedulesRv.isNestedScrollingEnabled = false
-        schedulesRv.adapter = ScheduleAdapter(getMockSchedules(), this)
+        schedulesRv.adapter =
+            ScheduleAdapter(getMockSchedules(), this)
         viewModel.scheduleList.observe(this, androidx.lifecycle.Observer { it ->
 
             (schedulesRv.adapter as ScheduleAdapter).setList(it)
@@ -85,10 +87,10 @@ class ScheduleFragment : Fragment(), ScheduleAdapter.PopupCallBacks {
         //intent.putExtra("scheduleId", scheduleId)
         when(type){
             1 -> {
-                Log.e("Fragment: ","AppList: ${schedule.appList}")
+                Log.e("Fragment: ","Active: ${schedule.active}")
                 val intent  = Intent(context, CustomScheduleActivity::class.java)
                 intent.putExtra("type",type)
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putParcelable("schedule", schedule)
                 //intent.putParcelableArrayListExtra("appInfoList",  schedule.appInfoList)
                 intent.putExtra("bundle", bundle)

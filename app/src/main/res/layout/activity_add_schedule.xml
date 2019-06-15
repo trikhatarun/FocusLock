@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="com.trikh.focuslock.utils.TimeDuration" />
+
         <variable
             name="viewModel"
             type="com.trikh.focuslock.ui.schedule.ScheduleViewModel" />
@@ -160,7 +162,7 @@
                             android:id="@+id/time_duration_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.calculateDuration(viewModel.startTime,viewModel.endTime)}"
+                            android:text="@{TimeDuration.calculateDuration(viewModel.startTime,viewModel.endTime)}"
                             android:textSize="22sp"
                             app:layout_constraintBottom_toBottomOf="@id/timePicker"
                             app:layout_constraintEnd_toEndOf="@id/timePicker"

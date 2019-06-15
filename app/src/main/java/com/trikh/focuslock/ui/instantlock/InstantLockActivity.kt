@@ -23,6 +23,7 @@ import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_add_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
@@ -78,6 +79,9 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                     serviceIntent.putExtra(SCHEDULE, schedule)
                     startService(serviceIntent)
                     finish()
+
+                }else{
+
                 }
             }
         }

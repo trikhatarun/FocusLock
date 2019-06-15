@@ -1,8 +1,6 @@
 package com.trikh.focuslock.ui
 
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -15,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.instantlock.InstantLockActivity
-import com.trikh.focuslock.ui.schedule.AddScheduleActivity
 import com.trikh.focuslock.ui.schedule.CustomScheduleActivity
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
 
