@@ -32,13 +32,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="instantLockActivity">
+                  <entry key="primaryScheduleActivity">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="340" />
-                            <option name="y" value="-362" />
+                            <option name="x" value="35" />
+                            <option name="y" value="-323" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -55,7 +55,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_scheduleFragment_to_addScheduleActivity2">
+                            <entry key="action_editPrimarySchedule">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_editSchedule">
                               <value>
                                 <LayoutPositions />
                               </value>

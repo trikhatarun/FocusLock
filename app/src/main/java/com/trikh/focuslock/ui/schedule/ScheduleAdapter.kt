@@ -67,9 +67,7 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                     context?.let {
                         val builder = MenuBuilder(it)
                         MenuInflater(it).inflate(R.menu.schedule_popup_menu, builder)
-                        CustomSchedulePopup(it, builder, itemView.options_iv) {
-                            listener.onPopupItemClicked(it, adapterPosition)
-                        }.show()
+                        CustomSchedulePopup(it, builder, itemView.options_iv, listener, adapterPosition).show()
                     }
                 }
             }
@@ -114,9 +112,7 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                         } else {
                             builder.rootMenu.removeItem(R.id.disable)
                         }
-                        CustomSchedulePopup(it, builder, itemView.options_iv) {
-                            listener.onPopupItemClicked(it, adapterPosition)
-                        }.show()
+                        CustomSchedulePopup(it, builder, itemView.options_iv,listener, adapterPosition).show()
                     }
                 }
 
@@ -128,9 +124,12 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
     }
 
 
+
+
     interface PopupCallBacks {
-        fun onPopupItemClicked(type: Int, adpaterPos: Int)
+        fun onItemClicked(type: String, adpaterPos: Int)
 
     }
+
 
 }

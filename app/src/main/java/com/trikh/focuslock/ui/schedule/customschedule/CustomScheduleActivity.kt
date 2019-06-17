@@ -1,8 +1,9 @@
-package com.trikh.focuslock.ui.schedule.CustomSchedule
+package com.trikh.focuslock.ui.schedule.customschedule
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -13,17 +14,22 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.ActivityCustomScheduleBinding
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import androidx.lifecycle.Observer
+import androidx.navigation.navArgs
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
+import com.trikh.focuslock.ui.schedule.ScheduleFragmentDirections
+import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
+import com.trikh.focuslock.widget.videoplayer.VideoPlayerActivityArgs
 import kotlinx.android.synthetic.main.activity_custom_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
@@ -34,20 +40,22 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     private lateinit var viewModelCustom: CustomScheduleViewModel
     private var weekFlag = false
     private var appListFlag = false
-    private var type = 0
+    private var type = Constants.DEFAULT_TYPE
     private lateinit var schedule: Schedule
+
+    private val args: CustomScheduleActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        type = intent.getIntExtra("type", 0)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_custom_schedule)
         viewModelCustom = ViewModelProviders.of(this).get(CustomScheduleViewModel::class.java)
-        binding.viewModel
+        binding.viewModel = viewModelCustom
         binding.lifecycleOwner = this
 
-        if (type > 0) {
-            schedule = intent.getBundleExtra("bundle").getParcelable("schedule")
+        type = getSharedPreferences(Constants.MY_PREF, 0).getString(Constants.TYPE, Constants.DEFAULT_TYPE)
+        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
+            schedule = args.schedule
             val active = schedule.active
             Log.e("Schedule Data: ", "${schedule.appList.toString()} Active: $active")
             schedule = IconsUtils(this).getIconsFromPackageManager(schedule)
@@ -159,7 +167,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             R.id.saveSchedule -> {
                 if (weekFlag and appListFlag) {
 
-                    if (type == 1) {
+                    if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
 
                         viewModelCustom.updateSchedule(schedule.id, schedule.level!!, schedule.active!!)
                         Toast.makeText(
