@@ -17,5 +17,12 @@ interface Constants {
 
         const val END_TIME = "End Time"
         const val START_TIME = "Start Time"
+        const val TYPE = "type"
+        const val MY_PREF = "focus_lock_pref"
+        const val POPUP_EDIT = "edit"
+        const val POPUP_DISABLE = "disable"
+        const val POPUP_ENABLE = "enable"
+        const val POPUP_DELETE = "delete"
+        const val DEFAULT_TYPE = "no_type"
     }
 }

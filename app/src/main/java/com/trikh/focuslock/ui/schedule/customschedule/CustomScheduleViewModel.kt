@@ -1,4 +1,4 @@
-package com.trikh.focuslock.ui.schedule.CustomSchedule
+package com.trikh.focuslock.ui.schedule.customschedule
 
 import android.util.Log
 
@@ -17,7 +17,6 @@ import kotlin.collections.ArrayList
 class CustomScheduleViewModel : ViewModel() {
 
 
-    val scheduleList: MutableLiveData<List<Schedule>> = MutableLiveData()
     // do not make them private they are used by data binding
     val startTime: MutableLiveData<Calendar> = MutableLiveData()
     val endTime: MutableLiveData<Calendar> = MutableLiveData()
@@ -34,11 +33,7 @@ class CustomScheduleViewModel : ViewModel() {
         appPicker.postValue(Event(Unit))
     }
 
-    init {
-        scheduleRepository.getSchedules().subscribeBy {
-            scheduleList.postValue(it)
-        }
-    }
+
 
 
     fun setTime(start: Calendar, end: Calendar) {

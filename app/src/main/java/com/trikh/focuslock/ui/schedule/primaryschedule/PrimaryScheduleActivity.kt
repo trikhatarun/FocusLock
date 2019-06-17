@@ -7,29 +7,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import com.trikh.focuslock.R
-import com.trikh.focuslock.databinding.ActivityAddScheduleBinding
+import com.trikh.focuslock.databinding.ActivityPrimaryScheduleBinding
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleViewModel
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
-import kotlinx.android.synthetic.main.activity_add_schedule.*
+import kotlinx.android.synthetic.main.activity_primary_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class AddScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener{
+class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener{
 
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
-    private lateinit var binding: ActivityAddScheduleBinding
-    private lateinit var viewModel: CustomScheduleViewModel
+    private lateinit var binding: ActivityPrimaryScheduleBinding
+    private lateinit var viewModel: PrimaryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_schedule)
-        viewModel = ViewModelProviders.of(this).get(CustomScheduleViewModel::class.java)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_primary_schedule)
+        viewModel = ViewModelProviders.of(this).get(PrimaryViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -48,6 +48,8 @@ class AddScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         end.set(Calendar.MINUTE, 0)
         setTime(start, end)
         /**********************************/
+
+
 
         timePicker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)

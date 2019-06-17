@@ -61,7 +61,7 @@ data class Schedule(
         CalendarTypeConverters.toCalender(parcel.readLong()),
         BooleanListConverter.jsonToList(parcel.readString() as String),
         parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         ListConverters.fetchList(parcel.createStringArrayList())
         //ListConverters.stringToList(parcel.readString() as String)
         //ListConverters.stringToList(parcel.readString())
@@ -77,7 +77,7 @@ data class Schedule(
         parcel.writeLong(endTime.timeInMillis)
         parcel.writeString(selectedWeekDays?.let { BooleanListConverter.listToJson(it) })
         level?.let { parcel.writeInt(it) }
-        parcel.writeByte(1)
+        parcel.writeValue(active)
         parcel.writeStringList(appList)
         //parcel.writeString(ListConverters.listToString(appList!!))
     }

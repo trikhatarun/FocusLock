@@ -7,13 +7,16 @@ import android.view.View
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import com.trikh.focuslock.R
+import com.trikh.focuslock.ui.schedule.ScheduleAdapter
+import com.trikh.focuslock.utils.Constants
 
 @SuppressLint("RestrictedApi")
 class CustomSchedulePopup(
     private val context:Context,
     menuBuilder: MenuBuilder,
     view: View,
-    val onItemClicked: (id: Int)-> Unit
+    val listener: ScheduleAdapter.PopupCallBacks,
+    val adapter_position: Int
 ): MenuPopupHelper(
     context,
     menuBuilder,
@@ -35,22 +38,22 @@ MenuBuilder.Callback
     override fun onMenuItemSelected(menu: MenuBuilder?, item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.edit -> {
-                onItemClicked(1)
+                listener.onItemClicked(Constants.POPUP_EDIT, adapter_position)
                 dismiss()
                 //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.enable -> {
-                onItemClicked(2)
+                listener.onItemClicked(Constants.POPUP_ENABLE, adapter_position)
                 dismiss()
                 //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.disable -> {
-                onItemClicked(3)
+                listener.onItemClicked(Constants.POPUP_DISABLE, adapter_position)
                 dismiss()
                 //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.delete -> {
-                onItemClicked(4)
+                listener.onItemClicked(Constants.POPUP_DELETE, adapter_position)
                 dismiss()
                 //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
@@ -58,6 +61,8 @@ MenuBuilder.Callback
 
         return true
     }
+
+
 
 
 

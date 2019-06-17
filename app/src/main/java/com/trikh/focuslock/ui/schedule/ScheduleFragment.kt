@@ -2,6 +2,7 @@ package com.trikh.focuslock.ui.schedule
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,8 +11,11 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivity
+import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -24,7 +28,11 @@ class ScheduleFragment : Fragment(),
     ScheduleAdapter.PopupCallBacks {
 
 
-    private lateinit var viewModel: ScheduleViewModel
+    private lateinit var pref : SharedPreferences
+
+
+    private lateinit var viewModelCustom: ScheduleViewModel
+
 
     private var listener: OnFragmentInteractionListener? = null
     override fun onCreateView(
@@ -32,16 +40,17 @@ class ScheduleFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
+        viewModelCustom = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("${context?.packageName} must implement interaction listener")
+            throw RuntimeException("${context?.packageName} must implement interaction listener") as Throwable
         }
     }
 
@@ -55,7 +64,7 @@ class ScheduleFragment : Fragment(),
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter =
             ScheduleAdapter(getMockSchedules(), this)
-        viewModel.scheduleList.observe(this, androidx.lifecycle.Observer { it ->
+        viewModelCustom.scheduleList.observe(this, androidx.lifecycle.Observer { it ->
 
             (schedulesRv.adapter as ScheduleAdapter).setList(it)
 
@@ -82,40 +91,44 @@ class ScheduleFragment : Fragment(),
         return list
     }
 
-    override fun onPopupItemClicked(type: Int, adpaterPos: Int) {
-        var schedule = viewModel.scheduleList.value!![adpaterPos]
+    override fun onItemClicked(type: String, adpaterPos: Int) {
+        var schedule = viewModelCustom.scheduleList.value!![adpaterPos]
         //intent.putExtra("scheduleId", scheduleId)
         when(type){
-            1 -> {
+            Constants.POPUP_EDIT -> {
+                val editor = pref!!.edit()
+                editor.putString(Constants.TYPE, Constants.POPUP_EDIT)
+                editor.apply()
                 Log.e("Fragment: ","Active: ${schedule.active}")
+                findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(schedule))
+                /*Log.e("Fragment: ","Active: ${schedule.active}")
                 val intent  = Intent(context, CustomScheduleActivity::class.java)
                 intent.putExtra("type",type)
                 val bundle = Bundle()
                 bundle.putParcelable("schedule", schedule)
                 //intent.putParcelableArrayListExtra("appInfoList",  schedule.appInfoList)
                 intent.putExtra("bundle", bundle)
-                context?.startActivity(intent)
+                context?.startActivity(intent)*/
             }
-            2 -> {
+            Constants.POPUP_ENABLE -> {
                 schedule.active = true
                 Log.e("Fragment: "," $schedule")
-                viewModel.enableOrDisableSchedule(schedule)
+                viewModelCustom.enableOrDisableSchedule(schedule)
             }
-            3 -> {
+            Constants.POPUP_DISABLE -> {
                 schedule.active = false
                 Log.e("Fragment: "," $schedule")
-                viewModel.enableOrDisableSchedule(schedule)
+                viewModelCustom.enableOrDisableSchedule(schedule)
             }
-            4 -> {
+            Constants.POPUP_DELETE -> {
                 CustomDialog(R.string.remove_schedule,
-                    {viewModel.removeSchedule(schedule.id)},
-                    R.string.dialog_yes_button,
-                    R.string.dialog_no_button).
-                        show(fragmentManager,"")
+                    {viewModelCustom.removeSchedule(schedule.id)},
+                    R.string.delete_text,
+                    R.string.cancel_text).
+                    show(fragmentManager,"")
 
             }
         }
-
     }
 
     interface OnFragmentInteractionListener {
