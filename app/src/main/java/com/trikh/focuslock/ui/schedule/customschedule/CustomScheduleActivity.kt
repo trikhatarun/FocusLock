@@ -18,7 +18,6 @@ import androidx.navigation.navArgs
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
-import com.trikh.focuslock.ui.schedule.ScheduleFragmentDirections
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.utils.TimeUtils
@@ -26,10 +25,8 @@ import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
-import com.trikh.focuslock.widget.videoplayer.VideoPlayerActivityArgs
 import kotlinx.android.synthetic.main.activity_custom_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
@@ -53,18 +50,16 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         binding.viewModel = viewModelCustom
         binding.lifecycleOwner = this
 
-        type = getSharedPreferences(Constants.MY_PREF, 0).getString(Constants.TYPE, Constants.DEFAULT_TYPE)
+        type = getSharedPreferences(Constants.MY_PREF, 0).getString(
+            Constants.TYPE,
+            Constants.DEFAULT_TYPE
+        )
         if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
             schedule = args.schedule
             val active = schedule.active
-            Log.e("Schedule Data: ", "${schedule.appList.toString()} Active: $active")
-            schedule = IconsUtils(this).getIconsFromPackageManager(schedule)
+
+            schedule.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)
             val appInfoList = schedule.appInfoList
-            Log.e("CustomSchedule: ", "AppInfoList Size: ${appInfoList.size}")
-            Log.e(
-                "CustomSchedule: ",
-                "AppInfoList Size: ${TimeUtils.getSleepTime(schedule.startTime.time, 0)}"
-            )
 
             setTime(schedule.startTime, schedule.endTime)
             viewModelCustom.applicationList.postValue(appInfoList)
@@ -169,32 +164,37 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
                     if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
 
-                        viewModelCustom.updateSchedule(schedule.id, schedule.level!!, schedule.active!!)
-                        Toast.makeText(
-                            this,
-                            "Schedule Updated",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        viewModelCustom.updateSchedule(
+                            schedule.id,
+                            schedule.level!!,
+                            schedule.active!!
+                        )
+
 
                     } else {
 
                         viewModelCustom.createSchedule()
-                        Toast.makeText(
-                            this,
-                            viewModelCustom.checkedIds.value.toString(),
-                            Toast.LENGTH_LONG
-                        ).show()
+
 
                     }
                     val serviceIntent = Intent(this, MainActivity::class.java)
                     startActivity(serviceIntent)
                 } else {
-                    CustomDialog(
-                        R.string.required_dialog_text,
-                        {},
-                        R.string.ok_text,
-                        R.string.empty_string
-                    ).show(supportFragmentManager, "")
+                    if (!weekFlag) {
+                        CustomDialog(
+                            R.string.minimum_weekday_msg,
+                            {},
+                            R.string.ok_text,
+                            R.string.empty_string
+                        ).show(supportFragmentManager, "")
+                    } else if (!appListFlag) {
+                        CustomDialog(
+                            R.string.minimum_blocked_apps_msg,
+                            {},
+                            R.string.ok_text,
+                            R.string.empty_string
+                        ).show(supportFragmentManager, "")
+                    }
                 }
             }
             android.R.id.home -> {
