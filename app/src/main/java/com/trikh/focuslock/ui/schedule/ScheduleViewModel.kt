@@ -33,4 +33,10 @@ class ScheduleViewModel: ViewModel(){
 
     fun removeSchedule(id: Int) = scheduleRepository.removeSchedule(id)
 
+    fun removeInstantLockSchedule() = scheduleRepository.deleteInstantLock()
+
+    fun updateInstantLockSchedule(schedule: InstantLockSchedule) = scheduleRepository.updateInstantLockSchedule(schedule)
+
+
+
 }

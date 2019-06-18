@@ -78,10 +78,9 @@ class ScheduleRepository {
 
     fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock()
 
+    fun updateInstantLockSchedule(schedule: InstantLockSchedule) = scheduleLocalRepository.updateInstantSchedule(schedule)
+
 
     fun getInstantLock() = scheduleLocalRepository.getInstantLock()
 
-    interface ScheduleCallBacks {
-        fun onScheduleAdded(id: Int)
-    }
 }
