@@ -42,6 +42,8 @@ class ScheduleLocalRepository(context: Context) {
             .subscribe()
     }
 
+
+
     fun removeSchedule(scheduleId: Int) {
         Observable.fromCallable { scheduleDao.removeSchedule(scheduleId) }
             .subscribeOn(Schedulers.io())
@@ -58,6 +60,13 @@ class ScheduleLocalRepository(context: Context) {
 
     fun deleteInstantLock() {
         Observable.fromCallable { instantLockDao.deleteSchedule() }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+    }
+
+    fun updateInstantSchedule(schedule: InstantLockSchedule) {
+        Log.d("LocalRepository: "," $schedule")
+        Observable.fromCallable { instantLockDao.updateSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }

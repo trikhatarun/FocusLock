@@ -40,4 +40,10 @@ class InstantLockViewModel : ViewModel() {
         scheduleRepository.insertInstantLock(instantLockSchedule)
         return instantLockSchedule
     }
+
+    fun updateInstantLockSchedule(): InstantLockSchedule {
+        val instantLockSchedule = InstantLockSchedule(endTime = getEndTime(), blockedApps = getBlockedPackageNames())
+        scheduleRepository.updateInstantLockSchedule(instantLockSchedule)
+        return instantLockSchedule
+    }
 }
