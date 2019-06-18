@@ -24,5 +24,6 @@ interface Constants {
         const val POPUP_ENABLE = "enable"
         const val POPUP_DELETE = "delete"
         const val DEFAULT_TYPE = "no_type"
+        const val POPUP_INSTANT_EDIT = "instant_edit"
     }
 }

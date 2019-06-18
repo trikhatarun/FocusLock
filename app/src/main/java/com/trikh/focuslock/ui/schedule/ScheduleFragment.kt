@@ -1,24 +1,33 @@
 package com.trikh.focuslock.ui.schedule
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
-import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivity
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants
+import com.trikh.focuslock.utils.IconsUtils
+import com.trikh.focuslock.utils.TimeDurationUtils
+import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.customdialog.CustomDialog
+import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.instant_lock_schedule.*
+import kotlinx.android.synthetic.main.schedule_layout.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.RuntimeException
 import java.util.*
@@ -28,10 +37,10 @@ class ScheduleFragment : Fragment(),
     ScheduleAdapter.PopupCallBacks {
 
 
-    private lateinit var pref : SharedPreferences
+    private lateinit var pref: SharedPreferences
 
 
-    private lateinit var viewModelCustom: ScheduleViewModel
+    private lateinit var viewModelschedule: ScheduleViewModel
 
 
     private var listener: OnFragmentInteractionListener? = null
@@ -40,7 +49,7 @@ class ScheduleFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModelCustom = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
+        viewModelschedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
@@ -50,23 +59,77 @@ class ScheduleFragment : Fragment(),
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("${context?.packageName} must implement interaction listener") as Throwable
+            throw RuntimeException("${context.packageName} must implement interaction listener") as Throwable
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.fabMenu?.visibility = View.VISIBLE
+        activity?.instantLockFab?.visibility = View.VISIBLE
         activity?.toolbar_title?.text = getString(R.string.schedule)
         /*activity?.mainTv1?.visibility = View.GONE
         activity?.mainTv2?.visibility = View.GONE*/
-
+        instantLock.visibility = View.GONE
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter =
             ScheduleAdapter(getMockSchedules(), this)
-        viewModelCustom.scheduleList.observe(this, androidx.lifecycle.Observer { it ->
+        viewModelschedule.scheduleList.observe(this, androidx.lifecycle.Observer {
 
             (schedulesRv.adapter as ScheduleAdapter).setList(it)
+
+        })
+
+        viewModelschedule.instantLockSchedule.observe(this, androidx.lifecycle.Observer {
+            val instantSchedule = it
+            if (it != null) {
+                instantLock.visibility = View.VISIBLE
+                activity?.instantLockFab?.visibility = View.GONE
+                val startTime = Calendar.getInstance()
+                var endTime = Calendar.getInstance()
+                val appInfoList = IconsUtils(context).getIconsFromPackageManager(it.blockedApps)
+                blockedAppsRv.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
+                blockedAppsRv.adapter = BlockedAppsAdapter(appInfoList)
+                blockedListTv.text = Application.instance.getString(R.string.blocked_apps, appInfoList.size)
+                endTime.timeInMillis = it .endTime
+                time.text = TimeDurationUtils.calculateDuration(startTime, endTime)
+
+                //uncomment the below code for showing popup menu to enable edit and delete on Instant Lock schedule
+                //****************************************************//
+                /*moreOptions.setOnClickListener {
+                    val builder = MenuBuilder(context)
+                    MenuInflater(context).inflate(R.menu.custom_schedule_popup_menu, builder)
+
+                        builder.rootMenu.removeItem(R.id.enable)
+
+                        builder.rootMenu.removeItem(R.id.disable)
+
+                    CustomSchedulePopup(context!!, builder, moreOptions, object : ScheduleAdapter.PopupCallBacks{
+                        override fun onItemClicked(type: String, adpaterPos: Int) {
+                            when(type){
+                                Constants.POPUP_EDIT -> {
+                                    val editor = pref.edit()
+                                    editor.putString(Constants.TYPE, Constants.POPUP_INSTANT_EDIT)
+                                    editor.apply()
+                                    findNavController().navigate(ScheduleFragmentDirections.actionScheduleFragmentToInstantLockActivity(instantSchedule))
+                                }
+                                Constants.POPUP_DELETE -> {
+                                    CustomDialog(
+                                        R.string.remove_schedule,
+                                        { viewModelschedule.removeInstantLockSchedule() },
+                                        R.string.delete_text,
+                                        R.string.cancel_text
+                                    ).show(fragmentManager, "")
+                                }
+                            }
+                        }
+                    }, it.id).show()
+                }*/
+                //*****************************************************//
+            }else{
+                instantLock.visibility = View.GONE
+            }
 
         })
 
@@ -92,40 +155,34 @@ class ScheduleFragment : Fragment(),
     }
 
     override fun onItemClicked(type: String, adpaterPos: Int) {
-        var schedule = viewModelCustom.scheduleList.value!![adpaterPos]
+        val schedule = viewModelschedule.scheduleList.value!![adpaterPos]
         //intent.putExtra("scheduleId", scheduleId)
-        when(type){
+        when (type) {
             Constants.POPUP_EDIT -> {
-                val editor = pref!!.edit()
+                val editor = pref.edit()
                 editor.putString(Constants.TYPE, Constants.POPUP_EDIT)
                 editor.apply()
-                Log.e("Fragment: ","Active: ${schedule.active}")
+                Log.e("Fragment: ", "Active: ${schedule.active}")
                 findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(schedule))
-                /*Log.e("Fragment: ","Active: ${schedule.active}")
-                val intent  = Intent(context, CustomScheduleActivity::class.java)
-                intent.putExtra("type",type)
-                val bundle = Bundle()
-                bundle.putParcelable("schedule", schedule)
-                //intent.putParcelableArrayListExtra("appInfoList",  schedule.appInfoList)
-                intent.putExtra("bundle", bundle)
-                context?.startActivity(intent)*/
+
             }
             Constants.POPUP_ENABLE -> {
                 schedule.active = true
-                Log.e("Fragment: "," $schedule")
-                viewModelCustom.enableOrDisableSchedule(schedule)
+                Log.e("Fragment: ", " $schedule")
+                viewModelschedule.enableOrDisableSchedule(schedule)
             }
             Constants.POPUP_DISABLE -> {
                 schedule.active = false
-                Log.e("Fragment: "," $schedule")
-                viewModelCustom.enableOrDisableSchedule(schedule)
+                Log.e("Fragment: ", " $schedule")
+                viewModelschedule.enableOrDisableSchedule(schedule)
             }
             Constants.POPUP_DELETE -> {
-                CustomDialog(R.string.remove_schedule,
-                    {viewModelCustom.removeSchedule(schedule.id)},
+                CustomDialog(
+                    R.string.remove_schedule,
+                    { viewModelschedule.removeSchedule(schedule.id) },
                     R.string.delete_text,
-                    R.string.cancel_text).
-                    show(fragmentManager,"")
+                    R.string.cancel_text
+                ).show(fragmentManager, "")
 
             }
         }

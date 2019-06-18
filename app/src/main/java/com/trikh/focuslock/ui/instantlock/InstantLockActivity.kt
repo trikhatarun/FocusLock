@@ -2,35 +2,50 @@ package com.trikh.focuslock.ui.instantlock
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.navArgs
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.databinding.ActivityInstantLockBinding
 import com.trikh.focuslock.ui.appblock.AppBlockService
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
+import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
 import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
+import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_primary_schedule.*
-import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.*
 
 class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
 
     private lateinit var binding: ActivityInstantLockBinding
     private lateinit var viewModel: InstantLockViewModel
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
+    private var hours: Int? = null
+    private var minutes: Int? = null
+    private var blockedApps: Int? = null
+
+    private var type = Constants.DEFAULT_TYPE
+
+    private lateinit var instantLockSchedule: InstantLockSchedule
+
+    private val args: InstantLockActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +53,35 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         viewModel = ViewModelProviders.of(this).get(InstantLockViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        type = getSharedPreferences(Constants.MY_PREF, 0).getString(
+            Constants.TYPE,
+            Constants.DEFAULT_TYPE
+        )
+        if (TextUtils.equals(type, Constants.POPUP_INSTANT_EDIT)) {
+            //uncomment the below code to enable edit feature of Instant Lock Schedule
+            //********************************************************//
+            /*instantLockSchedule = args.instantLockSchedule
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = instantLockSchedule.endTime
+            hours = cal.get(Calendar.HOUR)
+            minutes = cal.get(Calendar.MINUTE)
+            viewModel.hours.postValue(hours)
+            viewModel.minutes.postValue(minutes!!.div(10))
+            viewModel.applicationList.postValue(
+                IconsUtils(this).getIconsFromPackageManager(
+                    instantLockSchedule.blockedApps
+                )
+            )*/
+            //*******************************************************//
+
+        } else {
+
+            blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
+            blockedAppsAdapter = BlockedAppsAdapter(emptyList())
+            blocked_apps_rv.adapter = blockedAppsAdapter
+            blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
+        }
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
@@ -53,15 +97,17 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
             }
         })
 
+        viewModel.hours.observe(this, Observer { hours = it })
+
+        viewModel.minutes.observe(this, Observer { minutes = it.times(10) })
+
+
         viewModel.applicationList.observe(this, Observer {
+            blockedApps = it.size
             blockedAppsAdapter.updateList(it)
             blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
         })
 
-        blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
-        blockedAppsAdapter = BlockedAppsAdapter(emptyList())
-        blocked_apps_rv.adapter = blockedAppsAdapter
-        blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,17 +118,57 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.saveSchedule -> {
-                if (hasUsageStatsPermission){
-                    val schedule = viewModel.createInstantLockSchedule()
-                    val serviceIntent = Intent(this, AppBlockService::class.java)
-                    serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
-                    serviceIntent.putExtra(SCHEDULE, schedule)
-                    startService(serviceIntent)
-                    finish()
+                val time = hours?.times(60)?.plus(minutes!!)
+                Log.d("InstantLockActivity: ", "Time: $time")
+                if (hasUsageStatsPermission) {
 
-                }else{
+                    if ((time!!.compareTo(10) >= 0) and (blockedApps!!.compareTo(0) > 0)) {
+
+                        if (TextUtils.equals(type, Constants.POPUP_EDIT)){
+
+                            //add code to update Instant Lock Schedule
+                            //****************************************//
+                            //val schedule = viewModel.updateInstantLockSchedule()
+                            //****************************************//
+
+
+                        }else {
+
+
+                            val schedule = viewModel.createInstantLockSchedule()
+                            val serviceIntent = Intent(this, AppBlockService::class.java)
+                            serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
+                            serviceIntent.putExtra(SCHEDULE, schedule)
+                            startService(serviceIntent)
+                            finish()
+
+
+                        }
+
+                    } else {
+                        if (time.compareTo(10) < 0) {
+                            CustomDialog(
+                                R.string.minimum_time_msg,
+                                {},
+                                R.string.ok_text,
+                                R.string.empty_string
+                            ).show(supportFragmentManager, "")
+                        } else if (blockedApps!!.compareTo(0) <= 0) {
+                            CustomDialog(
+                                R.string.minimum_blocked_apps_msg,
+                                {},
+                                R.string.ok_text,
+                                R.string.empty_string
+                            ).show(supportFragmentManager, "")
+                        }
+                    }
+
+                } else {
 
                 }
+            }
+            android.R.id.home -> {
+                onBackPressed()
             }
         }
         return true
