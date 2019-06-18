@@ -20,6 +20,7 @@
         tools:text="@string/unblock_apps_message" />
 
     <com.google.android.material.button.MaterialButton
+        android:textAllCaps="false"
         style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/negativeBtn"
         android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
         tools:text="@string/dialog_no_button" />
 
     <com.google.android.material.button.MaterialButton
+        android:textAllCaps="false"
         style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/positiveBtn"
         android:layout_width="wrap_content"

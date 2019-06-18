@@ -107,7 +107,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/awakeTimeLabelTv"
+                    android:id="@+id/blockedListTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeTv"
-                    app:layout_constraintStart_toStartOf="@id/awakeTimeLabelTv"
+                    app:layout_constraintStart_toStartOf="@id/blockedListTv"
                     tools:text="08:30 AM" />
 
                 <TextView

@@ -3,7 +3,7 @@
 
     <data>
 
-        <import type="com.trikh.focuslock.utils.TimeDuration" />
+        <import type="com.trikh.focuslock.utils.TimeDurationUtils" />
 
         <variable
             name="viewModel"
@@ -95,7 +95,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/awakeTimeLabelTv"
+                                android:id="@+id/blockedListTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="20dp"
@@ -121,7 +121,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@{viewModel.getAwakeTime(viewModel.endTime.getTime(),0)}"
                                 app:layout_constraintBaseline_toBaselineOf="@id/sleep_time_tv"
-                                app:layout_constraintStart_toStartOf="@id/awakeTimeLabelTv"
+                                app:layout_constraintStart_toStartOf="@id/blockedListTv"
                                 tools:text="08:30 AM" />
 
                             <androidx.constraintlayout.widget.Guideline
@@ -162,7 +162,7 @@
                             android:id="@+id/time_duration_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{TimeDuration.calculateDuration(viewModel.startTime,viewModel.endTime)}"
+                            android:text="@{TimeDurationUtils.calculateDuration(viewModel.startTime,viewModel.endTime)}"
                             android:textSize="22sp"
                             app:layout_constraintBottom_toBottomOf="@id/timePicker"
                             app:layout_constraintEnd_toEndOf="@id/timePicker"

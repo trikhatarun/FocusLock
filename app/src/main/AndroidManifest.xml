@@ -71,6 +71,7 @@
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.VideoPlayerTheme" />
 
-        <activity android:name=".ui.onboarding.OnboardingActivity"/>
+        <activity android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="true"/>
     </application>
 </manifest>
