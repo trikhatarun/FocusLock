@@ -12,14 +12,13 @@ import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants.Companion.CUSTOM_SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.DAILY_SCHEDULE
-import com.trikh.focuslock.utils.TimeDuration
+import com.trikh.focuslock.utils.TimeDurationUtils
 
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.utils.WeekDaysUtils
 import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
-import kotlinx.android.synthetic.main.activity_custom_schedule.view.*
 import kotlinx.android.synthetic.main.schedule_layout.view.*
-import kotlinx.android.synthetic.main.schedule_layout.view.awakeTimeLabelTv
+import kotlinx.android.synthetic.main.schedule_layout.view.blockedListTv
 import kotlinx.android.synthetic.main.schedule_layout.view.blocked_apps_title
 import kotlinx.android.synthetic.main.schedule_layout.view.sleepTimeLabelTv
 
@@ -66,7 +65,10 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 itemView.options_iv.setOnClickListener {
                     context?.let {
                         val builder = MenuBuilder(it)
-                        MenuInflater(it).inflate(R.menu.schedule_popup_menu, builder)
+                        MenuInflater(it).inflate(R.menu.custom_schedule_popup_menu, builder)
+                        builder.rootMenu.removeItem(R.id.enable)
+                        builder.rootMenu.removeItem(R.id.disable)
+                        builder.rootMenu.removeItem(R.id.delete)
                         CustomSchedulePopup(it, builder, itemView.options_iv, listener, adapterPosition).show()
                     }
                 }
@@ -92,9 +94,9 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 }
 
 
-                itemView.awakeTimeLabelTv.text = context?.resources?.getString(R.string.end_time)
+                itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
                 itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
-                val duration = TimeDuration.calculateDuration(startTime, endTime)
+                val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
                 //Log.d("ScheduleAdapter:","Time Duration $duration")
                 itemView.hours_tv.text = duration
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
