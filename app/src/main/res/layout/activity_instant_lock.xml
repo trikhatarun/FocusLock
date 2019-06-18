@@ -67,7 +67,7 @@
                             tools:text="02:10 hr" />
 
                         <TextView
-                            android:id="@+id/awakeTimeLabelTv"
+                            android:id="@+id/blockedListTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="28dp"
@@ -84,8 +84,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:text="@string/hours"
-                            app:layout_constraintStart_toStartOf="@id/awakeTimeLabelTv"
-                            app:layout_constraintTop_toBottomOf="@id/awakeTimeLabelTv" />
+                            app:layout_constraintStart_toStartOf="@id/blockedListTv"
+                            app:layout_constraintTop_toBottomOf="@id/blockedListTv" />
 
                         <SeekBar
                             android:id="@+id/hourSeekBar"
@@ -337,6 +337,7 @@
                             app:srcCompat="@drawable/ic_edit" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:id="@+id/blocked_apps_rv"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

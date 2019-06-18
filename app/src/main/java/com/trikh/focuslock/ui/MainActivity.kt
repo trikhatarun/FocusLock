@@ -78,6 +78,9 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
     }
 
     fun onInstantLockClick(v: View) {
+        val editor = pref!!.edit()
+        editor.putString(Constants.TYPE, Constants.DEFAULT_TYPE)
+        editor.apply()
         findNavController(R.id.container).navigate(R.id.instantLock)
         fabMenu.toggle(true)
     }

@@ -2,7 +2,7 @@ package com.trikh.focuslock.utils
 
 import java.util.*
 
-class TimeDuration{
+class TimeDurationUtils{
     companion object{
         @JvmStatic
         fun calculateDuration(startTime: Calendar, endTime: Calendar): String {

@@ -11,9 +11,9 @@ class IconsUtils( private val instance: Context? = null){
 
 
 
-    fun getIconsFromPackageManager(schedule: Schedule): Schedule {
+    fun getIconsFromPackageManager(appList: List<String>): ArrayList<AppInfo> {
         val localAppList: ArrayList<AppInfo> = ArrayList()
-        schedule.appList?.forEach {
+        appList.forEach {
             val pkgManager = instance!!.packageManager
             val appInfo = pkgManager.getApplicationInfo(it, 0)
             localAppList.add(
@@ -25,8 +25,8 @@ class IconsUtils( private val instance: Context? = null){
                 )
             )
         }
-        schedule.appInfoList = localAppList
-        return schedule
+        return localAppList
+
     }
 
 
