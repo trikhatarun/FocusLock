@@ -13,8 +13,11 @@ class TimePickerViewModel : ViewModel() {
     val hours: MutableLiveData<Int> = MutableLiveData()
     val minutes: MutableLiveData<Int> = MutableLiveData()
     val sleepHours: MutableLiveData<Int> = MutableLiveData<Int>().apply { value = 0 }
-    //val blockText: MutableLiveData<String> = MutableLiveData< String>().apply{ value = Application.instance.getString(R.id.blocked_apps_title)}
+    val blockText: MutableLiveData<String> = MutableLiveData< String>().apply{ value = Application.instance.resources.getString(R.string.selected_sleep_time, 0)}
 
+    init {
+
+    }
 
     fun onClick(){
         val startTime = Calendar.getInstance()
@@ -25,9 +28,10 @@ class TimePickerViewModel : ViewModel() {
         endTime.set(Calendar.HOUR, sleepHours.value!!)
         val duration = TimeDurationUtils.calculateDuration(startTime,endTime)
         Log.d("TimePickerViewModel:"," duration: $duration")
-
-
     }
+
+
+
 
 
 }
