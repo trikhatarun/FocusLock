@@ -23,6 +23,7 @@
     <string name="level_n">Level %d</string>
     <string name="icon_content_description">Application Icon</string>
     <string name="level_message">App will be block\n%s to %s</string>
+    <string name="on_boarding_level_message">App will be block %s to %s</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="display_time">%02d:%02d hr</string>
