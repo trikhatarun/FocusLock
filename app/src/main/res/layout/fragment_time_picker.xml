@@ -263,7 +263,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/nextBtn"
-                android:onClick="@{()-> viewModel.onClick()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="38dp"
