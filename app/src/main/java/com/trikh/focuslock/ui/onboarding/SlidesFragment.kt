@@ -40,12 +40,12 @@ class SlidesFragment : Fragment() {
 
         compositeDisposable += Observable.intervalRange(1,2, 2000,2000,TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread()).subscribeBy {
-            slidesPager.currentItem = it.toInt()
-        }
+                slidesPager.currentItem = it.toInt()
+            }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         compositeDisposable.dispose()
     }
 }
