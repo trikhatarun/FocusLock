@@ -20,8 +20,22 @@
         android:label="fragment_time_picker"
         tools:layout="@layout/fragment_time_picker" >
         <action
-            android:id="@+id/action_next"
-            app:destination="@id/nav_graph" />
+            android:id="@+id/action_timePickerFragment_to_blockedAppsFragment"
+            app:destination="@id/blockedAppsFragment" />
     </fragment>
     <include app:graph="@navigation/nav_graph" />
+    <fragment
+        android:id="@+id/blockedAppsFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.BlockedAppsFragment"
+        android:label="BlockedAppsFragment" >
+        <action
+            android:id="@+id/action_blockedAppsFragment_to_nav_graph"
+            app:destination="@id/nav_graph" />
+        <argument
+            android:name="@string/start_time"
+            app:argType="java.util.Calendar"/>
+        <argument
+            android:name="@string/end_time"
+            app:argType="java.util.Calendar"/>
+    </fragment>
 </navigation>
