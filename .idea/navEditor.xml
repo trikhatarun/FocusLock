@@ -130,12 +130,33 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="nav_graph">
+                  <entry key="blockedAppsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="500" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_blockedAppsFragment_to_nav_graph">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="744" />
                             <option name="y" value="121" />
                           </Point>
                         </option>
@@ -174,7 +195,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_next">
+                            <entry key="action_timePickerFragment_to_blockedAppsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

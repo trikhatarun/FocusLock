@@ -11,10 +11,13 @@ import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 
 import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.FragmentTimePickerBinding
 import com.trikh.focuslock.ui.instantlock.InstantLockViewModel
+import com.trikh.focuslock.utils.TimeDurationUtils
+import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.fragment_time_picker.*
 import kotlinx.android.synthetic.main.fragment_time_picker.view.*
 import java.util.*
@@ -45,9 +48,31 @@ class TimePickerFragment : Fragment() {
             timePickerViewModel.blockText.postValue(getString(R.string.selected_sleep_time, it))
         })
 
+        root.nextBtn.setOnClickListener {
+            onButtonClicked()
+        }
 
 
         return root
+    }
+
+    private fun onButtonClicked(){
+        if (timePickerViewModel.sleepHours.value!! <=0){
+            CustomDialog(R.string.minimum_sleep_time_msg,
+                {},
+                noButtonText = R.string.empty_string,
+                yesButtonText = R.string.ok_text).show(fragmentManager, "")
+        }else{
+        val startTime = Calendar.getInstance()
+        val endTime = Calendar.getInstance()
+        startTime.set(Calendar.HOUR, timePickerViewModel.hours.value!!)
+        startTime.set(Calendar.MINUTE, timePickerViewModel.minutes.value!!)
+
+        endTime.set(Calendar.HOUR, timePickerViewModel.sleepHours.value!!)
+
+        findNavController().navigate(TimePickerFragmentDirections.actionTimePickerFragmentToBlockedAppsFragment(startTime, endTime))
+        val duration = TimeDurationUtils.calculateDuration(startTime,endTime)
+        Log.d("TimePickerViewModel:"," duration: $duration")}
     }
 
 
