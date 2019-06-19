@@ -81,6 +81,7 @@
     <string name="minimum_weekday_msg">You have to select one weekday to repeat</string>
     <string name="minimum_time_msg">You have to set the block time to at least 10 mins</string>
     <string name="minimum_blocked_apps_msg">You have to select at Least one app to block</string>
+    <string name="minimum_sleep_time_msg">You have to set sleep hours</string>
     <string name="ok_text">OK</string>
     <string name="empty_string"></string>
     <string name="remove_schedule">Are you sure you want to delete the schedule?</string>
@@ -88,7 +89,7 @@
     <string name="end_time">End Time</string>
     <string name="delete_text">Delete</string>
     <string name="selected_sleep_time">You selected your sleep time (%d)</string>
-    <string name="on_boarding_time_picker_title">What time Would like to sleep</string>
+    <string name="on_boarding_time_picker_title">What time would like to sleep</string>
     <string name="on_boarding_seek_bar_title">How many hours would you like to sleep?</string>
     <string name="step_1">Step 1 of 2</string>
     <string name="step_2">Step 2 of 2</string>
