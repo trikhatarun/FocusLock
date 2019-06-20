@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.trikh.focuslock.ui.onboarding.TimePickerViewModel" />
+            type="com.trikh.focuslock.ui.onboarding.timepicker.TimePickerViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +23,7 @@
             android:background="@color/backgroundColor"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:context=".ui.onboarding.TimePickerFragment">
+            tools:context=".ui.onboarding.timepicker.TimePickerFragment">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -267,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="38dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="14dp"
                 android:fontFamily="@font/muli_bold"
                 android:paddingVertical="16dp"
                 android:text="@string/next"

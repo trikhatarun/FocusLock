@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/timePickerFragment"
-        android:name="com.trikh.focuslock.ui.onboarding.TimePickerFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.timepicker.TimePickerFragment"
         android:label="fragment_time_picker"
         tools:layout="@layout/fragment_time_picker" >
         <action
@@ -26,7 +26,7 @@
     <include app:graph="@navigation/nav_graph" />
     <fragment
         android:id="@+id/blockedAppsFragment"
-        android:name="com.trikh.focuslock.ui.onboarding.BlockedAppsFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.blockapps.BlockedAppsFragment"
         android:label="BlockedAppsFragment" >
         <action
             android:id="@+id/action_blockedAppsFragment_to_nav_graph"
