@@ -17,7 +17,7 @@ class LevelsAdapter(private var list: List<String>, var listener: LevelCallBacks
 
     var context: Context? = null
 
-    var lastCheckedPos: Int? = null
+    var lastCheckedPos: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
@@ -34,16 +34,7 @@ class LevelsAdapter(private var list: List<String>, var listener: LevelCallBacks
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(string: String) {
 
-            if (adapterPosition == lastCheckedPos) {
-                itemView.levelCb.isChecked = true
-                /*val objectAnimator = ObjectAnimator.ofFloat(itemView.levelCb,"scaleY", 20f)
-                objectAnimator.duration = 100
-                objectAnimator.start()*/
-
-
-            } else {
-                itemView.levelCb.isChecked = false
-            }
+            itemView.levelCb.isChecked = adapterPosition == lastCheckedPos
             itemView.levelCb.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     Log.d("LevelViewHolder:", "Level: $string")

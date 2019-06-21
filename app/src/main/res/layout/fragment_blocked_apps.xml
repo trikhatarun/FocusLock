@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
                         android:fontFamily="@font/muli_bold"
-                        android:text="@string/on_boarding_level_message"
+                        android:text="@{viewModel.appBlockText}"
                         android:textColor="@color/colorDisabled"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"

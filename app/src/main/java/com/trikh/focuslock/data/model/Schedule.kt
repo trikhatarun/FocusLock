@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -20,6 +21,7 @@ data class Schedule(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "start_time") val startTime: Calendar,
     @ColumnInfo(name = "end_time") val endTime: Calendar,
+    @Nullable
     @ColumnInfo(name = "selected_week_days") val selectedWeekDays: Array<Boolean>? = null,
     val level: Int? = -1,
     var active: Boolean? = null,

@@ -1,19 +1,29 @@
 package com.trikh.focuslock.ui.schedule.primaryschedule
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
+import androidx.navigation.navArgs
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.ActivityPrimaryScheduleBinding
+import com.trikh.focuslock.ui.MainActivity
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
+import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleViewModel
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants
+import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
+import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_primary_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -24,6 +34,11 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityPrimaryScheduleBinding
     private lateinit var viewModel: PrimaryViewModel
+    private var appListFlag = false
+    private var type = Constants.DEFAULT_TYPE
+    private lateinit var schedule: Schedule
+
+    private val args: PrimaryScheduleActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +48,32 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        type = getSharedPreferences(Constants.MY_PREF, 0).getString(
+            Constants.TYPE,
+            Constants.DEFAULT_TYPE
+        )
+        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
+            schedule = args.schedule
+            val active = schedule.active
+
+            schedule.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)
+            val appInfoList = schedule.appInfoList
+
+            setTime(schedule.startTime, schedule.endTime)
+            viewModel.applicationList.postValue(appInfoList)
+
+
+
+        } else {
+            val start = Calendar.getInstance()
+            start.set(Calendar.HOUR_OF_DAY, 2)
+            start.set(Calendar.MINUTE, 0)
+            val end = Calendar.getInstance()
+            end.set(Calendar.HOUR_OF_DAY, 10)
+            end.set(Calendar.MINUTE, 0)
+            setTime(start, end)
+        }
+
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
         toolbar_title.text = getString(R.string.set_schedule)
@@ -40,13 +81,7 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
 
         //Replace this code and get start and end from intents instead
         /***********************************/
-        val start = Calendar.getInstance()
-        start.set(Calendar.HOUR_OF_DAY, 2)
-        start.set(Calendar.MINUTE, 0)
-        val end = Calendar.getInstance()
-        end.set(Calendar.HOUR_OF_DAY, 10)
-        end.set(Calendar.MINUTE, 0)
-        setTime(start, end)
+
         /**********************************/
 
 
@@ -59,6 +94,7 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         viewModel.applicationList.observe(this, Observer {
             blockedAppsAdapter.updateList(it)
             blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
+            appListFlag = it.isNotEmpty()
         })
 
 
@@ -85,6 +121,50 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         menuInflater.inflate(R.menu.save_option_menu, menu)
         return true
     }
+
+
+
+        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+            when (item?.itemId) {
+
+                R.id.saveSchedule -> {
+                    if (appListFlag) {
+
+                        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
+
+                            viewModel.updateSchedule(
+                                schedule.id,
+                                schedule.active!!
+                            )
+
+
+                        } else {
+
+                            viewModel.createSchedule()
+
+
+                        }
+                        val serviceIntent = Intent(this, MainActivity::class.java)
+                        startActivity(serviceIntent)
+                    } else {
+                        if (!appListFlag) {
+                            CustomDialog(
+                                R.string.minimum_blocked_apps_msg,
+                                {},
+                                R.string.ok_text,
+                                R.string.empty_string
+                            ).show(supportFragmentManager, "")
+                        }
+                    }
+                }
+                android.R.id.home -> {
+                    onBackPressed()
+                }
+
+            }
+            return true
+        }
+
 
     override fun onConfirm(applicationList: List<AppInfo>) {
         viewModel.applicationList.value = applicationList

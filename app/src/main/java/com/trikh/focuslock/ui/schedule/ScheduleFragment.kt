@@ -43,7 +43,7 @@ class ScheduleFragment : Fragment(),
     private lateinit var viewModelschedule: ScheduleViewModel
 
 
-    private var listener: OnFragmentInteractionListener? = null
+    //private var listener: OnFragmentInteractionListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,11 +56,11 @@ class ScheduleFragment : Fragment(),
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
-        if (context is OnFragmentInteractionListener) {
+        /*if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
             throw RuntimeException("${context.packageName} must implement interaction listener") as Throwable
-        }
+        }*/
     }
 
     @SuppressLint("RestrictedApi")
@@ -138,7 +138,7 @@ class ScheduleFragment : Fragment(),
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
+        //listener = null
     }
 
     @VisibleForTesting

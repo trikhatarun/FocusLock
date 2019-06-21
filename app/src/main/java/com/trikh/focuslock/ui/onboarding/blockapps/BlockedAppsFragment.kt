@@ -9,38 +9,51 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.FragmentBlockedAppsBinding
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
+import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
+import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.*
+import kotlinx.android.synthetic.main.fragment_blocked_apps.view.setSchedule
+import kotlin.collections.ArrayList
 
 
-class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener, LevelsAdapter.LevelCallBacks{
+class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
+    LevelsAdapter.LevelCallBacks {
 
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var levelsAdapter: LevelsAdapter
     private lateinit var viewModel: BlockAppsViewModel
-    private val args : BlockedAppsFragmentArgs by navArgs()
+    private val args: BlockedAppsFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentBlockedAppsBinding
     private lateinit var root: View
+    private var listFlag = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_blocked_apps, container, false)
+
         viewModel = ViewModelProviders.of(this).get(BlockAppsViewModel::class.java)
+        onLevelChanged(1)
+
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_blocked_apps, container, false)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-         root = binding.root
+        root = binding.root
 
         viewModel.appPicker.observe(this, Observer {
             if (!it.hasBeenHandled) {
@@ -52,6 +65,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener, Lev
 
         viewModel.applicationList.observe(this, Observer {
             blockedAppsAdapter.updateList(it)
+            listFlag = it.isNotEmpty()
             //blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
         })
 
@@ -61,12 +75,14 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener, Lev
         blockedAppsAdapter = BlockedAppsAdapter(emptyList())
         root.blocked_apps_rv.adapter = blockedAppsAdapter
 
-
+        root.setSchedule.setOnClickListener {
+            createPrimarySchedule()
+        }
         //blocked_apps_title.text = getString(R.string.blocked_apps, blockedAppsAdapter.itemCount)
         return root
     }
 
-    fun initLevelAdapter(root: View): View {
+    private fun initLevelAdapter(root: View): View {
         val list = ArrayList<String>()
         list.add(context!!.resources.getString(R.string.level_1))
         list.add(context!!.resources.getString(R.string.level_2))
@@ -87,7 +103,41 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener, Lev
         val endTime = args.stringEndTime
         val sleepTime = TimeUtils.getSleepTime(startTime.time, level)
         val awakeTIme = TimeUtils.getAwakeTime(endTime.time, level)
-        root.levelTv.text = getString(R.string.on_boarding_level_message,  sleepTime, awakeTIme )
+        val blockText = getString(R.string.on_boarding_level_message, sleepTime, awakeTIme)
+        viewModel.level.postValue(level)
+        viewModel.appBlockText.postValue(blockText)
+
+    }
+
+    private fun createPrimarySchedule() {
+        if (listFlag) {
+            val list: ArrayList<String> = ArrayList()
+            viewModel.applicationList.value?.forEach {
+                list.add(it.packageName)
+            }
+
+            val schedule = Schedule(
+                level = viewModel.level.value,
+                endTime = args.stringEndTime,
+                startTime = args.stringStartTime,
+                active = true,
+                appList = list as List<String>
+            )
+Log.d("BlockedAppsFragment:", "Level: ${schedule.level} endTime: ${schedule.endTime} startTime: ${schedule.startTime} active: ${schedule.active} appList: ${schedule.appList!!.size}")
+            viewModel.scheduleRepository.addSchedule(schedule)
+            val pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
+            val editor = pref!!.edit()
+            editor.putBoolean(Constants.ON_BOARDING, false)
+            editor.apply()
+            findNavController().navigate(BlockedAppsFragmentDirections.actionHomeToNavGraph())
+        } else {
+            CustomDialog(
+                R.string.minimum_blocked_apps_msg,
+                {},
+                R.string.ok_text,
+                R.string.empty_string
+            ).show(fragmentManager, "")
+        }
 
     }
 }

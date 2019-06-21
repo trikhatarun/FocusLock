@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboarding_graph"
-    app:startDestination="@id/slidesFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/slidesFragment"
@@ -29,7 +29,7 @@
         android:name="com.trikh.focuslock.ui.onboarding.blockapps.BlockedAppsFragment"
         android:label="BlockedAppsFragment" >
         <action
-            android:id="@+id/action_blockedAppsFragment_to_nav_graph"
+            android:id="@+id/action_home_to_nav_graph"
             app:destination="@id/nav_graph" />
         <argument
             android:name="@string/start_time"
@@ -37,5 +37,16 @@
         <argument
             android:name="@string/end_time"
             app:argType="java.util.Calendar"/>
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_slidesFragment"
+            app:destination="@id/slidesFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_nav_graph"
+            app:destination="@id/nav_graph" />
     </fragment>
 </navigation>

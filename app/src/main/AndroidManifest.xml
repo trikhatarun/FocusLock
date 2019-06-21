@@ -27,11 +27,7 @@
             android:launchMode="singleTask">
             <tools:validation testUrl="http://focus-lock.com/home" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -72,6 +68,12 @@
             android:theme="@style/AppTheme.VideoPlayerTheme" />
 
         <activity android:name=".ui.onboarding.OnboardingActivity"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
