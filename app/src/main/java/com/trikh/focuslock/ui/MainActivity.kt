@@ -85,6 +85,10 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         fabMenu.toggle(true)
     }
 
+    override fun onBackPressed() {
+
+    }
+
     private fun requestUsagePermission(){
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }

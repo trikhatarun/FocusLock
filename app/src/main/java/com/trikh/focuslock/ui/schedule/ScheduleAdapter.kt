@@ -2,6 +2,7 @@ package com.trikh.focuslock.ui.schedule
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
@@ -36,7 +37,13 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         context = parent.context
 
         return when (viewType) {
-            CUSTOM_SCHEDULE -> CustomScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
+            CUSTOM_SCHEDULE -> CustomScheduleViewHolder(
+                inflater.inflate(
+                    R.layout.schedule_layout,
+                    parent,
+                    false
+                )
+            )
             else -> ScheduleViewHolder(inflater.inflate(R.layout.schedule_layout, parent, false))
         }
     }
@@ -57,10 +64,17 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         @SuppressLint("RestrictedApi")
         fun bind(schedule: Schedule) {
             schedule.run {
+                itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
+                itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
+                val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
+                Log.d("ScheduleAdapter:", "appList size ${schedule.appInfoList!!.size}")
+                itemView.hours_tv.text = duration
+
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, level!!)
                 itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, level)
                 itemView.levelTv.text = itemView.context.getString(R.string.level_n, level)
-                itemView.blocked_apps_title.text = itemView.context.getString(R.string.blocked_apps, 0)
+                itemView.blocked_apps_title.text =
+                    itemView.context.getString(R.string.blocked_apps, 0)
 
                 itemView.options_iv.setOnClickListener {
                     context?.let {
@@ -69,9 +83,21 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                         builder.rootMenu.removeItem(R.id.enable)
                         builder.rootMenu.removeItem(R.id.disable)
                         builder.rootMenu.removeItem(R.id.delete)
-                        CustomSchedulePopup(it, builder, itemView.options_iv, listener, adapterPosition).show()
+                        CustomSchedulePopup(
+                            it,
+                            builder,
+                            itemView.options_iv,
+                            listener,
+                            adapterPosition
+                        ).show()
                     }
+
                 }
+                itemView.blockedAppsRv.layoutManager =
+                    AutoFitGridLayoutManager(Application.instance, 48)
+                itemView.blockedAppsRv.adapter = BlockedAppsAdapter(schedule.appInfoList)
+                itemView.blocked_apps_title.text =
+                    itemView.context.getString(R.string.blocked_apps, schedule.appList?.size)
             }
         }
     }
@@ -102,30 +128,38 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
                 itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, 0)
 
-                itemView.levelTv.text = selectedWeekDays?.let { it1 -> WeekDaysUtils.getNextWeek(it1, endTime) }
+                itemView.levelTv.text =
+                    selectedWeekDays?.let { it1 -> WeekDaysUtils.getNextWeek(it1, endTime) }
 
-                itemView.blocked_apps_title.text = itemView.context.getString(R.string.blocked_apps, 0)
+                itemView.blocked_apps_title.text =
+                    itemView.context.getString(R.string.blocked_apps, 0)
                 itemView.options_iv.setOnClickListener {
                     context?.let {
                         val builder = MenuBuilder(it)
                         MenuInflater(it).inflate(R.menu.custom_schedule_popup_menu, builder)
-                         if (schedule.active!!) {
+                        if (schedule.active!!) {
                             builder.rootMenu.removeItem(R.id.enable)
                         } else {
                             builder.rootMenu.removeItem(R.id.disable)
                         }
-                        CustomSchedulePopup(it, builder, itemView.options_iv,listener, adapterPosition).show()
+                        CustomSchedulePopup(
+                            it,
+                            builder,
+                            itemView.options_iv,
+                            listener,
+                            adapterPosition
+                        ).show()
                     }
                 }
 
-                itemView.blockedAppsRv.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
+                itemView.blockedAppsRv.layoutManager =
+                    AutoFitGridLayoutManager(Application.instance, 48)
                 itemView.blockedAppsRv.adapter = BlockedAppsAdapter(schedule.appInfoList)
-                itemView.blocked_apps_title.text = Application.instance.getString(R.string.blocked_apps, schedule.appList?.size)
+                itemView.blocked_apps_title.text =
+                    Application.instance.getString(R.string.blocked_apps, schedule.appList?.size)
             }
         }
     }
-
-
 
 
     interface PopupCallBacks {

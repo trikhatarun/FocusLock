@@ -23,27 +23,22 @@ class SplashFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.fragment_splash, container, false)
 
         onBoarding = context!!.getSharedPreferences(Constants.MY_PREF, 0)
             .getBoolean(Constants.ON_BOARDING, Constants.DEFAULT_ON_BOARDING)
 
-
-
-        Handler().postDelayed({
-            when (onBoarding) {
-                true -> {
-                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToSlidesFragment())
-                }
-                false -> {
-                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNavGraph())
-                }
+        when (onBoarding) {
+            true -> {
+                activity?.theme?.applyStyle(R.style.AppTheme, true)
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToSlidesFragment())
             }
-        }, 3000)
+            false -> {
+                activity?.theme?.applyStyle(R.style.AppTheme, true)
+                findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNavGraph())
+            }
+        }
 
 
-
-
-        return root
+        return super.onCreateView(inflater,container, savedInstanceState)
     }
 }

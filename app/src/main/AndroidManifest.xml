@@ -68,7 +68,8 @@
             android:theme="@style/AppTheme.VideoPlayerTheme" />
 
         <activity android:name=".ui.onboarding.OnboardingActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/splash_theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

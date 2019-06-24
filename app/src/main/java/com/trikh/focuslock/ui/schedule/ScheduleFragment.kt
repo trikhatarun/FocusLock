@@ -74,7 +74,7 @@ class ScheduleFragment : Fragment(),
         instantLock.visibility = View.GONE
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter =
-            ScheduleAdapter(getMockSchedules(), this)
+            ScheduleAdapter(emptyList(), this)
         viewModelschedule.scheduleList.observe(this, androidx.lifecycle.Observer {
 
             (schedulesRv.adapter as ScheduleAdapter).setList(it)

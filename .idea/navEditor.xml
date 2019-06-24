@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="339" />
-                            <option name="y" value="38" />
+                            <option name="x" value="322" />
+                            <option name="y" value="37" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -145,7 +145,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_graph">
+                  <entry key="mainActivity">
                     <value>
                       <LayoutPositions />
                     </value>

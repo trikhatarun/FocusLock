@@ -42,4 +42,8 @@
     <style name="AppTheme.VideoPlayerTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@android:color/black</item>
     </style>
+
+    <style name="splash_theme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>
