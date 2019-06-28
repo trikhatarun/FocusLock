@@ -1,14 +1,11 @@
 package com.trikh.focuslock.data.source.local
 
-import android.content.ComponentCallbacks
 import android.content.Context
 import android.util.Log
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
-import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.data.source.local.db.AppDatabase
-import com.trikh.focuslock.data.source.local.db.ApplicationsDao
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -27,6 +24,11 @@ class ScheduleLocalRepository(context: Context) {
         Observable.fromCallable { scheduleDao.getScheduleById(id) }
             .subscribeOn(Schedulers.io())
 
+    fun getScheduleEndTime() = Observable.fromCallable { scheduleDao.getAllEndTimes() }
+        .subscribeOn(Schedulers.io())
+
+    fun getInstantLockEndTime() = Observable.fromCallable { instantLockDao.getEndTime() }
+        .subscribeOn(Schedulers.io())
 
 
     // Not Yet Used May Be Used In Future
@@ -37,15 +39,15 @@ class ScheduleLocalRepository(context: Context) {
     }
 
     fun getAllApplicationList(id: Int) = applicationDao.getApplicationsByScheduleId(id)
+
 */
 
     fun updateSchedule(schedule: Schedule) {
-        Log.d("LocalRepository: "," $schedule")
+        Log.d("LocalRepository: ", " $schedule")
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
-
 
 
     fun removeSchedule(scheduleId: Int) {
@@ -69,7 +71,7 @@ class ScheduleLocalRepository(context: Context) {
     }
 
     fun updateInstantSchedule(schedule: InstantLockSchedule) {
-        Log.d("LocalRepository: "," $schedule")
+        Log.d("LocalRepository: ", " $schedule")
         Observable.fromCallable { instantLockDao.updateSchedule(schedule) }
             .subscribeOn(Schedulers.io())
             .subscribe()

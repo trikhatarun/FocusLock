@@ -36,8 +36,13 @@ class AppBlockService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
 
+        scheduleRepository.getRunningTime().subscribe{
+            runningTime = it
+            start(intent)
+        }
 
-        start(intent)
+
+
 
         return START_STICKY;
     }
@@ -47,13 +52,14 @@ class AppBlockService : Service() {
 
         when (intent?.getIntExtra(SCHEDULE_TYPE, -1)) {
             INSTANT_LOCK -> {
+
                 val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(getString(R.string.app_blocked_message))
                     .build()
                 startForeground(SERVICE_ID, notification)
                 val schedule = intent.getParcelableExtra<InstantLockSchedule>(SCHEDULE)
-                runningTime = schedule.endTime - System.currentTimeMillis()
+                //runningTime = schedule.endTime - System.currentTimeMillis()
                 blockedPackages = schedule.blockedApps
                 setInterval()
             }
@@ -64,7 +70,7 @@ class AppBlockService : Service() {
                         .setContentText(getString(R.string.app_blocked_message))
                         .build()
                     startForeground(SERVICE_ID, notification)
-                    runningTime = it.endTime.timeInMillis - System.currentTimeMillis()
+                    //runningTime = it.endTime.timeInMillis - System.currentTimeMillis()
                     blockedPackages = it.appList!!
                     setInterval()
                 }
@@ -82,6 +88,8 @@ class AppBlockService : Service() {
 
 
     private fun setInterval(){
+
+        //checking is blocked app is opening
         Observable.interval(TIME_INTERVAL, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.computation())
             .map { getForegroundApp() }
@@ -99,6 +107,8 @@ class AppBlockService : Service() {
                 activityManager.killBackgroundProcesses(p)
             }.addTo(compositeDisposable)
 
+
+        //timer for the smallest endTime
         Observable.timer(runningTime, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.computation())
             .subscribe {

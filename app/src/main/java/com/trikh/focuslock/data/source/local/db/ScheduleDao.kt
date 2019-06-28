@@ -26,6 +26,13 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule")
     fun getSchedules(): Observable<List<Schedule>>
 
+    @Query("SELECT end_time FROM schedule")
+    fun getAllEndTimes(): List<Calendar>
+
+
+
+
+
 /*  @Query("UPDATE schedule SET start_time = :startTime , end_time = :endTime ,selected_week_days = :selectedWeeks , level = :level , active = :active , appList = :appList  WHERE id LIKE :id")
     fun updateSchedule(id: Int,
                        startTime: Calendar,

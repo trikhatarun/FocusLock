@@ -5,10 +5,13 @@ import com.trikh.focuslock.data.model.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.local.ScheduleLocalRepository
+import com.trikh.focuslock.data.utils.RunningTime
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.flatMapIterable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleRepository {
     private val scheduleLocalRepository = ScheduleLocalRepository.getInstance()
@@ -31,6 +34,21 @@ class ScheduleRepository {
     fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap { return@flatMap withDrawableAndLabel(it) }
 
     fun getScheduleById(id: Int) = scheduleLocalRepository.getScheduleById(id).flatMap{ return@flatMap scheduleWithAppInfoList(it)    }
+
+    fun getRunningTime() = scheduleLocalRepository.getScheduleEndTime().flatMap {  return@flatMap checkSmallestEndTime(it)}
+
+
+    private fun checkSmallestEndTime(scheduleEndTime: List<Calendar>): Observable<Long> {
+        return scheduleLocalRepository.getInstantLockEndTime().map {
+            var cal = Calendar.getInstance()
+            cal.timeInMillis  = it
+            val list = (scheduleEndTime as ArrayList<Calendar>)
+            list.add(cal)
+            return@map RunningTime.getRunningTime(list)
+
+        }
+    }
+
 
 
 
