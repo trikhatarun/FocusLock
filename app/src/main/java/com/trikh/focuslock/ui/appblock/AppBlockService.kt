@@ -32,25 +32,56 @@ class AppBlockService : Service() {
     private lateinit var blockedPackages: List<String>
     private val usageStatsManager by lazy { getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
     private val activityManager by lazy { getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }
+    private val scheduleRepository = ScheduleRepository()
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle(getString(R.string.app_name))
-            .setContentText(getString(R.string.app_blocked_message))
-            .build()
-        startForeground(SERVICE_ID, notification)
+
+
+
+        start(intent)
+
+        return START_STICKY;
+    }
+
+    private fun start(intent: Intent?){
+
 
         when (intent?.getIntExtra(SCHEDULE_TYPE, -1)) {
             INSTANT_LOCK -> {
+                val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.app_blocked_message))
+                    .build()
+                startForeground(SERVICE_ID, notification)
                 val schedule = intent.getParcelableExtra<InstantLockSchedule>(SCHEDULE)
                 runningTime = schedule.endTime - System.currentTimeMillis()
                 blockedPackages = schedule.blockedApps
+                setInterval()
             }
             DAILY_SCHEDULE -> {
+                scheduleRepository.getScheduleById(1).subscribe{
+                    val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(getString(R.string.app_blocked_message))
+                        .build()
+                    startForeground(SERVICE_ID, notification)
+                    runningTime = it.endTime.timeInMillis - System.currentTimeMillis()
+                    blockedPackages = it.appList!!
+                    setInterval()
+                }
+
                 // fetch all schedule to be started now
             }
             else -> stopSelf()
         }
 
+
+
+
+
+    }
+
+
+    private fun setInterval(){
         Observable.interval(TIME_INTERVAL, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.computation())
             .map { getForegroundApp() }
@@ -74,7 +105,6 @@ class AppBlockService : Service() {
                 ScheduleRepository().deleteInstantLock()
                 stopSelf()
             }.addTo(compositeDisposable)
-        return START_NOT_STICKY;
     }
 
     private fun getForegroundApp(): String {

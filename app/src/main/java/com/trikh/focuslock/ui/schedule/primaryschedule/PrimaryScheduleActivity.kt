@@ -1,5 +1,8 @@
 package com.trikh.focuslock.ui.schedule.primaryschedule
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -14,6 +17,7 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.ActivityPrimaryScheduleBinding
 import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleViewModel
@@ -137,10 +141,14 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
                                 schedule.active!!
                             )
 
+                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
+
 
                         } else {
 
                             viewModel.createSchedule()
+
+                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
 
 
                         }
@@ -165,6 +173,14 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
             return true
         }
 
+
+    private fun setSchedule(calender: Calendar, type: Int) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, StartServiceReceiver::class.java)
+        intent.putExtra(Constants.SCHEDULE_TYPE, type)
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+    }
 
     override fun onConfirm(applicationList: List<AppInfo>) {
         viewModel.applicationList.value = applicationList

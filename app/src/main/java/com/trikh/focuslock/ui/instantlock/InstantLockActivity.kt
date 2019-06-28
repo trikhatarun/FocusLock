@@ -1,5 +1,8 @@
 package com.trikh.focuslock.ui.instantlock
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,8 +16,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.navArgs
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.InstantLockSchedule
+import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.ActivityInstantLockBinding
 import com.trikh.focuslock.ui.appblock.AppBlockService
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
@@ -174,13 +179,13 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         return true
     }
 
-    /*private fun startAlarm(calender: Calendar, type: Int) {
+    private fun startAlarm(calender: Calendar, type: Int) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, StartServiceReceiver::class.java)
-        //intent.putExtra(SCHEDULE_TYPE, )
+        intent.putExtra(SCHEDULE_TYPE, type)
         val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calender.timeInMillis, pendingIntent)
-    }*/
+    }
 
     override fun onConfirm(applicationList: List<AppInfo>) {
         viewModel.applicationList.value = applicationList

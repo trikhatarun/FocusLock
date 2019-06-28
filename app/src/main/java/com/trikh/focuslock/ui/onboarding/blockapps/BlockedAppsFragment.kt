@@ -1,11 +1,16 @@
 package com.trikh.focuslock.ui.onboarding.blockapps
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,15 +21,19 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.FragmentBlockedAppsBinding
 import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
+import com.trikh.focuslock.ui.onboarding.OnboardingActivity
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.TimeUtils
+import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.*
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.setSchedule
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -32,6 +41,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
     LevelsAdapter.LevelCallBacks {
 
 
+    private lateinit var listener: InteractionListener
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var levelsAdapter: LevelsAdapter
     private lateinit var viewModel: BlockAppsViewModel
@@ -84,6 +94,15 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
         return root
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        if (!context!!.hasUsageStatsPermission){
+            CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(fragmentManager,null)
+        }
+    }
+
+
     private fun initLevelAdapter(root: View): View {
         val list = ArrayList<String>()
         list.add(context!!.resources.getString(R.string.level_1))
@@ -111,6 +130,16 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
 
     }
 
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is InteractionListener){
+            listener = context
+        }else{
+            throw RuntimeException(context?.packageName + "must implement dialog interaction listener")
+        }
+    }
+
     private fun createPrimarySchedule() {
         if (listFlag) {
             val list: ArrayList<String> = ArrayList()
@@ -119,6 +148,9 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
             }
             Log.d("BlockedAppsFragment:", " list Size: ${list.size}")
 
+            if (!context!!.hasUsageStatsPermission){
+                CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(fragmentManager,null)
+            }
 
             val schedule = Schedule(
                 level = viewModel.level.value,
@@ -133,6 +165,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
                 "Level: ${schedule.level} endTime: ${schedule.endTime} startTime: ${schedule.startTime} active: ${schedule.active} appList: ${schedule.appList!!.size}"
             )
             viewModel.scheduleRepository.addSchedule(schedule)
+            (activity as OnboardingActivity).setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
             val pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
             val editor = pref!!.edit()
             editor.putBoolean(Constants.ON_BOARDING, false)
@@ -148,5 +181,15 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
             ).show(fragmentManager, "")
         }
 
+    }
+
+
+    interface InteractionListener{
+
+    }
+
+
+    private fun requestUsagePermission(){
+        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }

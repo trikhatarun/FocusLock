@@ -30,25 +30,28 @@ class ScheduleRepository {
 
     fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap { return@flatMap withDrawableAndLabel(it) }
 
-    fun getScheduleById(id: Int) =
-        scheduleWithAppInfoList(scheduleLocalRepository.getScheduleById(id))
+    fun getScheduleById(id: Int) = scheduleLocalRepository.getScheduleById(id).flatMap{ return@flatMap scheduleWithAppInfoList(it)    }
 
-    private fun scheduleWithAppInfoList(schedule: Schedule): Schedule {
-        val localAppList: ArrayList<AppInfo> = ArrayList()
-        schedule.appList?.forEach {
-            val pkgManager = com.trikh.focuslock.Application.instance.packageManager
-            val appInfo = pkgManager.getApplicationInfo(it, 0)
-            localAppList.add(
-                AppInfo(
-                    name = pkgManager.getApplicationLabel(appInfo).toString(),
-                    icon = appInfo.loadIcon(pkgManager),
-                    blocked = true,
-                    packageName = it
+
+
+    private fun scheduleWithAppInfoList(schedule: Schedule): Observable<Schedule> {
+        return Observable.fromCallable {
+            val localAppList: ArrayList<AppInfo> = ArrayList()
+            schedule.appList?.forEach {
+                val pkgManager = com.trikh.focuslock.Application.instance.packageManager
+                val appInfo = pkgManager.getApplicationInfo(it, 0)
+                localAppList.add(
+                    AppInfo(
+                        name = pkgManager.getApplicationLabel(appInfo).toString(),
+                        icon = appInfo.loadIcon(pkgManager),
+                        blocked = true,
+                        packageName = it
+                    )
                 )
-            )
+            }
+            schedule.appInfoList = localAppList
+            return@fromCallable schedule
         }
-        schedule.appInfoList = localAppList
-        return schedule
     }
 
     private fun withDrawableAndLabel(schedules: List<Schedule>): Observable<List<Schedule>> {

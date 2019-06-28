@@ -23,7 +23,11 @@ class ScheduleLocalRepository(context: Context) {
             .subscribe()
     }
 
-    fun getScheduleById(id: Int) = scheduleDao.getScheduleById(id)
+    fun getScheduleById(id: Int) =
+        Observable.fromCallable { scheduleDao.getScheduleById(id) }
+            .subscribeOn(Schedulers.io())
+
+
 
     // Not Yet Used May Be Used In Future
     /*fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){

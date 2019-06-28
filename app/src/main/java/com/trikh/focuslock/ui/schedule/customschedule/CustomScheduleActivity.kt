@@ -1,5 +1,8 @@
 package com.trikh.focuslock.ui.schedule.customschedule
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.navArgs
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.IconsUtils
@@ -28,6 +32,7 @@ import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_custom_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
+
 
 class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
 
@@ -171,6 +176,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
                         )
 
 
+
                     } else {
 
                         viewModelCustom.createSchedule()
@@ -204,6 +210,9 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         }
         return true
     }
+
+
+
 
 
     override fun onConfirm(applicationList: List<AppInfo>) {
