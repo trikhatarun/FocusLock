@@ -19,7 +19,7 @@ class OnboardingActivity : AppCompatActivity(), BlockedAppsFragment.InteractionL
         setContentView(R.layout.activity_onboarding)
     }
 
-    public fun setSchedule(calender: Calendar, type: Int) {
+    fun setSchedule(calender: Calendar, type: Int) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, StartServiceReceiver::class.java)
         intent.putExtra(Constants.SCHEDULE_TYPE, type)

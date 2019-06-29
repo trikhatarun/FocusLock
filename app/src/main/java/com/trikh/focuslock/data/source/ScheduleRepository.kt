@@ -1,14 +1,12 @@
 package com.trikh.focuslock.data.source
 
 import android.util.Log
-import com.trikh.focuslock.data.model.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.local.ScheduleLocalRepository
-import com.trikh.focuslock.data.utils.RunningTime
+import com.trikh.focuslock.data.utils.ServiceUtil
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.flatMapIterable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,6 +27,27 @@ class ScheduleRepository {
         scheduleLocalRepository.updateSchedule(schedule)
     }
 
+    /*fun getBlockedPackages() = getInstantLock().flatMap {
+            val list = ArrayList<String>()
+            if (it.endTime.compareTo(System.currentTimeMillis())>0){
+                list.addAll(it.blockedApps)
+            }else{
+                deleteInstantLock()
+            }
+            return@flatMap getScheduleBlockedPackages(list)
+        }*/
+
+
+    fun getScheduleBlockedPackages() = scheduleLocalRepository.getSchedules().map {
+                val packageList= ServiceUtil.getAllBlockedPackages(it)
+                Log.d("jkg","${packageList.size}" )
+                return@map packageList
+            }
+
+
+
+
+
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
 
     fun getSchedules() = scheduleLocalRepository.getSchedules().flatMap { return@flatMap withDrawableAndLabel(it) }
@@ -44,7 +63,7 @@ class ScheduleRepository {
             cal.timeInMillis  = it
             val list = (scheduleEndTime as ArrayList<Calendar>)
             list.add(cal)
-            return@map RunningTime.getRunningTime(list)
+            return@map ServiceUtil.getRunningTime(list)
 
         }
     }

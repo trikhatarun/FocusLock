@@ -61,12 +61,16 @@ class TimePickerFragment : Fragment() {
                 noButtonText = R.string.empty_string,
                 yesButtonText = R.string.ok_text).show(fragmentManager, "")
         }else{
+            Log.e("TimePickerFragment:" , "${timePickerViewModel.hours.value}  ${timePickerViewModel.minutes.value}  ${timePickerViewModel.sleepHours.value}")
         val startTime = Calendar.getInstance()
         val endTime = Calendar.getInstance()
         startTime.set(Calendar.HOUR, timePickerViewModel.hours.value!!)
         startTime.set(Calendar.MINUTE, timePickerViewModel.minutes.value!!)
 
-        endTime.set(Calendar.HOUR, timePickerViewModel.sleepHours.value!!)
+            val end = timePickerViewModel.hours.value!! + timePickerViewModel.sleepHours.value!!
+        endTime.set(Calendar.HOUR, end)
+
+
 
         findNavController().navigate(
             TimePickerFragmentDirections.actionTimePickerFragmentToBlockedAppsFragment(

@@ -23,6 +23,6 @@ interface InstantLockDao{
     @Update
     fun updateSchedule(schedule: InstantLockSchedule)
 
-    @Query("SELECT endTime FROM INSTANT_LOCK")
+    @Query("SELECT endTime FROM instant_lock")
     fun getEndTime(): Long
 }
