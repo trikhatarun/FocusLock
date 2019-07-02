@@ -53,7 +53,7 @@ class AppBlockService : Service() {
 
         val runningTimeObservable = scheduleRepository.getRunningTime()
 
-        //val blockedPackageObservable = scheduleRepository.getBlockedPackages()
+        //val blockedPackageObservable = scheduleRepository.getInstantLockBlockedPackages()
 
         /*blockedPackageObservable.subscribeBy {
             blockedPackages= it
@@ -65,18 +65,11 @@ class AppBlockService : Service() {
 
 
 
-        scheduleRepository.getSchedules().subscribeBy {
-            Log.e("InstantLock:", "$it")
-        }
 
-        scheduleRepository.getScheduleBlockedPackages().subscribeBy {
-            blockedPackages = it
-            runningTimeObservable.subscribe{
-                runningTime = it
-                setTimeAndPackages(time = runningTime, packages = blockedPackages)
-            }
 
-        }
+        /*scheduleRepository.getScheduleBlockedPackages().subscribeBy {
+
+        }*/
 
 
         /*Observable.zip(
@@ -85,6 +78,25 @@ class AppBlockService : Service() {
             BiFunction { t1: Long, t2: List<String> ->
                 setTimeAndPackages(t1, t2) }
         ).subscribe()*/
+
+        /*scheduleRepository.getScheduleBlockedPackages()
+            .mergeWith(scheduleRepository.getInstantLockBlockedPackages())
+            .subscribe{
+                blockedPackages = it
+                runningTimeObservable.subscribe{
+                    runningTime = it
+                    setTimeAndPackages(time = runningTime, packages = blockedPackages)
+                }
+
+            }*/
+
+        scheduleRepository.getBlockedPackages().subscribeBy {
+            blockedPackages = it
+            runningTimeObservable.subscribe{
+                runningTime = it
+                setTimeAndPackages(time = runningTime, packages = blockedPackages)
+            }
+        }
 
 
     }

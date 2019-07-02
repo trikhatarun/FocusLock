@@ -25,4 +25,7 @@ interface InstantLockDao{
 
     @Query("SELECT endTime FROM instant_lock")
     fun getEndTime(): Long
+
+    @Query("SELECT COUNT(*) FROM instant_lock")
+    fun getCount(): Int
 }

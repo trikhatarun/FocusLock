@@ -8,6 +8,8 @@ import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.local.db.AppDatabase
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleLocalRepository(context: Context) {
     private val scheduleDao = AppDatabase.getInstance(context).scheduleDao()
@@ -26,9 +28,21 @@ class ScheduleLocalRepository(context: Context) {
 
     fun getScheduleEndTime() = Observable.fromCallable { scheduleDao.getAllEndTimes() }
         .subscribeOn(Schedulers.io())
+        .map {
+            val list = ArrayList<Calendar>()
+            list.addAll(it)
+            return@map list
+        }
 
     fun getInstantLockEndTime() = Observable.fromCallable { instantLockDao.getEndTime() }
         .subscribeOn(Schedulers.io())
+        .map {
+            val list = ArrayList<Calendar>()
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = it
+            list.add(cal)
+            return@map list
+        }
 
 
     // Not Yet Used May Be Used In Future
@@ -76,6 +90,9 @@ class ScheduleLocalRepository(context: Context) {
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
+
+    fun getCount() = Observable.fromCallable { instantLockDao.getCount() }
+        .subscribeOn(Schedulers.io())
 
     fun getInstantLock() = instantLockDao.getSchedule().subscribeOn(Schedulers.io())
 
