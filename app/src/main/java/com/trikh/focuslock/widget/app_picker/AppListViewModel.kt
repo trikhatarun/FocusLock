@@ -24,7 +24,11 @@ class AppListViewModel(application: Application, private val selectedAppsList: L
             .filter { return@filter it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
             .map { it.toAppInfo() }
             .map {
-                if (selectedAppsList.binarySearch(it, Comparator { o1, o2 -> o1.packageName.compareTo(o2.packageName) }) >= 0) it.blocked = true
+                for (blockedApps in selectedAppsList) {
+                    if (blockedApps.packageName.toLowerCase().equals(it.packageName.toLowerCase())) {
+                        it.blocked = true
+                    }
+                }
                 it
             }
             .toSortedList { o1, o2 -> o1.name.compareTo(o2.name, true) }
