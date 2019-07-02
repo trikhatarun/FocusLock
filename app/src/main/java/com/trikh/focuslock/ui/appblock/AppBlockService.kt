@@ -31,6 +31,7 @@ import io.reactivex.functions.Function3
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class AppBlockService : Service() {
@@ -103,6 +104,11 @@ class AppBlockService : Service() {
 
     fun setTimeAndPackages(time: Long, packages: List<String>) {
         runningTime = time
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = 600000
+        val minute =cal.get(Calendar.MINUTE)
+        val hours = cal.get(Calendar.HOUR_OF_DAY)
+        Log.d("SetTimeAndPackages:", "Hours: $hours   Minutes: $minute")
         blockedPackages = packages
 
         if (runningTime > 0) {

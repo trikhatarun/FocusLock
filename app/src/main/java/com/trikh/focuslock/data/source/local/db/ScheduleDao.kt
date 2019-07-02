@@ -15,8 +15,8 @@ interface ScheduleDao {
     @Update
     fun updateSchedule(schedule: Schedule)
 
-   /* @Query("SELECT MAX(id) from schedule")
-    fun getMaxId(): Int*/
+    @Query("SELECT MAX(id) from schedule")
+    fun getMaxId(): Int
 
     @Query("DELETE FROM schedule where id = :id")
     fun removeSchedule(id: Int)
@@ -29,6 +29,8 @@ interface ScheduleDao {
 
     @Query("SELECT selected_week_days , end_time FROM schedule")
     fun getAllEndTimes(): List<WeekDayTime>
+
+
 
 
 

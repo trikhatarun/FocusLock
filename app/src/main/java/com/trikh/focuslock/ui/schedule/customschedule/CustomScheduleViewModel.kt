@@ -9,6 +9,7 @@ import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.utils.Event
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,7 +87,7 @@ class CustomScheduleViewModel : ViewModel() {
         this@CustomScheduleViewModel.startTime.value = start
     }
 
-    fun createSchedule(): Schedule {
+    fun createSchedule(): Observable<Long>? {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
@@ -101,13 +102,11 @@ class CustomScheduleViewModel : ViewModel() {
             appList = list as List<String>
         )
 
-        scheduleRepository.addSchedule(schedule)
+        return scheduleRepository.addSchedule(schedule)
 
-
-        return schedule
     }
 
-    fun updateSchedule(id: Int, level: Int, active: Boolean) {
+    fun updateSchedule(id: Int, level: Int, active: Boolean){
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
@@ -129,7 +128,7 @@ class CustomScheduleViewModel : ViewModel() {
             appList = list as List<String>
         )
 
-        scheduleRepository.updateSchedule(schedule)
+       scheduleRepository.updateSchedule(schedule)
 
     }
 

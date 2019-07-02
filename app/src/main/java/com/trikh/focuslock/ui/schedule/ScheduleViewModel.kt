@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.ScheduleRepository
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 
 class ScheduleViewModel: ViewModel(){
@@ -16,6 +17,8 @@ class ScheduleViewModel: ViewModel(){
 
     val scheduleRepository = ScheduleRepository()
 
+
+
     init {
         scheduleRepository.getSchedules().subscribeBy {
             scheduleList.postValue(it)
@@ -24,7 +27,12 @@ class ScheduleViewModel: ViewModel(){
         scheduleRepository.getInstantLock().subscribeBy {
             instantLockSchedule.postValue(it)
         }
+
+
+
     }
+
+    fun getInstantLockCount() = scheduleRepository.getInstantLockCount()
 
     fun enableOrDisableSchedule(schedule: Schedule) {
         Log.e("ScheduleViewModel: "," $schedule")

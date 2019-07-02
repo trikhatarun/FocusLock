@@ -42,6 +42,10 @@ class ScheduleFragment : Fragment(),
 
     private lateinit var viewModelschedule: ScheduleViewModel
 
+    private lateinit var endTime: Calendar
+
+    private var check = false
+
 
     //private var listener: OnFragmentInteractionListener? = null
     override fun onCreateView(
@@ -71,6 +75,7 @@ class ScheduleFragment : Fragment(),
         activity?.toolbar_title?.text = getString(R.string.schedule)
         /*activity?.mainTv1?.visibility = View.GONE
         activity?.mainTv2?.visibility = View.GONE*/
+        endTime = Calendar.getInstance()
         instantLock.visibility = View.GONE
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter =
@@ -81,19 +86,26 @@ class ScheduleFragment : Fragment(),
 
         })
 
+
+
+
         viewModelschedule.instantLockSchedule.observe(this, androidx.lifecycle.Observer {
             val instantSchedule = it
             if (it != null) {
                 instantLock.visibility = View.VISIBLE
                 activity?.instantLockFab?.visibility = View.GONE
                 val startTime = Calendar.getInstance()
-                var endTime = Calendar.getInstance()
                 val appInfoList = IconsUtils(context).getIconsFromPackageManager(it.blockedApps)
                 blockedAppsRv.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
                 blockedAppsRv.adapter = BlockedAppsAdapter(appInfoList)
-                blockedListTv.text = Application.instance.getString(R.string.blocked_apps, appInfoList.size)
-                endTime.timeInMillis = it .endTime
+                blockedListTv.text =
+                    Application.instance.getString(R.string.blocked_apps, appInfoList.size)
+                endTime.timeInMillis = it.endTime
+                check = true
+
+
                 time.text = TimeDurationUtils.calculateDuration(startTime, endTime)
+
 
                 //uncomment the below code for showing popup menu to enable edit and delete on Instant Lock schedule
                 //****************************************************//
@@ -127,11 +139,15 @@ class ScheduleFragment : Fragment(),
                     }, it.id).show()
                 }*/
                 //*****************************************************//
-            }else{
+            }
+            else {
                 instantLock.visibility = View.GONE
             }
 
         })
+        if (check) {
+            time.text = TimeDurationUtils.calculateDuration(Calendar.getInstance(), endTime)
+        }
 
 
     }
@@ -139,6 +155,15 @@ class ScheduleFragment : Fragment(),
     override fun onDetach() {
         super.onDetach()
         //listener = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModelschedule.getInstantLockCount().subscribe {
+            if (it<=0){
+                instantLock.visibility = View.GONE
+            }
+        }
     }
 
     @VisibleForTesting

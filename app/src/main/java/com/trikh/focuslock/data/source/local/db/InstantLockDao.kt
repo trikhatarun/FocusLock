@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface InstantLockDao{
 
     @Insert
-    fun insertSchedule(schedule : InstantLockSchedule)
+    fun insertSchedule(schedule : InstantLockSchedule): Long
 
     @Query("DELETE FROM instant_lock")
     fun deleteSchedule()

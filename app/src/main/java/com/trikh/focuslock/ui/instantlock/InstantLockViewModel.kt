@@ -6,6 +6,7 @@ import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.utils.Event
 import com.trikh.focuslock.widget.app_picker.AppInfo
+import io.reactivex.Observable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,10 +36,10 @@ class InstantLockViewModel : ViewModel() {
         return packageList
     }
 
-    fun createInstantLockSchedule(): InstantLockSchedule {
+    fun createInstantLockSchedule(): Observable<Long>? {
         val instantLockSchedule = InstantLockSchedule(endTime = getEndTime(), blockedApps = getBlockedPackageNames())
-        scheduleRepository.insertInstantLock(instantLockSchedule)
-        return instantLockSchedule
+
+        return scheduleRepository.insertInstantLock(instantLockSchedule)
     }
 
     fun updateInstantLockSchedule(): InstantLockSchedule {

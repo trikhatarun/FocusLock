@@ -24,14 +24,12 @@ class ScheduleRepository {
 
     //fun getAllApplicationList(id: Int) = scheduleLocalRepository.getAllApplicationList(id)
 
-    fun updateSchedule(schedule: Schedule) {
-        Log.d("ScheduleRepository: ", " $schedule")
-        scheduleLocalRepository.updateSchedule(schedule)
-    }
+    fun updateSchedule(schedule: Schedule) =
+                scheduleLocalRepository.updateSchedule(schedule)
 
     fun getInstantLockBlockedPackages() = getInstantLock().map {
         val list = ArrayList<String>()
-        if (it.endTime.compareTo(System.currentTimeMillis()) > 0) {
+        if (it.endTime > System.currentTimeMillis()) {
             list.addAll(it.blockedApps)
         } else {
             deleteInstantLock()
@@ -45,6 +43,9 @@ class ScheduleRepository {
         Log.d("jkg", "${packageList.size}")
         return@map packageList
     }
+
+
+    fun getInstantLockCount() = scheduleLocalRepository.getCount()
 
     fun getBlockedPackages() =
         scheduleLocalRepository.getCount().flatMap {
@@ -145,6 +146,8 @@ class ScheduleRepository {
 
     }
 
+    fun getLastSchedule() = scheduleLocalRepository.getLastSchedule()
+
 
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
 
@@ -215,8 +218,7 @@ class ScheduleRepository {
         }.subscribeOn(Schedulers.io())
     }
 
-    fun insertInstantLock(schedule: InstantLockSchedule) =
-        scheduleLocalRepository.insertInstantLock(schedule)
+    fun insertInstantLock(schedule: InstantLockSchedule) = scheduleLocalRepository.insertInstantLock(schedule)
 
     fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock()
 

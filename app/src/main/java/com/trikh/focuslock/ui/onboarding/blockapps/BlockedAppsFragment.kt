@@ -142,36 +142,42 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
 
     private fun createPrimarySchedule() {
         if (listFlag) {
-            val list: ArrayList<String> = ArrayList()
-            viewModel.applicationList.value?.forEach {
-                list.add(it.packageName)
-            }
-            Log.d("BlockedAppsFragment:", " list Size: ${list.size}")
-
             if (!context!!.hasUsageStatsPermission){
                 CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(fragmentManager,null)
+            }else{
+                val list: ArrayList<String> = ArrayList()
+                viewModel.applicationList.value?.forEach {
+                    list.add(it.packageName)
+                }
+                Log.d("BlockedAppsFragment:", " list Size: ${list.size}")
+
+
+
+                val schedule = Schedule(
+                    level = viewModel.level.value,
+                    endTime = args.stringEndTime,
+                    startTime = args.stringStartTime,
+                    active = true,
+                    selectedWeekDays = arrayOf(true, true, true, true, true, true, true),
+                    appList = list
+                )
+                Log.d(
+                    "BlockedAppsFragment:",
+                    "Level: ${schedule.level} endTime: ${schedule.endTime} startTime: ${schedule.startTime} active: ${schedule.active} appList: ${schedule.appList!!.size}"
+                )
+                viewModel.scheduleRepository.addSchedule(schedule).subscribe {
+                    (activity as OnboardingActivity).setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
+                    val pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
+                    val editor = pref!!.edit()
+                    editor.putBoolean(Constants.ON_BOARDING, false)
+                    editor.apply()
+                    //startActivity(Intent(context, MainActivity::class.java))
+                    findNavController().navigate(BlockedAppsFragmentDirections.actionHomeToNavGraph())
+                }
+
             }
 
-            val schedule = Schedule(
-                level = viewModel.level.value,
-                endTime = args.stringEndTime,
-                startTime = args.stringStartTime,
-                active = true,
-                selectedWeekDays = arrayOf(true, true, true, true, true, true, true),
-                appList = list
-            )
-            Log.d(
-                "BlockedAppsFragment:",
-                "Level: ${schedule.level} endTime: ${schedule.endTime} startTime: ${schedule.startTime} active: ${schedule.active} appList: ${schedule.appList!!.size}"
-            )
-            viewModel.scheduleRepository.addSchedule(schedule)
-            (activity as OnboardingActivity).setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
-            val pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
-            val editor = pref!!.edit()
-            editor.putBoolean(Constants.ON_BOARDING, false)
-            editor.apply()
-            //startActivity(Intent(context, MainActivity::class.java))
-            findNavController().navigate(BlockedAppsFragmentDirections.actionHomeToNavGraph())
+
         } else {
             CustomDialog(
                 R.string.minimum_blocked_apps_msg,

@@ -17,11 +17,10 @@ class ScheduleLocalRepository(context: Context) {
     private val instantLockDao = AppDatabase.getInstance(context).instantLockDao()
     //private val applicationDao = AppDatabase.getInstance(context).applicationsDao()
 
-    fun addSchedule(schedule: Schedule) {
+    fun addSchedule(schedule: Schedule) =
         Observable.fromCallable { scheduleDao.addSchedule(schedule) }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+
 
     fun getScheduleById(id: Int) =
         Observable.fromCallable { scheduleDao.getScheduleById(id) }
@@ -45,6 +44,10 @@ class ScheduleLocalRepository(context: Context) {
             return@map list
         }
 
+    fun getLastSchedule() = Observable.fromCallable { scheduleDao.getMaxId() }
+        .subscribeOn(Schedulers.io())
+
+
 
     // Not Yet Used May Be Used In Future
     /*fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
@@ -58,11 +61,9 @@ class ScheduleLocalRepository(context: Context) {
 */
 
     fun updateSchedule(schedule: Schedule) {
-        Log.d("LocalRepository: ", " $schedule")
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+            .subscribeOn(Schedulers.io()).subscribe()}
+
 
 
     fun removeSchedule(scheduleId: Int) {
@@ -73,11 +74,8 @@ class ScheduleLocalRepository(context: Context) {
 
     fun getSchedules() = scheduleDao.getSchedules().subscribeOn(Schedulers.io())
 
-    fun insertInstantLock(schedule: InstantLockSchedule) {
-        Observable.fromCallable { instantLockDao.insertSchedule(schedule) }
+    fun insertInstantLock(schedule: InstantLockSchedule) = Observable.fromCallable { instantLockDao.insertSchedule(schedule) }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
 
     fun deleteInstantLock() {
         Observable.fromCallable { instantLockDao.deleteSchedule() }

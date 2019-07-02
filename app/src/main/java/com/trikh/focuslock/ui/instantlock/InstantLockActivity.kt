@@ -33,6 +33,7 @@ import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_primary_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -140,12 +141,14 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                         }else {
 
 
-                            val schedule = viewModel.createInstantLockSchedule()
-                            val serviceIntent = Intent(this, AppBlockService::class.java)
-                            serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
-                            serviceIntent.putExtra(SCHEDULE, schedule)
-                            startService(serviceIntent)
-                            finish()
+                            viewModel.createInstantLockSchedule()?.subscribeBy {
+                                val serviceIntent = Intent(this, AppBlockService::class.java)
+                                serviceIntent.putExtra(SCHEDULE_TYPE, INSTANT_LOCK)
+                                //serviceIntent.putExtra(SCHEDULE, schedule)
+                                startService(serviceIntent)
+                                finish()
+                            }
+
 
 
                         }

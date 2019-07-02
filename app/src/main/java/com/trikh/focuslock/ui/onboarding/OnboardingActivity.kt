@@ -23,7 +23,7 @@ class OnboardingActivity : AppCompatActivity(), BlockedAppsFragment.InteractionL
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, StartServiceReceiver::class.java)
         intent.putExtra(Constants.SCHEDULE_TYPE, type)
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import com.trikh.focuslock.data.model.Schedule
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.min
 
 class ServiceUtil {
     companion object {
@@ -19,6 +20,8 @@ class ServiceUtil {
                 }
             }
 
+
+
             //var previousTime = list[0].timeInMillis
             list.forEach {
                 //val runningTime = it.timeInMillis - systemTime
@@ -31,6 +34,14 @@ class ServiceUtil {
 
                 }
             }
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = smallestRunningTime
+            val hours = cal.get(Calendar.HOUR_OF_DAY)
+            val minutes = cal.get(Calendar.MINUTE)
+
+            smallestRunningTime -= systemTime
+
+            Log.d("getRunningTime:", " hours: $hours minutes: $minutes")
 
             return smallestRunningTime
         }
