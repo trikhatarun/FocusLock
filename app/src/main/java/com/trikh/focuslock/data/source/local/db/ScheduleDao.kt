@@ -2,6 +2,7 @@ package com.trikh.focuslock.data.source.local.db
 
 import androidx.room.*
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.data.model.WeekDayTime
 import io.reactivex.Observable
 import java.util.*
 
@@ -26,8 +27,8 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule")
     fun getSchedules(): Observable<List<Schedule>>
 
-    @Query("SELECT end_time FROM schedule")
-    fun getAllEndTimes(): List<Calendar>
+    @Query("SELECT selected_week_days , end_time FROM schedule")
+    fun getAllEndTimes(): List<WeekDayTime>
 
 
 

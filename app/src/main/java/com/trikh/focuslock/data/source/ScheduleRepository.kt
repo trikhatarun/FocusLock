@@ -3,6 +3,7 @@ package com.trikh.focuslock.data.source
 import android.util.Log
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.data.model.WeekDayTime
 import com.trikh.focuslock.data.source.local.ScheduleLocalRepository
 import com.trikh.focuslock.data.utils.ServiceUtil
 import com.trikh.focuslock.widget.app_picker.AppInfo
@@ -109,9 +110,9 @@ class ScheduleRepository {
     fun mergeTiming() = Observable.zip(
         scheduleLocalRepository.getScheduleEndTime(),
         scheduleLocalRepository.getInstantLockEndTime(),
-        BiFunction { t1: ArrayList<Calendar>, t2: ArrayList<Calendar> ->
-            t1.addAll(t2)
-            return@BiFunction ServiceUtil.getRunningTime(t1)
+        BiFunction { t1: ArrayList<WeekDayTime>, t2: ArrayList<Calendar> ->
+            t2.addAll(timeWithWeekDays(t1))
+            return@BiFunction ServiceUtil.getRunningTime(t2)
 
         }
     )
@@ -123,11 +124,26 @@ class ScheduleRepository {
             }
             else -> {
                 scheduleLocalRepository.getScheduleEndTime().map {
-                    return@map ServiceUtil.getRunningTime(it)
+                    return@map ServiceUtil.getRunningTime(timeWithWeekDays(it))
                     //return@flatMap checkSmallestEndTime(it)
                 }
             }
         }
+
+    private fun timeWithWeekDays(list:ArrayList<WeekDayTime>): ArrayList<Calendar> {
+        val endTimeList = ArrayList<Calendar>()
+        val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
+
+        list.forEach{
+            val weekDay = it.selectedWeekDays?.get(day) != null
+            if (weekDay){
+                endTimeList.add(it.endTime)
+            }
+        }
+        return endTimeList
+
+
+    }
 
 
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)

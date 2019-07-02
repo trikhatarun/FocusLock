@@ -5,6 +5,7 @@ import android.util.Log
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.data.model.WeekDayTime
 import com.trikh.focuslock.data.source.local.db.AppDatabase
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -29,7 +30,7 @@ class ScheduleLocalRepository(context: Context) {
     fun getScheduleEndTime() = Observable.fromCallable { scheduleDao.getAllEndTimes() }
         .subscribeOn(Schedulers.io())
         .map {
-            val list = ArrayList<Calendar>()
+            val list = ArrayList<WeekDayTime>()
             list.addAll(it)
             return@map list
         }

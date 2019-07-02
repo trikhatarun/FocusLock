@@ -1,5 +1,6 @@
 package com.trikh.focuslock.data.utils
 
+import android.util.Log
 import com.trikh.focuslock.data.model.Schedule
 import java.util.*
 import kotlin.collections.ArrayList
@@ -38,7 +39,12 @@ class ServiceUtil {
         fun getAllBlockedPackages(allPackages: List<Schedule>): ArrayList<String> {
             val blockedPackageList = ArrayList<String>()
             allPackages.forEach {
-                if ( System.currentTimeMillis() in it.startTime.timeInMillis until it.endTime.timeInMillis ) {
+                val cal = Calendar.getInstance()
+                val day = cal.get(Calendar.DAY_OF_WEEK) - 1
+
+                val weekDay = it.selectedWeekDays?.get(day) != null
+                Log.d("getAllBlockedPackages","weekDay: $weekDay")
+                if ( (System.currentTimeMillis() in it.startTime.timeInMillis until it.endTime.timeInMillis) && (weekDay)) {
 
                     it.appList?.forEach {
                         if (!blockedPackageList.contains(it)) {
