@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="6dp"
-                        android:text="00"
+                        android:text="04"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintEnd_toStartOf="@+id/textView5"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -139,7 +139,7 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="01"
+                        android:text="05"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toStartOf="@+id/textView6"
@@ -150,7 +150,7 @@
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="02"
+                        android:text="06"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toStartOf="@+id/textView7"
@@ -161,7 +161,7 @@
                         android:id="@+id/textView7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="03"
+                        android:text="07"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toStartOf="@+id/textView8"
@@ -172,7 +172,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="04"
+                        android:text="08"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toStartOf="@+id/textView9"
@@ -183,7 +183,7 @@
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="05"
+                        android:text="09"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toStartOf="@+id/textView10"
@@ -194,33 +194,26 @@
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="06"
-                        android:textColor="@color/colorSecondaryText"
-                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
-                        app:layout_constraintEnd_toStartOf="@+id/textView11"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView9" />
-
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:text="10"
                         android:layout_marginEnd="8dp"
-                        android:text="07"
                         android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBaseline_toBaselineOf="@id/textView4"
                         app:layout_constraintEnd_toEndOf="@id/hourSeekBar"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView10" />
+                        app:layout_constraintStart_toEndOf="@+id/textView9" />
+
 
                     <SeekBar
+
+                        android:min="4"
                         android:id="@+id/hourSeekBar"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="20dp"
-                        android:max="7"
+                        android:max="16"
+
                         android:progress="@={viewModel.sleepHours}"
                         android:progressBackgroundTint="@color/colorPrimary"
                         android:progressBackgroundTintMode="src_over"
@@ -228,6 +221,27 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView4" />
+
+                    <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                        app:corner_radius="10"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="10dp"
+                        app:steps="0.5"
+                        app:data_type="_float"
+                        app:min_value="4"
+                        app:max_value="10"
+                        android:id="@+id/hourSeekBar"
+                        android:progressBackgroundTint="@color/colorPrimary"
+                        android:progressBackgroundTintMode="src_over"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:bar_color="@color/colorPrimary"
+                        app:bar_highlight_color="@color/colorPrimary"
+                        app:left_thumb_image="@mipmap/ic_launcher_thumb_crystal_seekbar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView4"/>-->
 
                     <TextView
                         android:id="@+id/sleep_time_tv"

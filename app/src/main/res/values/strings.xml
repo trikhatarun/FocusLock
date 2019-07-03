@@ -89,7 +89,7 @@
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="delete_text">Delete</string>
-    <string name="selected_sleep_time">You selected your sleep time (%d)</string>
+    <string name="selected_sleep_time">You selected your sleep time <b>%d hours %d minutes </b>  </string>
     <string name="on_boarding_time_picker_title">What time would like to sleep</string>
     <string name="on_boarding_seek_bar_title">How many hours would you like to sleep?</string>
     <string name="step_1">Step 1 of 2</string>

@@ -52,7 +52,20 @@ class AppBlockService : Service() {
 
     private fun start() {
 
+        val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(getString(R.string.app_blocked_message))
+            .build()
+        startForeground(SERVICE_ID, notification)
         val runningTimeObservable = scheduleRepository.getRunningTime()
+
+        scheduleRepository.getBlockedPackages().subscribeBy {
+            blockedPackages = it
+            runningTimeObservable.subscribe{
+                runningTime = it
+                setTimeAndPackages(time = runningTime, packages = blockedPackages)
+            }
+        }
 
         //val blockedPackageObservable = scheduleRepository.getInstantLockBlockedPackages()
 
@@ -91,13 +104,7 @@ class AppBlockService : Service() {
 
             }*/
 
-        scheduleRepository.getBlockedPackages().subscribeBy {
-            blockedPackages = it
-            runningTimeObservable.subscribe{
-                runningTime = it
-                setTimeAndPackages(time = runningTime, packages = blockedPackages)
-            }
-        }
+
 
 
     }
@@ -113,11 +120,7 @@ class AppBlockService : Service() {
 
         if (runningTime > 0) {
 
-            val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.app_blocked_message))
-                .build()
-            startForeground(SERVICE_ID, notification)
+
             setInterval()
 
         } else {

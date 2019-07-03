@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
@@ -19,9 +17,10 @@ import com.trikh.focuslock.utils.TimeDurationUtils
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.fragment_time_picker.view.*
 import java.util.*
+import kotlin.math.min
 
 class TimePickerFragment : Fragment() {
-     private lateinit var timePickerViewModel: TimePickerViewModel
+    private lateinit var timePickerViewModel: TimePickerViewModel
 
     private lateinit var binding: FragmentTimePickerBinding
 
@@ -31,20 +30,53 @@ class TimePickerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_time_picker, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_time_picker, container, false)
         timePickerViewModel = ViewModelProviders.of(this).get(TimePickerViewModel::class.java)
         binding.viewModel = timePickerViewModel
         binding.lifecycleOwner = this
         val root = binding.root
-        root.timePicker.setOnTimeChangedListener(TimePicker.OnTimeChangedListener { view, hourOfDay, minute ->
-            Log.d("TimePickerFragment:"," Hours: $hourOfDay Minutes: $minute")
+        root.timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
+            Log.d("TimePickerFragment:", " Hours: $hourOfDay Minutes: $minute")
             timePickerViewModel.hours.postValue(hourOfDay)
             timePickerViewModel.minutes.postValue(minute)
+        }
+
+
+
+        timePickerViewModel.sleepHours.observe(this, androidx.lifecycle.Observer {
+
+            var minutes = 0
+            var hours = 4
+            when(it % 2){
+                0-> {
+                    hours = (it/2)+2
+                    minutes = 0
+                }
+                else ->{
+                    hours = ((it-1)/2)+2
+                    minutes = 30
+
+                }
+
+            }
+
+            timePickerViewModel.blockText.postValue(getString(R.string.selected_sleep_time, hours, minutes))
+            Log.d("SleepHours:", " $hours minutes: $minutes")
+
         })
 
-        timePickerViewModel.sleepHours.observe(this, Observer {
-            timePickerViewModel.blockText.postValue(getString(R.string.selected_sleep_time, it))
-        })
+        /*root.hourSeekBar.setOnSeekbarFinalValueListener {
+            val minutes = when(((it.toFloat().times(10F)).toInt()) % 10){
+                5 -> 30
+                else -> 0
+            }
+            val hours = it.toInt()
+            Log.e("Minutes", "$minutes  hours: $hours")
+
+            timePickerViewModel.blockText.postValue(getString(R.string.selected_sleep_time, hours, minutes))
+            timePickerViewModel.sleepHours.postValue(hours)
+            timePickerViewModel.sleepMinutes.postValue(minutes)
+        }*/
 
         root.nextBtn.setOnClickListener {
             onButtonClicked()
@@ -54,34 +86,36 @@ class TimePickerFragment : Fragment() {
         return root
     }
 
-    private fun onButtonClicked(){
-        if (timePickerViewModel.sleepHours.value!! <=0){
-            CustomDialog(R.string.minimum_sleep_time_msg,
+    private fun onButtonClicked() {
+        if (timePickerViewModel.sleepHours.value!! <= 0) {
+            CustomDialog(
+                R.string.minimum_sleep_time_msg,
                 {},
                 noButtonText = R.string.empty_string,
-                yesButtonText = R.string.ok_text).show(fragmentManager, "")
-        }else{
-            Log.e("TimePickerFragment:" , "${timePickerViewModel.hours.value}  ${timePickerViewModel.minutes.value}  ${timePickerViewModel.sleepHours.value}")
-        val startTime = Calendar.getInstance()
-        val endTime = Calendar.getInstance()
-        startTime.set(Calendar.HOUR, timePickerViewModel.hours.value!!)
-        startTime.set(Calendar.MINUTE, timePickerViewModel.minutes.value!!)
-
-            val end = timePickerViewModel.hours.value!! + timePickerViewModel.sleepHours.value!!
-        endTime.set(Calendar.HOUR, end)
-
-
-
-        findNavController().navigate(
-            TimePickerFragmentDirections.actionTimePickerFragmentToBlockedAppsFragment(
-                startTime,
-                endTime
+                yesButtonText = R.string.ok_text
+            ).show(fragmentManager, "")
+        } else {
+            Log.e(
+                "TimePickerFragment:",
+                "${timePickerViewModel.hours.value}  ${timePickerViewModel.minutes.value}  ${timePickerViewModel.sleepHours.value}"
             )
-        )
-        val duration = TimeDurationUtils.calculateDuration(startTime,endTime)
-        Log.d("TimePickerViewModel:"," duration: $duration")}
-    }
+            val startTime = timePickerViewModel.getStartTime()
+            val endTime = timePickerViewModel.getSleepTime()
 
+
+            Log.d("endTime", "$endTime")
+
+
+            findNavController().navigate(
+                TimePickerFragmentDirections.actionTimePickerFragmentToBlockedAppsFragment(
+                    startTime,
+                    endTime
+                )
+            )
+            val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
+            Log.d("TimePickerViewModel:", " duration: $duration")
+        }
+    }
 
 
 }
