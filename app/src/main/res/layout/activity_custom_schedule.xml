@@ -145,16 +145,14 @@
                             app:border_color="@color/colorClockBorder"
                             app:border_thickness="4dp"
                             app:end_thumb_color="@color/colorYellow"
-                            app:end_thumb_image_am="@drawable/ic_sun"
-                            app:end_thumb_image_pm="@drawable/ic_sun"
+
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/constraintLayout"
                             app:onChange="@{viewModel.onTimeChangedListener}"
                             app:start_thumb_color="@color/colorPrimaryText"
-                            app:start_thumb_image_am="@drawable/ic_moon"
-                            app:start_thumb_image_pm="@drawable/ic_moon"
+
                             app:thumb_size="30dp" />
 
                         <TextView

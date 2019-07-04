@@ -9,6 +9,7 @@ import com.trikh.focuslock.data.source.ScheduleRepository
 import com.trikh.focuslock.utils.Event
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
+import io.reactivex.Observable
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.logging.Level
@@ -27,6 +28,7 @@ class PrimaryViewModel : ViewModel() {
     val appPicker: MutableLiveData<Event<Unit>> = MutableLiveData()
     val scheduleRepository = ScheduleRepository()
     val level: MutableLiveData<Int> = MutableLiveData<Int>().apply { value = 0 }
+    val levelId: MutableLiveData<Int> = MutableLiveData()
     val levelTitles = arrayOf(R.string.level_1, R.string.level_2, R.string.level_3)
 
 
@@ -46,10 +48,28 @@ class PrimaryViewModel : ViewModel() {
 
     }
 
+    fun onChecked(check: Boolean, id: Int) {
+        if (check) {
+            level.postValue(id)
+        }
 
-    fun setLevels(id: Int) {
+    }
+
+
+    /*fun setLevels(id: Int) {
+        when (id) {
+            R.id.level_one_rb -> {
+                level.postValue(1)
+            }
+            R.id.level_two_rb -> {
+                level.postValue(2)
+            }
+            R.id.level_three_rb -> {
+                level.postValue(3)
+            }
+        }
         Log.d("setLevels: ", "level: $id")
-        level.postValue(id)
+
     }
 
     fun getLevels(id: Int): Boolean {
@@ -59,7 +79,7 @@ class PrimaryViewModel : ViewModel() {
         }
         return false
 
-    }
+    }*/
 
 
     /*fun setChecked(id: Int): Boolean {
@@ -95,7 +115,7 @@ class PrimaryViewModel : ViewModel() {
         this@PrimaryViewModel.startTime.value = start
     }
 
-    fun createSchedule(): Schedule {
+    fun createSchedule(): Observable<Long>? {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
@@ -106,16 +126,17 @@ class PrimaryViewModel : ViewModel() {
             endTime = endTime.value!!,
             startTime = startTime.value!!,
             active = true,
+            selectedWeekDays = arrayOf(true, true, true, true, true, true, true),
             appList = list as List<String>
         )
 
-        scheduleRepository.addSchedule(schedule)
+        return scheduleRepository.addSchedule(schedule)
 
 
-        return schedule
+        //return schedule
     }
 
-    fun updateSchedule(id: Int, active: Boolean) {
+    fun updateSchedule(id: Int, active: Boolean): Observable<Int>? {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
@@ -133,10 +154,11 @@ class PrimaryViewModel : ViewModel() {
             level = level.value!!,
             endTime = endTime.value!!,
             startTime = startTime.value!!,
+            selectedWeekDays = arrayOf(true, true, true, true, true, true, true),
             appList = list as List<String>
         )
 
-        scheduleRepository.updateSchedule(schedule)
+       return scheduleRepository.updateSchedule(schedule)
 
     }
 

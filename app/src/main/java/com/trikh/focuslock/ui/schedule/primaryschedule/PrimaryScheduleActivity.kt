@@ -6,8 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -28,11 +31,12 @@ import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_primary_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener{
+class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
 
 
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
@@ -65,7 +69,14 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
 
             setTime(schedule.startTime, schedule.endTime)
             viewModel.applicationList.postValue(appInfoList)
-
+            /*viewModel.level.postValue(schedule.level)
+            when(schedule.level){
+                1 -> level_one_rb.isChecked = true
+                2 -> level_two_rb.isChecked = true
+                3 -> level_three_rb.isChecked = true
+            }*/
+            binding.root.findViewWithTag<RadioButton>(schedule.level.toString()).isChecked = true
+            Log.d("PrimarySchedule:", " $schedule")
 
 
         } else {
@@ -78,6 +89,8 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
             setTime(start, end)
         }
 
+
+
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
         toolbar_title.text = getString(R.string.set_schedule)
@@ -87,7 +100,6 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         /***********************************/
 
         /**********************************/
-
 
 
         timePicker.setOnTouchListener { _, _ ->
@@ -127,51 +139,54 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
     }
 
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
 
-        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-            when (item?.itemId) {
+            R.id.saveSchedule -> {
+                if (appListFlag) {
 
-                R.id.saveSchedule -> {
-                    if (appListFlag) {
+                    if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
 
-                        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
-
-                            viewModel.updateSchedule(
-                                schedule.id,
-                                schedule.active!!
-                            )
-
-                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
-
-
-                        } else {
-
-                            viewModel.createSchedule()
-
-                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
-
-
+                        viewModel.updateSchedule(
+                            schedule.id,
+                            schedule.active!!
+                        )?.subscribeBy {
+                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE)
                         }
-                        val serviceIntent = Intent(this, MainActivity::class.java)
-                        startActivity(serviceIntent)
+
+
+
+
                     } else {
-                        if (!appListFlag) {
-                            CustomDialog(
-                                R.string.minimum_blocked_apps_msg,
-                                {},
-                                R.string.ok_text,
-                                R.string.empty_string
-                            ).show(supportFragmentManager, "")
+
+                        viewModel.createSchedule()?.subscribeBy {
+
+                            setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE)
                         }
+
+
+
+                    }
+                    val serviceIntent = Intent(this, MainActivity::class.java)
+                    startActivity(serviceIntent)
+                } else {
+                    if (!appListFlag) {
+                        CustomDialog(
+                            R.string.minimum_blocked_apps_msg,
+                            {},
+                            R.string.ok_text,
+                            R.string.empty_string
+                        ).show(supportFragmentManager, "")
                     }
                 }
-                android.R.id.home -> {
-                    onBackPressed()
-                }
-
             }
-            return true
+            android.R.id.home -> {
+                onBackPressed()
+            }
+
         }
+        return true
+    }
 
 
     private fun setSchedule(calender: Calendar, type: Int) {
@@ -179,7 +194,12 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         val intent = Intent(this, StartServiceReceiver::class.java)
         intent.putExtra(Constants.SCHEDULE_TYPE, type)
         val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calender.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
     }
 
     override fun onConfirm(applicationList: List<AppInfo>) {

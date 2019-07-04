@@ -223,8 +223,8 @@
                             app:layout_constraintStart_toStartOf="parent" />
 
                         <RadioButton
-                            android:onClick="@{() -> viewModel.setLevels(1)}"
-                            android:checked="@{viewModel.getLevels(1)}"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,1)}"
+                            android:tag="1"
                             android:id="@+id/level_one_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -247,8 +247,8 @@
                             app:layout_constraintTop_toTopOf="@id/level_one_rb" />
 
                         <RadioButton
-                            android:onClick="@{() -> viewModel.setLevels(2)}"
-                            android:checked="@{viewModel.getLevels(2)}"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,2)}"
+                            android:tag="2"
                             android:id="@+id/level_two_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -271,8 +271,8 @@
                             app:layout_constraintTop_toTopOf="@id/level_two_rb" />
 
                         <RadioButton
-                            android:onClick="@{() -> viewModel.setLevels(3)}"
-                            android:checked="@{viewModel.getLevels(3)}"
+                            android:onCheckedChanged="@{(v,e)->viewModel.onChecked(e,3)}"
+                            android:tag="3"
                             android:id="@+id/level_three_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

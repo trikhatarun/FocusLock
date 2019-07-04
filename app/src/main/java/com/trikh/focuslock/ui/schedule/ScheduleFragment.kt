@@ -24,6 +24,7 @@ import com.trikh.focuslock.utils.TimeDurationUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.instant_lock_schedule.*
@@ -159,7 +160,7 @@ class ScheduleFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        viewModelschedule.getInstantLockCount().subscribe {
+        viewModelschedule.getInstantLockCount().subscribeBy {
             if (it<=0){
                 instantLock.visibility = View.GONE
             }
@@ -188,7 +189,10 @@ class ScheduleFragment : Fragment(),
                 editor.putString(Constants.TYPE, Constants.POPUP_EDIT)
                 editor.apply()
                 Log.e("Fragment: ", "Active: ${schedule.active}")
-                findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(schedule))
+                if (adpaterPos == 0){
+                    findNavController().navigate(ScheduleFragmentDirections.actionEditPrimarySchedule(schedule))
+                }else{
+                findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(schedule)) }
 
             }
             Constants.POPUP_ENABLE -> {

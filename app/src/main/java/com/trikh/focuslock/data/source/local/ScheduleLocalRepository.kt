@@ -60,9 +60,9 @@ class ScheduleLocalRepository(context: Context) {
 
 */
 
-    fun updateSchedule(schedule: Schedule) {
+    fun updateSchedule(schedule: Schedule) =
         Observable.fromCallable { scheduleDao.updateSchedule(schedule) }
-            .subscribeOn(Schedulers.io()).subscribe()}
+            .subscribeOn(Schedulers.io())
 
 
 

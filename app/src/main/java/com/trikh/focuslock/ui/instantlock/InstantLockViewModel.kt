@@ -28,6 +28,15 @@ class InstantLockViewModel : ViewModel() {
         return calendar.timeInMillis
     }
 
+    fun setMinutes(sleepTime: Int){
+        minutes.postValue(sleepTime)
+    }
+
+    fun setHours(sleepTime: Int){
+
+        hours.postValue((sleepTime/10)-1)
+    }
+
     private fun getBlockedPackageNames() : List<String>{
         val packageList = ArrayList<String>()
         applicationList.value?.forEach{

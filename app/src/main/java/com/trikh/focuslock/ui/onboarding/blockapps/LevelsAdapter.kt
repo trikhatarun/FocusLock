@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.R
+import kotlinx.android.synthetic.main.fragment_blocked_apps.view.*
 import kotlinx.android.synthetic.main.level_card_rv_layout.view.*
 
 class LevelsAdapter(private var list: List<String>, var listener: LevelCallBacks) :
@@ -33,6 +34,7 @@ class LevelsAdapter(private var list: List<String>, var listener: LevelCallBacks
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(string: String) {
+            itemView.levelCb.text = string
 
             itemView.levelCb.isChecked = adapterPosition == lastCheckedPos
             itemView.levelCb.setOnCheckedChangeListener { buttonView, isChecked ->

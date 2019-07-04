@@ -14,7 +14,7 @@
             android:shape="rectangle">
             <solid android:color="@color/colorLine"/>
             <size android:height="42dp"
-                android:width="112dp"/>
+                android:width="106dp"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>

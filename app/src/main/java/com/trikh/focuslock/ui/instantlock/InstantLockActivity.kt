@@ -9,6 +9,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -48,6 +50,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
     private var blockedApps: Int? = null
 
     private var type = Constants.DEFAULT_TYPE
+    private lateinit var root: View
 
     private lateinit var instantLockSchedule: InstantLockSchedule
 
@@ -59,6 +62,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
         viewModel = ViewModelProviders.of(this).get(InstantLockViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        root = binding.root
 
         type = getSharedPreferences(Constants.MY_PREF, 0).getString(
             Constants.TYPE,
@@ -103,9 +107,33 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
             }
         })
 
-        viewModel.hours.observe(this, Observer { hours = it })
 
-        viewModel.minutes.observe(this, Observer { minutes = it.times(10) })
+        viewModel.hours.observe(this, Observer {
+            hours = it
+            val temp = (it + 1) * 10
+            Log.d("Temp: ", "$temp")
+            root.findViewWithTag<TextView>(temp.toString())
+                .setTextColor(resources.getColor(R.color.colorPrimary))
+
+            for (i in 10..80 step 10) {
+                if (i != temp) {
+                    root.findViewWithTag<TextView>(i.toString()).setTextColor(resources.getColor(R.color.colorSecondaryText))
+                }
+            }
+        })
+
+        viewModel.minutes.observe(this, Observer {
+            minutes = it.times(10)
+            root.findViewWithTag<TextView>(it.toString())
+                .setTextColor(resources.getColor(R.color.colorPrimary))
+            for (i in 0..5) {
+                if (i != it) {
+                    Log.d("Temp: ", "$i")
+                    root.findViewWithTag<TextView>(i.toString())
+                        .setTextColor(resources.getColor(R.color.colorSecondaryText))
+                }
+            }
+        })
 
 
         viewModel.applicationList.observe(this, Observer {
@@ -130,7 +158,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
                     if ((time!!.compareTo(10) >= 0) and (blockedApps!!.compareTo(0) > 0)) {
 
-                        if (TextUtils.equals(type, Constants.POPUP_EDIT)){
+                        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
 
                             //add code to update Instant Lock Schedule
                             //****************************************//
@@ -138,7 +166,7 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                             //****************************************//
 
 
-                        }else {
+                        } else {
 
 
                             viewModel.createInstantLockSchedule()?.subscribeBy {
@@ -148,7 +176,6 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                                 startService(serviceIntent)
                                 finish()
                             }
-
 
 
                         }

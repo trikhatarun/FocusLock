@@ -13,7 +13,7 @@ interface ScheduleDao {
     fun addSchedule(schedule: Schedule): Long
 
     @Update
-    fun updateSchedule(schedule: Schedule)
+    fun updateSchedule(schedule: Schedule): Int
 
     @Query("SELECT MAX(id) from schedule")
     fun getMaxId(): Int
