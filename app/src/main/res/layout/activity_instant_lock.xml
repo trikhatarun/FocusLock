@@ -56,6 +56,14 @@
                             android:text="@string/instant_lock_title"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <View
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@color/colorPrimaryText"
+                            app:layout_constraintTop_toTopOf="@id/sleepTimeLabelTv"
+                            app:layout_constraintBottom_toBottomOf="@id/sleepTimeLabelTv"
+                            android:layout_width="3dp"
+                            android:layout_height="0dp"/>
+
                         <TextView
                             android:text="@{@string/display_time(viewModel.hours,viewModel.minutes*10)}"
                             android:layout_width="wrap_content"
@@ -96,8 +104,6 @@
                             android:layout_marginEnd="20dp"
                             android:max="7"
                             android:progress="@={viewModel.hours}"
-                            android:progressBackgroundTint="@color/colorPrimary"
-                            android:progressBackgroundTintMode="src_over"
                             android:thumb="@drawable/seekbar_thumb"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -364,8 +370,6 @@
                             android:layout_marginBottom="20dp"
                             android:max="5"
                             android:progress="@={viewModel.minutes}"
-                            android:progressBackgroundTint="@color/colorPrimary"
-                            android:progressBackgroundTintMode="src_over"
                             android:thumb="@drawable/seekbar_thumb"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
