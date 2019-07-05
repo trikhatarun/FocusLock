@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TabHost
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.tabs.TabLayout
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.FragmentBlockedAppsBinding
@@ -40,13 +42,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
-    LevelsAdapter.LevelCallBacks {
+class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
 
 
     private lateinit var listener: InteractionListener
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
-    private lateinit var levelsAdapter: LevelsAdapter
+    //private lateinit var levelsAdapter: LevelsAdapter
     private lateinit var viewModel: BlockAppsViewModel
     private val args: BlockedAppsFragmentArgs by navArgs()
 
@@ -111,6 +112,18 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
         levels.addTab(levels.newTab().setText("Level 1"))
         levels.addTab(levels.newTab().setText("Level 2"))
         levels.addTab(levels.newTab().setText("Level 3"))
+        onLevelChanged(1)
+        levels.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                onLevelChanged(p0!!.position + 1)
+            }
+        })
     }
 
 
@@ -119,7 +132,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
         list.add(context!!.resources.getString(R.string.level_1))
         list.add(context!!.resources.getString(R.string.level_2))
         list.add(context!!.resources.getString(R.string.level_3))
-        levelsAdapter = LevelsAdapter(list, this)
+        //levelsAdapter = LevelsAdapter(list, this)
         //root.levelsRv.adapter = levelsAdapter
         return root
     }
@@ -129,17 +142,13 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
     }
 
 
-    override fun onLevelChanged(level: Int) {
+   /* override fun onLevelChanged(level: Int) {
         Log.d("BlocksAppsFragment:", "levels: $level")
-        val startTime = args.stringStartTime
-        val endTime = args.stringEndTime
-        val sleepTime = TimeUtils.getSleepTime(startTime.time, level)
-        val awakeTIme = TimeUtils.getAwakeTime(endTime.time, level)
-        val blockText = getString(R.string.on_boarding_level_message, sleepTime, awakeTIme)
-        viewModel.level.postValue(level)
-        viewModel.appBlockText.postValue(blockText)
 
-    }
+
+
+
+    }*/
 
 
     override fun onAttach(context: Context?) {
@@ -165,7 +174,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
 
 
                 val schedule = Schedule(
-                    level = tabLayout.selectedTabPosition+1,
+                    level = levels.selectedTabPosition+1,
                     endTime = args.stringEndTime,
                     startTime = args.stringStartTime,
                     active = true,
@@ -190,14 +199,19 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
 
 
         } else {
-            CustomDialog(
-                R.string.minimum_blocked_apps_msg,
-                {},
-                R.string.ok_text,
-                R.string.empty_string
-            ).show(fragmentManager, "")
+            CustomDialog(R.string.minimum_blocked_apps_msg, {}, R.string.ok_text, R.string.empty_string).show(fragmentManager, "")
         }
 
+    }
+
+    fun onLevelChanged(level: Int){
+        val startTime = args.stringStartTime
+        val endTime = args.stringEndTime
+        val sleepTime = TimeUtils.getSleepTime(startTime.time, level)
+        val awakeTIme = TimeUtils.getAwakeTime(endTime.time, level)
+        val blockText = getString(R.string.on_boarding_level_message, sleepTime, awakeTIme)
+        viewModel.level.postValue(level)
+        viewModel.appBlockText.postValue(blockText)
     }
 
 
