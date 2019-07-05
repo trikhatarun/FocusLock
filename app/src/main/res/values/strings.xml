@@ -23,7 +23,7 @@
     <string name="level_n">Level %d</string>
     <string name="icon_content_description">Application Icon</string>
     <string name="level_message">App will be block\n%s to %s</string>
-    <string name="on_boarding_level_message">App will be block %s to %s</string>
+    <string name="on_boarding_level_message">Apps will be blocked between %s to %s</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="display_time">%02d:%02d hr</string>
@@ -95,7 +95,7 @@
     <string name="step_1">Step 1 of 2</string>
     <string name="step_2">Step 2 of 2</string>
     <string name="on_boarding_app_block_title">Which app would you like to block?</string>
-    <string name="on_boarding_level_title">From which app you like to start?</string>
+    <string name="on_boarding_level_title">From which level you like to start?</string>
     <string name="on_boarding_block_btn_text">Block your apps</string>
 
 
