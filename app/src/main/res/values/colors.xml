@@ -23,4 +23,5 @@
     <color name="videoPlayerDivider">#32FFFFFF</color>
     <color name="colorDarkBlue">#191970</color>
     <color name="colorPink">#ff2d55</color>
+    <color name="seek_bar_background">#ababab</color>
 </resources>
