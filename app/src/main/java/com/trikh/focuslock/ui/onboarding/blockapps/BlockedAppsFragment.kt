@@ -31,8 +31,11 @@ import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.customdialog.CustomDialog
+import kotlinx.android.synthetic.main.fragment_blocked_apps.*
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.*
+import kotlinx.android.synthetic.main.fragment_blocked_apps.view.levels
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.setSchedule
+import kotlinx.android.synthetic.main.fragment_slides.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -102,6 +105,14 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        levels.addTab(levels.newTab().setText("Level 1"))
+        levels.addTab(levels.newTab().setText("Level 2"))
+        levels.addTab(levels.newTab().setText("Level 3"))
+    }
+
 
     private fun initLevelAdapter(root: View): View {
         val list = ArrayList<String>()
@@ -109,7 +120,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
         list.add(context!!.resources.getString(R.string.level_2))
         list.add(context!!.resources.getString(R.string.level_3))
         levelsAdapter = LevelsAdapter(list, this)
-        root.levelsRv.adapter = levelsAdapter
+        //root.levelsRv.adapter = levelsAdapter
         return root
     }
 
@@ -154,7 +165,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener,
 
 
                 val schedule = Schedule(
-                    level = viewModel.level.value,
+                    level = tabLayout.selectedTabPosition+1,
                     endTime = args.stringEndTime,
                     startTime = args.stringStartTime,
                     active = true,
