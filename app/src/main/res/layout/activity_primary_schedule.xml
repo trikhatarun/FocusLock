@@ -24,7 +24,7 @@
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:behavior_overlapTop="90dp"
+            app:behavior_overlapTop="120dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
