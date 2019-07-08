@@ -80,6 +80,10 @@ class ScheduleLocalRepository(context: Context) {
         Observable.fromCallable { instantLockDao.deleteSchedule() }
             .subscribeOn(Schedulers.io())
 
+    fun setPrimaryScheduleActive() =
+        Observable.fromCallable { scheduleDao.setPrimaryScheduleActive(true) }
+            .subscribeOn(Schedulers.io())
+
 
     fun setEmergencyModeOn(active: Boolean) =
         Observable.fromCallable { scheduleDao.setEmergencyModeOn(active) }

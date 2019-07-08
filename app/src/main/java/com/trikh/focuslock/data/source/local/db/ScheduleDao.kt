@@ -15,6 +15,9 @@ interface ScheduleDao {
     @Query("UPDATE schedule SET active = :active")
     fun setEmergencyModeOn(active: Boolean): Int
 
+    @Query("UPDATE schedule SET active = :active WHERE id = 1")
+    fun setPrimaryScheduleActive(active: Boolean): Int
+
     @Update
     fun updateSchedule(schedule: Schedule): Int
 

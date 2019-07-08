@@ -45,6 +45,8 @@ class ScheduleRepository {
 
         }
 
+    fun setPrimaryScheduleActive() =
+        scheduleLocalRepository.setPrimaryScheduleActive()
 
     private fun setAllScheduleInActive(list: ArrayList<Schedule>): ArrayList<Schedule> {
 
