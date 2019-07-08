@@ -97,9 +97,21 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
     fun startService() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, StartServiceReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(this, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent)
+        setPrimaryScheduleActive()
     }
+
+    fun setPrimaryScheduleActive(){
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, StartServiceReceiver::class.java)
+        intent.putExtra("SetPrimaryScheduleActive", true)
+        val pendingIntent = PendingIntent.getBroadcast(this, 22, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_MONTH,1)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+    }
+
 
 
 
