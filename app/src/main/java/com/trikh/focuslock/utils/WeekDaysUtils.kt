@@ -8,6 +8,7 @@ object WeekDaysUtils {
 
     fun getNextWeek(selectedWeekDays: Array<Boolean>, endTime: Calendar): String {
         val cal: Calendar = Calendar.getInstance()
+        val today = cal.get(Calendar.DAY_OF_WEEK) - 1
         val dayOfWeek = if (cal.get(Calendar.DAY_OF_WEEK)<7){
             (cal.get(Calendar.DAY_OF_WEEK) + 1)
 
@@ -15,7 +16,7 @@ object WeekDaysUtils {
             1
         }
 
-        if (cal.timeInMillis <= endTime.timeInMillis) {
+        if ((cal.timeInMillis <= endTime.timeInMillis)  && (selectedWeekDays[today])) {
             Log.e("TimeInMillis: ${cal.timeInMillis} "," EndTime: ${endTime.timeInMillis} dayOfWeek: $dayOfWeek ")
             return "Today"
         } else {
