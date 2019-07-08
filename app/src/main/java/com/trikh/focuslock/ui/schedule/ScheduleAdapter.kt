@@ -64,6 +64,11 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         @SuppressLint("RestrictedApi")
         fun bind(schedule: Schedule) {
             schedule.run {
+                if (schedule.active!!) {
+                    itemView.backgroundView.visibility = View.GONE
+                } else {
+                    itemView.backgroundView.visibility = View.VISIBLE
+                }
                 itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
                 itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
                 val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
