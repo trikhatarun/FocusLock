@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.trikh.focuslock.data.source.ScheduleRepository
+import io.reactivex.rxkotlin.subscribeBy
 
 class StartServiceReceiver : BroadcastReceiver() {
 
@@ -12,11 +14,32 @@ class StartServiceReceiver : BroadcastReceiver() {
         Log.e("onReceive:", "Start")
         val serviceIntent = Intent(context, AppBlockService::class.java)
         serviceIntent.putExtras(intent)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(serviceIntent)
+        val active = intent.getBooleanExtra("SetPrimaryScheduleActive", false)
+        if (active) {
+
+            setPrimaryScheduleActive(context, serviceIntent)
+
         } else {
-            context.startService(serviceIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
+            Log.e("onReceive:", "Start")
         }
-        Log.e("onReceive:", "Start")
+    }
+
+    fun setPrimaryScheduleActive(context: Context, serviceIntent: Intent) {
+        val repository = ScheduleRepository()
+
+        repository.setPrimaryScheduleActive().subscribeBy {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
+        }
+
+
     }
 }
