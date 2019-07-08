@@ -1,7 +1,10 @@
 package com.trikh.focuslock.ui.schedule
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +14,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.IconsUtils
@@ -140,8 +145,7 @@ class ScheduleFragment : Fragment(),
                     }, it.id).show()
                 }*/
                 //*****************************************************//
-            }
-            else {
+            } else {
                 instantLock.visibility = View.GONE
             }
 
@@ -161,7 +165,7 @@ class ScheduleFragment : Fragment(),
     override fun onResume() {
         super.onResume()
         viewModelschedule.getInstantLockCount().subscribeBy {
-            if (it<=0){
+            if (it <= 0) {
                 instantLock.visibility = View.GONE
             }
         }
@@ -189,21 +193,34 @@ class ScheduleFragment : Fragment(),
                 editor.putString(Constants.TYPE, Constants.POPUP_EDIT)
                 editor.apply()
                 Log.e("Fragment: ", "Active: ${schedule.active}")
-                if (adpaterPos == 0){
-                    findNavController().navigate(ScheduleFragmentDirections.actionEditPrimarySchedule(schedule))
-                }else{
-                findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(schedule)) }
+                if (adpaterPos == 0) {
+                    findNavController().navigate(
+                        ScheduleFragmentDirections.actionEditPrimarySchedule(
+                            schedule
+                        )
+                    )
+                } else {
+                    findNavController().navigate(
+                        ScheduleFragmentDirections.actionEditSchedule(
+                            schedule
+                        )
+                    )
+                }
 
             }
             Constants.POPUP_ENABLE -> {
                 schedule.active = true
                 Log.e("Fragment: ", " $schedule")
-                viewModelschedule.enableOrDisableSchedule(schedule)
+                viewModelschedule.enableOrDisableSchedule(schedule).subscribe {
+                    startService()
+                }
             }
             Constants.POPUP_DISABLE -> {
                 schedule.active = false
                 Log.e("Fragment: ", " $schedule")
-                viewModelschedule.enableOrDisableSchedule(schedule)
+                viewModelschedule.enableOrDisableSchedule(schedule).subscribe {
+                    startService()
+                }
             }
             Constants.POPUP_DELETE -> {
                 CustomDialog(
@@ -215,6 +232,15 @@ class ScheduleFragment : Fragment(),
 
             }
         }
+    }
+
+    fun startService() {
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, StartServiceReceiver::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent)
+        //setPrimaryScheduleActive()
     }
 
     interface OnFragmentInteractionListener {

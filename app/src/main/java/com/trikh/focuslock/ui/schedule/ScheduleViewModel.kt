@@ -34,10 +34,9 @@ class ScheduleViewModel: ViewModel(){
 
     fun getInstantLockCount() = scheduleRepository.getInstantLockCount()
 
-    fun enableOrDisableSchedule(schedule: Schedule) {
-        Log.e("ScheduleViewModel: "," $schedule")
+    fun enableOrDisableSchedule(schedule: Schedule) =
         scheduleRepository.updateSchedule(schedule)
-    }
+
 
     fun removeSchedule(id: Int) = scheduleRepository.removeSchedule(id)
 
