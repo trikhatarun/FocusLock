@@ -65,7 +65,11 @@ class AppBlockService : Service() {
         scheduleRepository.getBlockedPackages().subscribeBy {
             blockedPackages = it
             runningTimeObservable.subscribe{
+                if (blockedPackages.isEmpty()){
+                    runningTime = 0
+                }else{
                 runningTime = it
+                }
                 setTimeAndPackages(time = runningTime, packages = blockedPackages)
             }
         }
