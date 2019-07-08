@@ -25,7 +25,7 @@ class ScheduleRepository {
     //fun getAllApplicationList(id: Int) = scheduleLocalRepository.getAllApplicationList(id)
 
     fun updateSchedule(schedule: Schedule) =
-                scheduleLocalRepository.updateSchedule(schedule)
+        scheduleLocalRepository.updateSchedule(schedule)
 
     fun getInstantLockBlockedPackages() = getInstantLock().map {
         val list = ArrayList<String>()
@@ -35,6 +35,25 @@ class ScheduleRepository {
             deleteInstantLock()
         }
         return@map list
+    }
+
+    fun setEmergencyModeOn() =
+        scheduleLocalRepository.deleteInstantLock().flatMap {
+            return@flatMap scheduleLocalRepository.setEmergencyModeOn(false).map {
+                return@map it
+            }
+
+        }
+
+
+    private fun setAllScheduleInActive(list: ArrayList<Schedule>): ArrayList<Schedule> {
+
+
+        list.forEach { it: Schedule ->
+            it.active = false
+        }
+        Log.d("all Schedule Disabled ", "$list")
+        return list
     }
 
 
@@ -131,13 +150,13 @@ class ScheduleRepository {
             }
         }
 
-    private fun timeWithWeekDays(list:ArrayList<WeekDayTime>): ArrayList<Calendar> {
+    private fun timeWithWeekDays(list: ArrayList<WeekDayTime>): ArrayList<Calendar> {
         val endTimeList = ArrayList<Calendar>()
         val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
 
-        list.forEach{
+        list.forEach {
             val weekDay = it.selectedWeekDays?.get(day) != null
-            if (weekDay){
+            if (weekDay) {
                 endTimeList.add(it.endTime)
             }
         }
@@ -218,9 +237,10 @@ class ScheduleRepository {
         }.subscribeOn(Schedulers.io())
     }
 
-    fun insertInstantLock(schedule: InstantLockSchedule) = scheduleLocalRepository.insertInstantLock(schedule)
+    fun insertInstantLock(schedule: InstantLockSchedule) =
+        scheduleLocalRepository.insertInstantLock(schedule)
 
-    fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock()
+    fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock().subscribe()
 
     fun updateInstantLockSchedule(schedule: InstantLockSchedule) =
         scheduleLocalRepository.updateInstantSchedule(schedule)
