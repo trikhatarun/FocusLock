@@ -15,6 +15,7 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_video.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class VideoFragment : Fragment() {
 
@@ -26,6 +27,7 @@ class VideoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.fabMenu?.visibility = View.GONE
+        activity?.toolbar_title?.text = getString(R.string.video)
 
         viewModel = ViewModelProviders.of(this).get(VideoViewModel::class.java)
         viewModel.getVideoDetails()

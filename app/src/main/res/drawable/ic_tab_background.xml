@@ -15,7 +15,8 @@
             android:innerRadius="0dp"
             android:thickness="4dp"
             android:useLevel="false">
-            <solid android:color="@color/colorDisabled"/>
+            <solid android:color="@color/translucentBackgroundColor"/>
+
         </shape>
     </item>
 </selector>

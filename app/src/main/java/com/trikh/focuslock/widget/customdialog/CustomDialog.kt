@@ -29,11 +29,15 @@ class CustomDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCanceledOnTouchOutside(true)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         titleTv.setText(titleText)
-        negativeBtn.setText(noButtonText)
+        if (resources.getString(noButtonText).equals("")) {
+            negativeBtn.visibility = View.GONE
+        } else {
+            negativeBtn.setText(noButtonText)
+        }
         positiveBtn.setText(yesButtonText)
 
         negativeBtn.setOnClickListener { dismiss() }

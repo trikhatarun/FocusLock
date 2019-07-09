@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboarding_graph"
-    app:startDestination="@id/slidesFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/slidesFragment"
@@ -16,12 +16,40 @@
     </fragment>
     <fragment
         android:id="@+id/timePickerFragment"
-        android:name="com.trikh.focuslock.ui.onboarding.TimePickerFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.timepicker.TimePickerFragment"
         android:label="fragment_time_picker"
         tools:layout="@layout/fragment_time_picker" >
         <action
-            android:id="@+id/action_next"
-            app:destination="@id/nav_graph" />
+            android:id="@+id/action_timePickerFragment_to_blockedAppsFragment"
+            app:destination="@id/blockedAppsFragment" />
     </fragment>
-    <include app:graph="@navigation/nav_graph" />
+    <fragment
+        android:id="@+id/blockedAppsFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.blockapps.BlockedAppsFragment"
+        android:label="BlockedAppsFragment" >
+        <argument
+            android:name="@string/start_time"
+            app:argType="java.util.Calendar"/>
+        <argument
+            android:name="@string/end_time"
+            app:argType="java.util.Calendar"/>
+        <action
+            android:id="@+id/action_home_to_nav_graph"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.trikh.focuslock.ui.onboarding.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_slidesFragment"
+            app:destination="@id/slidesFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_nav_graph"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.trikh.focuslock.ui.MainActivity"
+        android:label="MainActivity" />
 </navigation>

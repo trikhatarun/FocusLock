@@ -40,7 +40,7 @@
             android:fontFamily="@font/muli_regular"
             android:text="@string/emergency_dialog_text_1"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleBarTv" />
@@ -55,7 +55,7 @@
             android:fontFamily="@font/muli_regular"
             android:text="@string/emergency_dialog_text_2"
             android:textColor="@color/colorDisabled"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textTV1" />

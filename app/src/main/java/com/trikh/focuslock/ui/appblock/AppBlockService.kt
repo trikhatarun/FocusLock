@@ -7,7 +7,10 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.source.ScheduleRepository
@@ -20,10 +23,16 @@ import com.trikh.focuslock.utils.Constants.Companion.SCHEDULE_TYPE
 import com.trikh.focuslock.utils.Constants.Companion.SERVICE_ID
 import com.trikh.focuslock.utils.Constants.Companion.TIME_INTERVAL
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function
+import io.reactivex.functions.Function3
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class AppBlockService : Service() {
@@ -32,25 +41,105 @@ class AppBlockService : Service() {
     private lateinit var blockedPackages: List<String>
     private val usageStatsManager by lazy { getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
     private val activityManager by lazy { getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }
+    private val scheduleRepository = ScheduleRepository()
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+
+        start()
+
+
+        return START_STICKY;
+    }
+
+    private fun start() {
+
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.app_blocked_message))
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(ContextCompat.getColor(Application.instance, R.color.colorPrimary))
             .build()
         startForeground(SERVICE_ID, notification)
+        val runningTimeObservable = scheduleRepository.getRunningTime()
 
-        when (intent?.getIntExtra(SCHEDULE_TYPE, -1)) {
-            INSTANT_LOCK -> {
-                val schedule = intent.getParcelableExtra<InstantLockSchedule>(SCHEDULE)
-                runningTime = schedule.endTime - System.currentTimeMillis()
-                blockedPackages = schedule.blockedApps
+        scheduleRepository.getBlockedPackages().subscribeBy {
+            blockedPackages = it
+            runningTimeObservable.subscribe{
+                if (blockedPackages.isEmpty()){
+                    runningTime = 0
+                }else{
+                runningTime = it
+                }
+                setTimeAndPackages(time = runningTime, packages = blockedPackages)
             }
-            DAILY_SCHEDULE -> {
-                // fetch all schedule to be started now
-            }
-            else -> stopSelf()
         }
 
+        //val blockedPackageObservable = scheduleRepository.getInstantLockBlockedPackages()
+
+        /*blockedPackageObservable.subscribeBy {
+            blockedPackages= it
+            setTimeAndPackages(runningTime, blockedPackages)
+            runningTimeObservable.subscribe{
+                runningTime = it
+            }
+        }*/
+
+
+
+
+
+        /*scheduleRepository.getScheduleBlockedPackages().subscribeBy {
+
+        }*/
+
+
+        /*Observable.zip(
+            runningTimeObservable,
+            blockedPackageObservable,
+            BiFunction { t1: Long, t2: List<String> ->
+                setTimeAndPackages(t1, t2) }
+        ).subscribe()*/
+
+        /*scheduleRepository.getScheduleBlockedPackages()
+            .mergeWith(scheduleRepository.getInstantLockBlockedPackages())
+            .subscribe{
+                blockedPackages = it
+                runningTimeObservable.subscribe{
+                    runningTime = it
+                    setTimeAndPackages(time = runningTime, packages = blockedPackages)
+                }
+
+            }*/
+
+
+
+
+    }
+
+    fun setTimeAndPackages(time: Long, packages: List<String>) {
+        runningTime = time
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = 600000
+        val minute =cal.get(Calendar.MINUTE)
+        val hours = cal.get(Calendar.HOUR_OF_DAY)
+        Log.d("SetTimeAndPackages:", "Hours: $hours   Minutes: $minute")
+        blockedPackages = packages
+
+        if (runningTime > 0) {
+
+
+            setInterval()
+
+        } else {
+            stopSelf()
+        }
+    }
+
+
+    private fun setInterval() {
+
+
+        //checking is blocked app is opening
         Observable.interval(TIME_INTERVAL, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.computation())
             .map { getForegroundApp() }
@@ -68,13 +157,15 @@ class AppBlockService : Service() {
                 activityManager.killBackgroundProcesses(p)
             }.addTo(compositeDisposable)
 
+
+        //timer for the smallest endTime
         Observable.timer(runningTime, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.computation())
             .subscribe {
-                ScheduleRepository().deleteInstantLock()
-                stopSelf()
+                start()
+                //ScheduleRepository().deleteInstantLock()
+                //stopSelf()
             }.addTo(compositeDisposable)
-        return START_NOT_STICKY;
     }
 
     private fun getForegroundApp(): String {

@@ -1,8 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    tools:context=".ui.onboarding.TimePickerFragment">
-</FrameLayout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.trikh.focuslock.ui.onboarding.timepicker.TimePickerViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_overlapTop="90dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".ui.onboarding.timepicker.TimePickerFragment">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="24dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/sleepLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/sleepTimeTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/muli_semibold"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="16dp"
+                            android:paddingStart="20dp"
+                            android:text="@string/on_boarding_time_picker_title"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@drawable/black_gradient"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="0dp"
+                            android:background="@color/colorPrimaryText"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TimePicker
+
+                        android:id="@+id/timePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:addStatesFromChildren="true"
+                        android:headerBackground="@color/white"
+                        android:headerTimeTextAppearance="@color/white"
+                        android:numbersSelectorColor="@color/colorPrimaryDark"
+                        android:textAlignment="center"
+                        android:textDirection="ltr"
+                        android:timePickerMode="spinner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/sleepLayout" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="6dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muli_semibold"
+                        android:padding="20dp"
+                        android:paddingStart="28dp"
+                        android:paddingLeft="28dp"
+                        android:text="@string/on_boarding_seek_bar_title"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="6dp"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(0)}"
+                        android:tag="0"
+                        android:text="04"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintEnd_toStartOf="@+id/textView430"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="@id/hourSeekBar"
+                        app:layout_constraintTop_toBottomOf="@id/textView1" />
+
+                    <TextView
+                        android:id="@+id/textView430"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="1"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView5"
+                        app:layout_constraintStart_toEndOf="@+id/textView4"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(2)}"
+                        android:tag="2"
+                        android:text="05"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView530"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView430" />
+
+                    <TextView
+                        android:id="@+id/textView530"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="3"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView6"
+                        app:layout_constraintStart_toEndOf="@+id/textView5"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(4)}"
+                        android:tag="4"
+                        android:text="06"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView630"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView530" />
+
+                    <TextView
+                        android:id="@+id/textView630"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="5"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView7"
+                        app:layout_constraintStart_toEndOf="@+id/textView6"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(6)}"
+                        android:tag="6"
+                        android:text="07"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView730"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView630" />
+
+                    <TextView
+                        android:id="@+id/textView730"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="7"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView8"
+                        app:layout_constraintStart_toEndOf="@+id/textView7"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(8)}"
+                        android:tag="8"
+                        android:text="08"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView830"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView730" />
+
+                    <TextView
+                        android:id="@+id/textView830"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="9"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView9"
+                        app:layout_constraintStart_toEndOf="@+id/textView8"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(10)}"
+                        android:tag="10"
+                        android:text="09"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView930"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView830" />
+
+                    <TextView
+                        android:id="@+id/textView930"
+                        android:layout_width="wrap_content"
+                        android:layout_height="12dp"
+                        android:tag="11"
+                        android:text="|"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBottom_toBottomOf="@id/textView4"
+                        app:layout_constraintEnd_toStartOf="@+id/textView10"
+                        app:layout_constraintStart_toEndOf="@+id/textView9"
+                        app:layout_constraintTop_toTopOf="@id/textView4"
+                        app:layout_constraintVertical_bias="0.32" />
+
+                    <TextView
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:fontFamily="@font/muli_bold"
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{(v) ->viewModel.setSleepTime(12)}"
+                        android:tag="12"
+                        android:text="10"
+                        android:textColor="@color/colorSecondaryText"
+                        app:layout_constraintBaseline_toBaselineOf="@id/textView4"
+                        app:layout_constraintEnd_toEndOf="@id/hourSeekBar"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView930" />
+
+
+                    <SeekBar
+                        android:id="@+id/hourSeekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
+                        android:max="12"
+                        android:progress="@={viewModel.sleepHours}"
+                        android:progressDrawable="@drawable/seek_bar"
+                        android:thumb="@drawable/seekbar_thumb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView4" />
+
+                    <!--<com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                        app:corner_radius="10"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="10dp"
+                        app:steps="0.5"
+                        app:data_type="_float"
+                        app:min_value="4"
+                        app:max_value="10"
+                        android:id="@+id/hourSeekBar"
+                        android:progressBackgroundTint="@color/colorPrimary"
+                        android:progressBackgroundTintMode="src_over"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:bar_color="@color/colorPrimary"
+                        app:bar_highlight_color="@color/colorPrimary"
+                        app:left_thumb_image="@mipmap/ic_launcher_thumb_crystal_seekbar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView4"/>-->
+
+                    <TextView
+                        android:id="@+id/sleep_time_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muli_regular"
+                        android:padding="20dp"
+                        android:paddingStart="28dp"
+                        android:paddingLeft="28dp"
+                        android:text="@{viewModel.blockText}"
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/hourSeekBar" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/muli_light"
+                android:text="@string/step_1"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nextBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="38dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="14dp"
+                android:fontFamily="@font/muli_bold"
+                android:paddingVertical="16dp"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

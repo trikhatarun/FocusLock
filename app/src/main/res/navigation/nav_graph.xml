@@ -11,8 +11,14 @@
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule" >
         <action
-            android:id="@+id/action_scheduleFragment_to_addScheduleActivity2"
-            app:destination="@id/addScheduleActivity2" />
+            android:id="@+id/action_editSchedule"
+            app:destination="@id/customSchedule" />
+        <action
+            android:id="@+id/action_scheduleFragment_to_instantLockActivity"
+            app:destination="@id/instantLock" />
+        <action
+            android:id="@+id/action_editPrimarySchedule"
+            app:destination="@id/primaryScheduleActivity"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -20,9 +26,24 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <activity
-        android:id="@+id/addScheduleActivity2"
-        android:name="com.trikh.focuslock.ui.schedule.AddScheduleActivity"
-        android:label="AddScheduleActivity" />
+        android:id="@+id/customSchedule"
+        android:name="com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivity"
+        android:label="CustomScheduleActivity"
+        tools:layout="@layout/activity_custom_schedule">
+        <argument
+            android:name="schedule"
+            app:argType="com.trikh.focuslock.data.model.Schedule"/>
+    </activity>
+
+    <activity
+        android:id="@+id/instantLock"
+        android:name="com.trikh.focuslock.ui.instantlock.InstantLockActivity"
+        android:label="InstantLock"
+        tools:layout="@layout/activity_instant_lock" >
+        <argument
+            android:name="instant_lock_schedule"
+            app:argType="com.trikh.focuslock.data.model.InstantLockSchedule"/>
+    </activity>
     <activity
         android:id="@+id/videoPlayerActivity"
         android:name="com.trikh.focuslock.widget.videoplayer.VideoPlayerActivity"
@@ -41,4 +62,15 @@
             android:id="@+id/action_play_video"
             app:destination="@id/videoPlayerActivity" />
     </fragment>
+
+    <activity
+        android:id="@+id/primaryScheduleActivity"
+        android:name="com.trikh.focuslock.ui.schedule.primaryschedule.PrimaryScheduleActivity"
+        android:label="PrimaryScheduleActivity">
+
+        <argument
+            android:name="schedule"
+            app:argType="com.trikh.focuslock.data.model.Schedule"/>
+
+    </activity>
 </navigation>

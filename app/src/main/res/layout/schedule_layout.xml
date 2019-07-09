@@ -97,7 +97,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/sleepTimeLabelTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -107,12 +107,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/blockedListTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:text="@string/awake_time"
-                    app:layout_constraintBaseline_toBaselineOf="@id/textView"
+                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
@@ -122,8 +122,8 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="6dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/textView"
-                    app:layout_constraintTop_toBottomOf="@id/textView"
+                    app:layout_constraintStart_toStartOf="@id/sleepTimeLabelTv"
+                    app:layout_constraintTop_toBottomOf="@id/sleepTimeLabelTv"
                     tools:text="11:00 PM" />
 
                 <TextView
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeTv"
-                    app:layout_constraintStart_toStartOf="@id/textView2"
+                    app:layout_constraintStart_toStartOf="@id/blockedListTv"
                     tools:text="08:30 AM" />
 
                 <TextView
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="12sp"
-                    app:layout_constraintBaseline_toBaselineOf="@id/textView"
+                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="09hr 30min" />
@@ -181,6 +181,10 @@
                 app:layout_constraintTop_toBottomOf="@id/view" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@id/blockedAppsRv"
+                tools:listitem="@layout/blocked_app_list_item"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -190,6 +194,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/blocked_apps_title"
                 app:layout_constraintTop_toBottomOf="@id/blocked_apps_title" />
+            <View
+                android:visibility="gone"
+                android:id="@+id/backgroundView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/translucentBackgroundColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

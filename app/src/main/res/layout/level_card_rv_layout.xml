@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/levelCb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/slider_selecter_card_layout"
+    android:button="@null"
+    android:fontFamily="@font/muli_bold"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="16dp"
+    android:text="Levels"
+    android:textColor="@color/text_selector"
+
+    android:textSize="14sp" />

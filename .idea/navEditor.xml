@@ -8,13 +8,37 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="addScheduleActivity2">
+                  <entry key="customSchedule">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="343" />
-                            <option name="y" value="50" />
+                            <option name="x" value="322" />
+                            <option name="y" value="37" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="instantLock">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="340" />
+                            <option name="y" value="-286" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="primaryScheduleActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="35" />
+                            <option name="y" value="-323" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -31,7 +55,17 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_scheduleFragment_to_addScheduleActivity2">
+                            <entry key="action_editPrimarySchedule">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_editSchedule">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_scheduleFragment_to_instantLockActivity">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -96,13 +130,34 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="nav_graph">
+                  <entry key="blockedAppsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="646" />
-                            <option name="y" value="265" />
+                            <option name="x" value="744" />
+                            <option name="y" value="63" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_home_to_nav_graph">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="mainActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="988" />
+                            <option name="y" value="20" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -113,8 +168,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="93" />
-                            <option name="y" value="199" />
+                            <option name="x" value="256" />
+                            <option name="y" value="63" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -129,14 +184,49 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="splashFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="20" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_splashFragment_to_nav_graph">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_splashFragment_to_slidesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="timePickerFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="362" />
-                            <option name="y" value="198" />
+                            <option name="x" value="500" />
+                            <option name="y" value="63" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_timePickerFragment_to_blockedAppsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

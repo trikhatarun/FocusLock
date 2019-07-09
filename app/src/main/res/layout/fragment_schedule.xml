@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
-    tools:context=".ui.schedule.ScheduleFragment">
+    tools:context=".ui.schedule.ScheduleFragment"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,11 +20,13 @@
             layout="@layout/instant_lock_schedule" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:clipToPadding="true"
             android:id="@+id/schedulesRv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/schedule_layout" />
+            tools:listitem="@layout/schedule_layout"
+            android:paddingBottom="64dp"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
