@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         intent.putExtra("SetPrimaryScheduleActive", true)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
         val cal = Calendar.getInstance()
-        cal.add(Calendar.DAY_OF_MONTH,1)
+        cal.add(Calendar.HOUR,12)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
     }
 
