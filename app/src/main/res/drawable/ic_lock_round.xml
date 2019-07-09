@@ -8,5 +8,5 @@
                 android:height="32dp" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_lock" android:gravity="center"/>
+    <item android:drawable="@drawable/ic_blue_app_logo" android:gravity="center"/>
 </layer-list>
