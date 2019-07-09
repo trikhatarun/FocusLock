@@ -48,7 +48,6 @@ class ScheduleLocalRepository(context: Context) {
         .subscribeOn(Schedulers.io())
 
 
-
     // Not Yet Used May Be Used In Future
     /*fun addApplicationList(list: List<com.trikh.focuslock.data.model.Application>){
         Observable.fromCallable { applicationDao.insertApplicationList(list) }
@@ -65,7 +64,6 @@ class ScheduleLocalRepository(context: Context) {
             .subscribeOn(Schedulers.io())
 
 
-
     fun removeSchedule(scheduleId: Int) {
         Observable.fromCallable { scheduleDao.removeSchedule(scheduleId) }
             .subscribeOn(Schedulers.io())
@@ -74,14 +72,22 @@ class ScheduleLocalRepository(context: Context) {
 
     fun getSchedules() = scheduleDao.getSchedules().subscribeOn(Schedulers.io())
 
-    fun insertInstantLock(schedule: InstantLockSchedule) = Observable.fromCallable { instantLockDao.insertSchedule(schedule) }
+    fun insertInstantLock(schedule: InstantLockSchedule) =
+        Observable.fromCallable { instantLockDao.insertSchedule(schedule) }
             .subscribeOn(Schedulers.io())
 
-    fun deleteInstantLock() {
+    fun deleteInstantLock() =
         Observable.fromCallable { instantLockDao.deleteSchedule() }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+
+    fun setPrimaryScheduleActive() =
+        Observable.fromCallable { scheduleDao.setPrimaryScheduleActive(true) }
+            .subscribeOn(Schedulers.io())
+
+
+    fun setEmergencyModeOn(active: Boolean) =
+        Observable.fromCallable { scheduleDao.setEmergencyModeOn(active) }
+            .subscribeOn(Schedulers.io())
 
     fun updateInstantSchedule(schedule: InstantLockSchedule) {
         Log.d("LocalRepository: ", " $schedule")

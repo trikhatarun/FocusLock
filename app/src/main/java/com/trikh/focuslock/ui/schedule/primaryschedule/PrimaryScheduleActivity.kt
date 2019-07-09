@@ -69,13 +69,14 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
 
             setTime(schedule.startTime, schedule.endTime)
             viewModel.applicationList.postValue(appInfoList)
+            viewModel.level.postValue(schedule.level)
             /*viewModel.level.postValue(schedule.level)
             when(schedule.level){
                 1 -> level_one_rb.isChecked = true
                 2 -> level_two_rb.isChecked = true
                 3 -> level_three_rb.isChecked = true
             }*/
-            binding.root.findViewWithTag<RadioButton>(schedule.level.toString()).isChecked = true
+            //binding.root.findViewWithTag<RadioButton>(schedule.level.toString()).isChecked = true
             Log.d("PrimarySchedule:", " $schedule")
 
 

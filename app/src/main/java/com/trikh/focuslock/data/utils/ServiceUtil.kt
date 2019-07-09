@@ -52,10 +52,13 @@ class ServiceUtil {
             allPackages.forEach {
                 val cal = Calendar.getInstance()
                 val day = cal.get(Calendar.DAY_OF_WEEK) - 1
+                Log.d("schedule:", "$it")
+                val selectedDay = it.selectedWeekDays!![day]
+                val active = it.active!!
+                Log.d("SelectedWeekdays: ", "$selectedDay")
 
-                val weekDay = it.selectedWeekDays?.get(day) != null
-                Log.d("getAllBlockedPackages","weekDay: $weekDay")
-                if ( (System.currentTimeMillis() in it.startTime.timeInMillis until it.endTime.timeInMillis) && (weekDay)) {
+               // Log.d("getAllBlockedPackages","weekDay: $weekDay")
+                if ( (System.currentTimeMillis() in it.startTime.timeInMillis until it.endTime.timeInMillis) && (selectedDay) && (active)) {
 
                     it.appList?.forEach {
                         if (!blockedPackageList.contains(it)) {

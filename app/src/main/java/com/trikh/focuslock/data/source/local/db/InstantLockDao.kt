@@ -9,16 +9,16 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 @Dao
-interface InstantLockDao{
+interface InstantLockDao {
 
     @Insert
-    fun insertSchedule(schedule : InstantLockSchedule): Long
+    fun insertSchedule(schedule: InstantLockSchedule): Long
 
     @Query("DELETE FROM instant_lock")
-    fun deleteSchedule()
+    fun deleteSchedule(): Int
 
     @Query("SELECT * FROM instant_lock")
-    fun getSchedule() : Observable<InstantLockSchedule>
+    fun getSchedule(): Observable<InstantLockSchedule>
 
     @Update
     fun updateSchedule(schedule: InstantLockSchedule)

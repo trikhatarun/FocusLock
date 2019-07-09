@@ -1,6 +1,9 @@
 package com.trikh.focuslock.ui
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -9,11 +12,13 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.ScheduleFragment
 import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
 
@@ -88,6 +93,27 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
     override fun onBackPressed() {
 
     }
+
+    fun startService() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, StartServiceReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent)
+        setPrimaryScheduleActive()
+    }
+
+    fun setPrimaryScheduleActive(){
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, StartServiceReceiver::class.java)
+        intent.putExtra("SetPrimaryScheduleActive", true)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_MONTH,1)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+    }
+
+
+
 
     private fun requestUsagePermission(){
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))

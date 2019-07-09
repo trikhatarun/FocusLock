@@ -1,31 +1,52 @@
 package com.trikh.focuslock.ui.settings
 
+import android.app.ActivityManager
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.source.ScheduleRepository
+import com.trikh.focuslock.ui.MainActivity
+import com.trikh.focuslock.ui.appblock.AppBlockService
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
+import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.Constants.Companion.FEEDBACK_EMAIL
 import com.trikh.focuslock.utils.Constants.Companion.PLAIN_TEXT
 import com.trikh.focuslock.utils.Constants.Companion.SHARE_FOCUS_LOCK
 import com.trikh.focuslock.widget.customAboutDialog.CustomAboutDialog
 import com.trikh.focuslock.widget.customEmergencyDialog.CustomEmergencyDialog
 import com.trikh.focuslock.widget.customFeedbackDialog.CustomFeedbackDialog
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteractionListener,
     CustomEmergencyDialog.DialogListener, CustomFeedbackDialog.DialogListener {
+    val repository = ScheduleRepository()
 
 
     override fun onBlock() {
-        //TODO perform task when user don't want to disable all schedules
+        repository.setEmergencyModeOn().subscribeBy {
+            Log.d("SettingFragment", "${it}")
+            if (!isServiceRunningInForeground(AppBlockService::class.java)){
+                (activity as MainActivity).startService()
+            }
+
+        }
     }
 
     override fun onSubmit(name: String, title: String, description: String) {
@@ -124,6 +145,19 @@ class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteracti
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    fun isServiceRunningInForeground( serviceClass: Class<*>): Boolean {
+        val manager = Application.instance.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                if (service.foreground) {
+                    return true
+                }
+
+            }
+        }
+        return false
     }
 
     interface OnFragmentInteractionListener {

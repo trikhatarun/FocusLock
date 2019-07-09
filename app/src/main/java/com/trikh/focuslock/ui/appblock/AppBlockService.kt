@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.InstantLockSchedule
@@ -55,6 +56,8 @@ class AppBlockService : Service() {
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.app_blocked_message))
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(ContextCompat.getColor(Application.instance, R.color.colorPrimary))
             .build()
         startForeground(SERVICE_ID, notification)
         val runningTimeObservable = scheduleRepository.getRunningTime()
@@ -62,7 +65,11 @@ class AppBlockService : Service() {
         scheduleRepository.getBlockedPackages().subscribeBy {
             blockedPackages = it
             runningTimeObservable.subscribe{
+                if (blockedPackages.isEmpty()){
+                    runningTime = 0
+                }else{
                 runningTime = it
+                }
                 setTimeAndPackages(time = runningTime, packages = blockedPackages)
             }
         }

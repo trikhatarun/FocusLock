@@ -12,6 +12,12 @@ interface ScheduleDao {
     @Insert
     fun addSchedule(schedule: Schedule): Long
 
+    @Query("UPDATE schedule SET active = :active")
+    fun setEmergencyModeOn(active: Boolean): Int
+
+    @Query("UPDATE schedule SET active = :active WHERE id = 1")
+    fun setPrimaryScheduleActive(active: Boolean): Int
+
     @Update
     fun updateSchedule(schedule: Schedule): Int
 
@@ -29,11 +35,6 @@ interface ScheduleDao {
 
     @Query("SELECT selected_week_days , end_time FROM schedule")
     fun getAllEndTimes(): List<WeekDayTime>
-
-
-
-
-
 
 
 /*  @Query("UPDATE schedule SET start_time = :startTime , end_time = :endTime ,selected_week_days = :selectedWeeks , level = :level , active = :active , appList = :appList  WHERE id LIKE :id")

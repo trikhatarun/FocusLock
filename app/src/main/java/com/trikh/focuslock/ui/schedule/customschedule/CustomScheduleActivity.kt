@@ -172,38 +172,37 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
                             schedule.id,
                             schedule.level!!,
                             schedule.active!!
-                        )
-                        viewModelCustom.startTime.value?.let { it2 ->
-                            viewModelCustom.checkedIds.value?.let { it1 ->
+                        )?.subscribe {
+                            viewModelCustom.startTime.value?.let { it2 ->
+
                                 setCustomScheduleAlarm(
                                     it2,
                                     Constants.CUSTOM_SCHEDULE,
-                                    it1,
                                     schedule.id
                                 )
+
                             }
                         }
+
 
 
                     } else {
 
                         viewModelCustom.createSchedule()?.subscribeBy {
-                            if (it > 0 ){
+                            if (it > 0) {
                                 viewModelCustom.scheduleRepository.getLastSchedule().subscribeBy {
                                     viewModelCustom.startTime.value?.let { it2 ->
-                                        viewModelCustom.checkedIds.value?.let { it1 ->
+
                                             setCustomScheduleAlarm(
                                                 it2,
                                                 Constants.CUSTOM_SCHEDULE,
-                                                it1,
                                                 it
                                             )
-                                        }
+
                                     }
                                 }
                             }
                         }
-
 
 
                     }
@@ -239,28 +238,21 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     fun setCustomScheduleAlarm(
         calender: Calendar,
         type: Int,
-        selectedWeekDayTime: Array<Boolean>,
         requestCode: Int
     ) {
 
         val intent = Intent(this, StartServiceReceiver::class.java)
         intent.putExtra(Constants.SCHEDULE_TYPE, type)
-        val pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        for (index in 0 until selectedWeekDayTime.size) {
-
-            if (selectedWeekDayTime[index]) {
-                calender.set(Calendar.DAY_OF_WEEK, index + 1)
-                val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP,
-                    calender.timeInMillis,
-                    AlarmManager.INTERVAL_DAY,
-                    pendingIntent
-                )
-            }
-
-        }
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calender.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
 
 
     }

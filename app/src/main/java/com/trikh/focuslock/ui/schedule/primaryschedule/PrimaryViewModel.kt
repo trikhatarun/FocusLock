@@ -48,10 +48,12 @@ class PrimaryViewModel : ViewModel() {
 
     }
 
-    fun onChecked(check: Boolean, id: Int) {
-        if (check) {
+
+
+
+    fun onChecked( id: Int) {
+
             level.postValue(id)
-        }
 
     }
 
@@ -144,7 +146,8 @@ class PrimaryViewModel : ViewModel() {
 
         Log.e(
             "Schedule ",
-            "active: $active  End Time: ${endTime.value!!.timeInMillis}"
+            "active: $active  End Time: ${endTime.value!!.timeInMillis}"+
+                  "level: ${level.value}"
         )
 
 
