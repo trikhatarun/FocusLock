@@ -106,7 +106,7 @@ class CustomScheduleViewModel : ViewModel() {
 
     }
 
-    fun updateSchedule(id: Int, level: Int, active: Boolean){
+    fun updateSchedule(id: Int, level: Int, active: Boolean): Observable<Int>? {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
@@ -116,6 +116,8 @@ class CustomScheduleViewModel : ViewModel() {
             "Schedule ",
             "active: $active  End Time: ${endTime.value!!.timeInMillis}"
         )
+
+        Log.d("Update Custom Schedule", "applist: $list")
 
 
         val schedule = Schedule(
@@ -128,7 +130,7 @@ class CustomScheduleViewModel : ViewModel() {
             appList = list as List<String>
         )
 
-       scheduleRepository.updateSchedule(schedule)
+       return scheduleRepository.updateSchedule(schedule)
 
     }
 

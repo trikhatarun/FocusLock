@@ -172,17 +172,18 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
                             schedule.id,
                             schedule.level!!,
                             schedule.active!!
-                        )
-                        viewModelCustom.startTime.value?.let { it2 ->
-                            viewModelCustom.checkedIds.value?.let { it1 ->
+                        )?.subscribe {
+                            viewModelCustom.startTime.value?.let { it2 ->
+
                                 setCustomScheduleAlarm(
                                     it2,
                                     Constants.CUSTOM_SCHEDULE,
-                                    it1,
                                     schedule.id
                                 )
+
                             }
                         }
+
 
 
                     } else {
@@ -191,14 +192,13 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
                             if (it > 0) {
                                 viewModelCustom.scheduleRepository.getLastSchedule().subscribeBy {
                                     viewModelCustom.startTime.value?.let { it2 ->
-                                        viewModelCustom.checkedIds.value?.let { it1 ->
+
                                             setCustomScheduleAlarm(
                                                 it2,
                                                 Constants.CUSTOM_SCHEDULE,
-                                                it1,
                                                 it
                                             )
-                                        }
+
                                     }
                                 }
                             }
@@ -238,7 +238,6 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     fun setCustomScheduleAlarm(
         calender: Calendar,
         type: Int,
-        selectedWeekDayTime: Array<Boolean>,
         requestCode: Int
     ) {
 
