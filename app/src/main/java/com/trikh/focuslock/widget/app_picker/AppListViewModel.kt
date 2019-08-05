@@ -31,6 +31,7 @@ class AppListViewModel(application: Application, private val selectedAppsList: L
                 }
                 it
             }
+            .filter { return@filter it.packageName != "com.trikh.focuslock"}
             .toSortedList { o1, o2 -> o1.name.compareTo(o2.name, true) }
 
     init {
