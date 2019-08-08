@@ -12,16 +12,10 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
-import androidx.navigation.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
-import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.appblock.StartServiceReceiver
-import com.trikh.focuslock.ui.schedule.ScheduleFragment
-import com.trikh.focuslock.ui.schedule.customschedule.CustomScheduleActivityArgs
-
 import com.trikh.focuslock.ui.settings.SettingsFragment
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
@@ -30,9 +24,8 @@ import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteractionListener,
+class MainActivity : AppCompatActivity(),
     SettingsFragment.OnFragmentInteractionListener {
 
     private var pref: SharedPreferences? = null
@@ -54,23 +47,24 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
 
         bottomNavigationBar.itemIconTintList = null
         bottomNavigationBar.setupWithNavController(findNavController(R.id.container))
-
-
-
     }
 
     override fun onResume() {
         super.onResume()
-        if (!hasUsageStatsPermission){
-            CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(supportFragmentManager,null)
+        if (!hasUsageStatsPermission) {
+            CustomDialog(
+                R.string.usage_permission_request_message,
+                this::requestUsagePermission,
+                R.string.grant,
+                R.string.deny
+            ).show(supportFragmentManager, null)
         }
     }
 
     override fun onNewIntent(intent: Intent?) {
-            super.onNewIntent(intent)
-        if (Intent.ACTION_VIEW.equals(intent?.action)){
-            Toast.makeText(this,"Open via link",Toast.LENGTH_SHORT).show()
-
+        super.onNewIntent(intent)
+        if (Intent.ACTION_VIEW.equals(intent?.action)) {
+            Toast.makeText(this, "Open via link", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -102,20 +96,17 @@ class MainActivity : AppCompatActivity(), ScheduleFragment.OnFragmentInteraction
         setPrimaryScheduleActive()
     }
 
-    fun setPrimaryScheduleActive(){
+    fun setPrimaryScheduleActive() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, StartServiceReceiver::class.java)
         intent.putExtra("SetPrimaryScheduleActive", true)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
         val cal = Calendar.getInstance()
-        cal.add(Calendar.HOUR,12)
+        cal.add(Calendar.HOUR, 12)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
     }
 
-
-
-
-    private fun requestUsagePermission(){
+    private fun requestUsagePermission() {
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }

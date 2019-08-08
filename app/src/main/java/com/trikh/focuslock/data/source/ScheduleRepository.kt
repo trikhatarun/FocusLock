@@ -1,6 +1,8 @@
 package com.trikh.focuslock.data.source
 
+import android.content.pm.PackageManager
 import android.util.Log
+import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.model.WeekDayTime
@@ -219,21 +221,23 @@ class ScheduleRepository {
 
     private fun withDrawableAndLabel(schedules: List<Schedule>): Observable<List<Schedule>> {
         return Observable.fromCallable {
-            schedules.forEach {
+            schedules.forEach { schedule ->
                 val localAppList: ArrayList<AppInfo> = ArrayList()
-                it.appList?.forEach {
-                    val pkgManager = com.trikh.focuslock.Application.instance.packageManager
-                    val appInfo = pkgManager.getApplicationInfo(it, 0)
-                    localAppList.add(
-                        AppInfo(
-                            name = pkgManager.getApplicationLabel(appInfo).toString(),
-                            icon = appInfo.loadIcon(pkgManager),
-                            blocked = true,
-                            packageName = it
+                schedule.appList?.forEach {
+                    val pkgManager = Application.instance.packageManager
+                    try {
+                        val appInfo = pkgManager.getApplicationInfo(it, 0)
+                        localAppList.add(
+                            AppInfo(
+                                name = pkgManager.getApplicationLabel(appInfo).toString(),
+                                icon = appInfo.loadIcon(pkgManager),
+                                blocked = true,
+                                packageName = it
+                            )
                         )
-                    )
+                    } catch (ignored: PackageManager.NameNotFoundException) { }
                 }
-                it.appInfoList = localAppList
+                schedule.appInfoList = localAppList
             }
             return@fromCallable schedules
         }.subscribeOn(Schedulers.io())

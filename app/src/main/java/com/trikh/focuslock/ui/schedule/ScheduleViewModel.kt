@@ -1,35 +1,30 @@
 package com.trikh.focuslock.ui.schedule
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.data.source.ScheduleRepository
-import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 
-class ScheduleViewModel: ViewModel(){
+class ScheduleViewModel : ViewModel() {
 
     val scheduleList: MutableLiveData<List<Schedule>> = MutableLiveData()
-
     val instantLockSchedule: MutableLiveData<InstantLockSchedule> = MutableLiveData()
-
-    val scheduleRepository = ScheduleRepository()
-
+    private val scheduleRepository = ScheduleRepository()
+    private val compositeDisposable = CompositeDisposable()
 
 
     init {
-        scheduleRepository.getSchedules().subscribeBy {
+        compositeDisposable += scheduleRepository.getSchedules().subscribeBy {
             scheduleList.postValue(it)
         }
 
-        scheduleRepository.getInstantLock().subscribeBy {
+        compositeDisposable += scheduleRepository.getInstantLock().subscribeBy {
             instantLockSchedule.postValue(it)
         }
-
-
-
     }
 
     fun getInstantLockCount() = scheduleRepository.getInstantLockCount()
@@ -42,8 +37,6 @@ class ScheduleViewModel: ViewModel(){
 
     fun removeInstantLockSchedule() = scheduleRepository.deleteInstantLock()
 
-    fun updateInstantLockSchedule(schedule: InstantLockSchedule) = scheduleRepository.updateInstantLockSchedule(schedule)
-
-
-
+    fun updateInstantLockSchedule(schedule: InstantLockSchedule) =
+        scheduleRepository.updateInstantLockSchedule(schedule)
 }

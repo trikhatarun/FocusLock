@@ -48,8 +48,6 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
         }
     }
 
-    //fun addList(list: ArrayList<Schedule>){this.scheduleList.addAll(list)}
-
     override fun getItemCount() = scheduleList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -72,7 +70,6 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
                 itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
                 val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
-                Log.d("ScheduleAdapter:", "appList size ${schedule.appInfoList!!.size}")
                 itemView.hours_tv.text = duration
 
                 itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, level!!)
