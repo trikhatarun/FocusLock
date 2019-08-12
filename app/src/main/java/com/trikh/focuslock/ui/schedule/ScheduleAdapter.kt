@@ -166,7 +166,6 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
 
     interface PopupCallBacks {
         fun onItemClicked(type: String, adpaterPos: Int)
-
     }
 
 
