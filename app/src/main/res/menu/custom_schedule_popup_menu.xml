@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit"
-        android:title="Edit"
+        android:title="@string/edit"
         android:icon="@drawable/ic_edit"
         app:showAsAction="never"/>
     <item
         android:id="@+id/enable"
-        android:title="Enable"
+        android:title="@string/enable"
         android:icon="@drawable/ic_enable"
         app:showAsAction="never"/>
     <item
         android:id="@+id/disable"
-        android:title="Disable"
+        android:title="@string/disable"
         android:icon="@drawable/ic_disable"
         app:showAsAction="never"/>
     <item
         android:id="@+id/delete"
-        android:title="Delete"
+        android:title="@string/delete"
         android:icon="@drawable/ic_delete"
         app:showAsAction="never"/>
 

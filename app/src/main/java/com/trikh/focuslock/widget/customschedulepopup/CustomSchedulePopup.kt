@@ -11,24 +11,12 @@ import com.trikh.focuslock.ui.schedule.ScheduleAdapter
 import com.trikh.focuslock.utils.Constants
 
 @SuppressLint("RestrictedApi")
-class CustomSchedulePopup(
-    private val context:Context,
-    menuBuilder: MenuBuilder,
-    view: View,
-    val listener: ScheduleAdapter.PopupCallBacks,
-    val adapter_position: Int
-): MenuPopupHelper(
-    context,
-    menuBuilder,
-    view),
-MenuBuilder.Callback
-{
-   // val menuInflater= MenuInflater(context)
+class CustomSchedulePopup(context: Context, menuBuilder: MenuBuilder, view: View,
+                          val listener: ScheduleAdapter.PopupCallBacks,
+                          private val adapterPosition: Int): MenuPopupHelper(context, menuBuilder, view), MenuBuilder.Callback {
     init {
-        //menuInflater.inflate(popUpView, menuBuilder)
         menuBuilder.setCallback(this)
-        this.setForceShowIcon(true  )
-
+        this.setForceShowIcon(true)
     }
 
     override fun onMenuModeChange(menu: MenuBuilder?) {
@@ -38,32 +26,23 @@ MenuBuilder.Callback
     override fun onMenuItemSelected(menu: MenuBuilder?, item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.edit -> {
-                listener.onItemClicked(Constants.POPUP_EDIT, adapter_position)
+                listener.onItemClicked(Constants.POPUP_EDIT, adapterPosition)
                 dismiss()
-                //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.enable -> {
-                listener.onItemClicked(Constants.POPUP_ENABLE, adapter_position)
+                listener.onItemClicked(Constants.POPUP_ENABLE, adapterPosition)
                 dismiss()
-                //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.disable -> {
-                listener.onItemClicked(Constants.POPUP_DISABLE, adapter_position)
+                listener.onItemClicked(Constants.POPUP_DISABLE, adapterPosition)
                 dismiss()
-                //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
             R.id.delete -> {
-                listener.onItemClicked(Constants.POPUP_DELETE, adapter_position)
+                listener.onItemClicked(Constants.POPUP_DELETE, adapterPosition)
                 dismiss()
-                //Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
             }
         }
 
         return true
     }
-
-
-
-
-
 }
