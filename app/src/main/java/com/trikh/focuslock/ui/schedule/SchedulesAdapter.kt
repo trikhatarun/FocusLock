@@ -3,8 +3,10 @@ package com.trikh.focuslock.ui.schedule
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
 import android.widget.ListPopupWindow
 import android.widget.PopupMenu
+import android.widget.PopupWindow
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
@@ -14,6 +16,8 @@ import com.trikh.focuslock.utils.*
 import com.trikh.focuslock.utils.Constants.Companion.CUSTOM_SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.DAILY_SCHEDULE
 import com.trikh.focuslock.utils.Constants.Companion.INSTANT_LOCK
+import com.trikh.focuslock.utils.extensions.getMenuOptions
+import com.trikh.focuslock.utils.extensions.px
 import kotlinx.android.synthetic.main.instant_lock_schedule.view.*
 import kotlinx.android.synthetic.main.schedule_layout.view.*
 import kotlinx.android.synthetic.main.schedule_layout.view.blockedAppsRv
@@ -37,10 +41,18 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is CustomScheduleViewHolder -> holder.bind(scheduleList[position])
-            is PrimaryScheduleViewHolder -> holder.bind(scheduleList[position])
-            is InstantLockViewHolder -> holder.bind(instantLock)
+        if (instantLock != null) {
+            when (holder) {
+                is CustomScheduleViewHolder -> holder.bind(scheduleList[position -1])
+                is PrimaryScheduleViewHolder -> holder.bind(scheduleList[position -1])
+                is InstantLockViewHolder -> holder.bind(instantLock)
+            }
+        } else {
+            when (holder) {
+                is CustomScheduleViewHolder -> holder.bind(scheduleList[position])
+                is PrimaryScheduleViewHolder -> holder.bind(scheduleList[position])
+                is InstantLockViewHolder -> holder.bind(instantLock)
+            }
         }
     }
 
@@ -53,12 +65,18 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && instantLock != null) {
-            INSTANT_LOCK
-        } else if (scheduleList[position].level == -1) {
-            CUSTOM_SCHEDULE
+        return if (instantLock != null) {
+            when {
+                position == 0 -> INSTANT_LOCK
+                scheduleList[position - 1].level == -1 -> CUSTOM_SCHEDULE
+                else -> DAILY_SCHEDULE
+            }
         } else {
-            DAILY_SCHEDULE
+            if (scheduleList[position].level == -1) {
+                CUSTOM_SCHEDULE
+            } else {
+                DAILY_SCHEDULE
+            }
         }
     }
 
@@ -117,8 +135,11 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         itemView.context.getString(R.string.blocked_apps, 0)
                 itemView.options_iv.setOnClickListener {
                     val popupMenu = ListPopupWindow(itemView.options_iv.context)
-                    //Todo: Customise Schedule menu adapter acco to schedule
-                    popupMenu.setAdapter()
+                    popupMenu.anchorView = it
+                    popupMenu.height = ListPopupWindow.WRAP_CONTENT
+                    popupMenu.width = 203.px
+                    popupMenu.setAdapter(ScheduleMenuOptionAdapter(getMenuOptions))
+                    popupMenu.show()
                 }
 
                 itemView.blockedAppsRv.layoutManager =
@@ -150,7 +171,12 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         itemView.context.getString(R.string.blocked_apps, 0)
 
                 itemView.options_iv.setOnClickListener {
-                    //Todo: open menu 2
+                    val popupMenu = ListPopupWindow(itemView.options_iv.context)
+                    popupMenu.anchorView = it
+                    popupMenu.height = ListPopupWindow.WRAP_CONTENT
+                    popupMenu.width = 203.px
+                    popupMenu.setAdapter(ScheduleMenuOptionAdapter(getMenuOptions))
+                    popupMenu.show()
                 }
                 itemView.blockedAppsRv.layoutManager =
                         AutoFitGridLayoutManager(Application.instance, 48)

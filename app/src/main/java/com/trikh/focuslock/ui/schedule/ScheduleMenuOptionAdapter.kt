@@ -17,7 +17,7 @@ class ScheduleMenuOptionAdapter(private val optionList: List<PopupMenuOption>) :
         val menuOption = itemView.findViewById<TextView>(R.id.menu_option)
         val currentOption = (getItem(position) as PopupMenuOption)
         menuOption.text = currentOption.title
-        menuOption.setCompoundDrawables(menuOption.context.getDrawable(currentOption.iconRes), null, null, null)
+        menuOption.setCompoundDrawablesRelativeWithIntrinsicBounds(menuOption.context.getDrawable(currentOption.iconRes), null, null, null)
 
         return itemView!!
     }

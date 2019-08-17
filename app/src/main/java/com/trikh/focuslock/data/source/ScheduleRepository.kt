@@ -203,7 +203,7 @@ class ScheduleRepository {
         return Observable.fromCallable {
             val localAppList: ArrayList<AppInfo> = ArrayList()
             schedule.appList?.forEach {
-                val pkgManager = com.trikh.focuslock.Application.instance.packageManager
+                val pkgManager = Application.instance.packageManager
                 val appInfo = pkgManager.getApplicationInfo(it, 0)
                 localAppList.add(
                     AppInfo(

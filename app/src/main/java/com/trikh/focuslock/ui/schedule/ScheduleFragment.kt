@@ -14,19 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.appblock.StartServiceReceiver
-import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants
-import com.trikh.focuslock.utils.IconsUtils
-import com.trikh.focuslock.utils.TimeDurationUtils
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotlinx.android.synthetic.main.instant_lock_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
@@ -36,9 +30,8 @@ class ScheduleFragment : Fragment(),
     private lateinit var pref: SharedPreferences
     private lateinit var viewModelSchedule: ScheduleViewModel
     private lateinit var endTime: Calendar
-    private var check = false
     private var compositeDisposable = CompositeDisposable()
-    private val scheduleAdapter = ScheduleAdapter(emptyList(), this)
+    private val scheduleAdapter = SchedulesAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModelSchedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
@@ -59,7 +52,6 @@ class ScheduleFragment : Fragment(),
 
         endTime = Calendar.getInstance()
 
-        instantLock.visibility = View.GONE
         schedulesRv.layoutManager = LinearLayoutManager(context)
         schedulesRv.isNestedScrollingEnabled = false
         schedulesRv.adapter = scheduleAdapter
@@ -69,36 +61,7 @@ class ScheduleFragment : Fragment(),
         })
 
         viewModelSchedule.instantLockSchedule.observe(this, androidx.lifecycle.Observer {
-            if (it != null) {
-                instantLock.visibility = View.VISIBLE
-                activity?.instantLockFab?.visibility = View.GONE
-
-                val startTime = Calendar.getInstance()
-                val appInfoList = IconsUtils(context).getIconsFromPackageManager(it.blockedApps)
-
-                instantLockBlockedApps.layoutManager = AutoFitGridLayoutManager(Application.instance, 48)
-                instantLockBlockedApps.adapter = BlockedAppsAdapter(appInfoList)
-                blockedListTv.text = Application.instance.getString(R.string.blocked_apps, appInfoList.size)
-
-                endTime.timeInMillis = it.endTime
-                check = true
-
-                time.text = TimeDurationUtils.calculateDuration(startTime, endTime)
-            } else {
-                instantLock.visibility = View.GONE
-            }
-        })
-        if (check) {
-            time.text = TimeDurationUtils.calculateDuration(Calendar.getInstance(), endTime)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        compositeDisposable.add(viewModelSchedule.getInstantLockCount().subscribeBy {
-            if (it <= 0) {
-                instantLock.visibility = View.GONE
-            }
+            scheduleAdapter.setInstantLock(it)
         })
     }
 

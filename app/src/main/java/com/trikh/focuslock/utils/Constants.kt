@@ -28,5 +28,10 @@ interface Constants {
 
         const val ON_BOARDING = "on_Boarding"
         const val DEFAULT_ON_BOARDING = true
+
+        const val MENU_EDIT: Long = 1
+        const val MENU_DELETE: Long = 2
+        const val MENU_ENABLE: Long = 3
+        const val MENU_DISABLE: Long = 4
     }
 }
