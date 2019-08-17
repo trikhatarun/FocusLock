@@ -3,10 +3,7 @@ package com.trikh.focuslock.ui.schedule
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import android.widget.ListPopupWindow
-import android.widget.PopupMenu
-import android.widget.PopupWindow
 import androidx.recyclerview.widget.RecyclerView
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.R
@@ -25,7 +22,7 @@ import kotlinx.android.synthetic.main.schedule_layout.view.blockedListTv
 import kotlinx.android.synthetic.main.schedule_layout.view.sleepTimeLabelTv
 import java.util.*
 
-class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SchedulesAdapter(val listener:PopupCallBacks) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var instantLock: InstantLockSchedule? = null
     private var scheduleList: List<Schedule> = emptyList()
@@ -43,8 +40,8 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (instantLock != null) {
             when (holder) {
-                is CustomScheduleViewHolder -> holder.bind(scheduleList[position -1])
-                is PrimaryScheduleViewHolder -> holder.bind(scheduleList[position -1])
+                is CustomScheduleViewHolder -> holder.bind(scheduleList[position - 1])
+                is PrimaryScheduleViewHolder -> holder.bind(scheduleList[position - 1])
                 is InstantLockViewHolder -> holder.bind(instantLock)
             }
         } else {
@@ -110,7 +107,7 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class CustomScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CustomScheduleViewHolder(itemView: View) : BaseScheduleViewHolder(itemView) {
         fun bind(schedule: Schedule) {
             schedule.run {
                 if (schedule.active!!) {
@@ -134,12 +131,7 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 itemView.blocked_apps_title.text =
                         itemView.context.getString(R.string.blocked_apps, 0)
                 itemView.options_iv.setOnClickListener {
-                    val popupMenu = ListPopupWindow(itemView.options_iv.context)
-                    popupMenu.anchorView = it
-                    popupMenu.height = ListPopupWindow.WRAP_CONTENT
-                    popupMenu.width = 203.px
-                    popupMenu.setAdapter(ScheduleMenuOptionAdapter(getMenuOptions))
-                    popupMenu.show()
+                    showPopupMenu(schedule, it)
                 }
 
                 itemView.blockedAppsRv.layoutManager =
@@ -151,7 +143,7 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    inner class PrimaryScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PrimaryScheduleViewHolder(itemView: View) : BaseScheduleViewHolder(itemView) {
         fun bind(schedule: Schedule) {
             schedule.run {
                 if (schedule.active!!) {
@@ -171,12 +163,7 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         itemView.context.getString(R.string.blocked_apps, 0)
 
                 itemView.options_iv.setOnClickListener {
-                    val popupMenu = ListPopupWindow(itemView.options_iv.context)
-                    popupMenu.anchorView = it
-                    popupMenu.height = ListPopupWindow.WRAP_CONTENT
-                    popupMenu.width = 203.px
-                    popupMenu.setAdapter(ScheduleMenuOptionAdapter(getMenuOptions))
-                    popupMenu.show()
+                    showPopupMenu(schedule, it)
                 }
                 itemView.blockedAppsRv.layoutManager =
                         AutoFitGridLayoutManager(Application.instance, 48)
@@ -187,7 +174,7 @@ class SchedulesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    interface ScheduleListInteractionListener {
-        fun openPopUpMenu(id: Int)
+    interface PopupCallBacks {
+        fun onItemClicked(type: String, adpaterPos: Int)
     }
 }

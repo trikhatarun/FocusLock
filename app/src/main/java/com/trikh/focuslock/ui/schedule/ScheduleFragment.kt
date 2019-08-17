@@ -25,13 +25,13 @@ import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 class ScheduleFragment : Fragment(),
-    ScheduleAdapter.PopupCallBacks {
+    SchedulesAdapter.PopupCallBacks {
 
     private lateinit var pref: SharedPreferences
     private lateinit var viewModelSchedule: ScheduleViewModel
     private lateinit var endTime: Calendar
     private var compositeDisposable = CompositeDisposable()
-    private val scheduleAdapter = SchedulesAdapter()
+    private val scheduleAdapter = SchedulesAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModelSchedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
