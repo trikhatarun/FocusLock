@@ -7,10 +7,12 @@ import android.widget.BaseAdapter
 import android.widget.ListAdapter
 import android.widget.TextView
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.utils.extensions.getMenuOptions
 
-class ScheduleMenuOptionAdapter(
-    private val optionList: List<PopupMenuOption>,
-    private val itemClickListener: PopupMenuItemClickListener) : BaseAdapter(), ListAdapter {
+class ScheduleMenuOptionAdapter(schedule: Schedule) : BaseAdapter(), ListAdapter {
+
+    private val optionList: List<PopupMenuOption> = schedule.getMenuOptions
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -27,9 +29,11 @@ class ScheduleMenuOptionAdapter(
             null
         )
 
-        menuOption.setOnClickListener {
+        //Todo: setup menu item click listener
+        /*menuOption.setOnClickListener
+
             itemClickListener.onItemClicked(currentOption.id)
-        }
+        }*/
 
         return itemView!!
     }

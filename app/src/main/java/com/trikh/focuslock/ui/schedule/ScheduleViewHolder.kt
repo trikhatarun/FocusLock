@@ -61,17 +61,12 @@ open class ScheduleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
         }
     }
 
-    fun showPopupMenu(schedule: Schedule, anchorView: View) {
+    private fun showPopupMenu(schedule: Schedule, anchorView: View) {
         val popupMenu = ListPopupWindow(itemView.options_iv.context)
         popupMenu.anchorView = anchorView
         popupMenu.height = ListPopupWindow.WRAP_CONTENT
         popupMenu.width = 203.px
-        popupMenu.setAdapter(ScheduleMenuOptionAdapter(schedule.getMenuOptions, object :
-            ScheduleMenuOptionAdapter.PopupMenuItemClickListener {
-            override fun onItemClicked(id: Long) {
-
-            }
-        }))
+        popupMenu.setAdapter(ScheduleMenuOptionAdapter(schedule))
         popupMenu.show()
     }
 
