@@ -2,7 +2,6 @@ package com.trikh.focuslock.ui.schedule
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
@@ -19,9 +18,9 @@ import com.trikh.focuslock.utils.TimeUtils
 import com.trikh.focuslock.utils.WeekDaysUtils
 import com.trikh.focuslock.widget.customschedulepopup.CustomSchedulePopup
 import kotlinx.android.synthetic.main.schedule_layout.view.*
-import kotlinx.android.synthetic.main.schedule_layout.view.blockedListTv
+import kotlinx.android.synthetic.main.schedule_layout.view.endTimeLabelTv
 import kotlinx.android.synthetic.main.schedule_layout.view.blocked_apps_title
-import kotlinx.android.synthetic.main.schedule_layout.view.sleepTimeLabelTv
+import kotlinx.android.synthetic.main.schedule_layout.view.startTimeLabelTv
 
 class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: PopupCallBacks) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -67,13 +66,13 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 } else {
                     itemView.backgroundView.visibility = View.VISIBLE
                 }
-                itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
-                itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
+                itemView.endTimeLabelTv.text = context?.resources?.getString(R.string.end_time)
+                itemView.startTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
                 val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
                 itemView.hours_tv.text = duration
 
-                itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, level!!)
-                itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, level)
+                itemView.startTimeTv.text = TimeUtils.getSleepTime(startTime.time, level!!)
+                itemView.endTimeTv.text = TimeUtils.getAwakeTime(endTime.time, level)
                 itemView.levelTv.text = itemView.context.getString(R.string.level_n, level)
                 itemView.blocked_apps_title.text =
                     itemView.context.getString(R.string.blocked_apps, 0)
@@ -122,13 +121,13 @@ class ScheduleAdapter(private var scheduleList: List<Schedule>, val listener: Po
                 }
 
 
-                itemView.blockedListTv.text = context?.resources?.getString(R.string.end_time)
-                itemView.sleepTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
+                itemView.endTimeLabelTv.text = context?.resources?.getString(R.string.end_time)
+                itemView.startTimeLabelTv.text = context?.resources?.getString(R.string.start_time)
                 val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
                 //Log.d("ScheduleAdapter:","Time Duration $duration")
                 itemView.hours_tv.text = duration
-                itemView.sleepTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
-                itemView.awakeTimeTv.text = TimeUtils.getAwakeTime(endTime.time, 0)
+                itemView.startTimeTv.text = TimeUtils.getSleepTime(startTime.time, 0)
+                itemView.endTimeTv.text = TimeUtils.getAwakeTime(endTime.time, 0)
 
                 itemView.levelTv.text =
                     selectedWeekDays?.let { it1 -> WeekDaysUtils.getNextWeek(it1, endTime) }

@@ -1,37 +1,29 @@
 package com.trikh.focuslock.ui.schedule
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trikh.focuslock.R
-import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.utils.Constants
-import com.trikh.focuslock.widget.customdialog.CustomDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class ScheduleFragment : Fragment(),
-    SchedulesAdapter.PopupCallBacks {
+class ScheduleFragment : Fragment() {
 
     private lateinit var pref: SharedPreferences
     private lateinit var viewModelSchedule: ScheduleViewModel
     private lateinit var endTime: Calendar
     private var compositeDisposable = CompositeDisposable()
-    private val scheduleAdapter = SchedulesAdapter(this)
+    private val scheduleAdapter = SchedulesAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModelSchedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
@@ -70,7 +62,7 @@ class ScheduleFragment : Fragment(),
         compositeDisposable.dispose()
     }
 
-    override fun onItemClicked(type: String, adpaterPos: Int) {
+    /*override fun onItemClicked(type: String, adpaterPos: Int) {
         val schedule = viewModelSchedule.scheduleList.value!![adpaterPos]
         when (type) {
             Constants.POPUP_EDIT -> {
@@ -116,13 +108,13 @@ class ScheduleFragment : Fragment(),
 
             }
         }
-    }
+    }*/
 
-    private fun startService() {
+    /*private fun startService() {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, StartServiceReceiver::class.java)
         val pendingIntent =
             PendingIntent.getBroadcast(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent)
-    }
+    }*/
 }

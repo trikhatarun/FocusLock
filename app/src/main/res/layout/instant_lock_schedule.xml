@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/sleepTimeLabelTv"
+            android:id="@+id/startTimeLabelTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -34,9 +34,9 @@
             android:layout_width="3dp"
             android:layout_height="0dp"
             android:background="@color/colorPrimaryText"
-            app:layout_constraintBottom_toBottomOf="@id/sleepTimeLabelTv"
+            app:layout_constraintBottom_toBottomOf="@id/startTimeLabelTv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sleepTimeLabelTv" />
+            app:layout_constraintTop_toTopOf="@id/startTimeLabelTv" />
 
         <ImageView
             android:id="@+id/moreOptions"
@@ -45,9 +45,9 @@
             android:layout_marginEnd="8dp"
             android:padding="8dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/sleepTimeLabelTv"
-            app:layout_constraintEnd_toEndOf="@id/sleepTimeLabelTv"
-            app:layout_constraintTop_toTopOf="@id/sleepTimeLabelTv"
+            app:layout_constraintBottom_toBottomOf="@id/startTimeLabelTv"
+            app:layout_constraintEnd_toEndOf="@id/startTimeLabelTv"
+            app:layout_constraintTop_toTopOf="@id/startTimeLabelTv"
             app:srcCompat="@drawable/ic_more" />
 
         <TextView
@@ -58,9 +58,9 @@
             android:fontFamily="@font/muli_bold"
             android:textColor="@color/colorPrimaryText"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/sleepTimeLabelTv"
+            app:layout_constraintBottom_toBottomOf="@id/startTimeLabelTv"
             app:layout_constraintEnd_toStartOf="@id/moreOptions"
-            app:layout_constraintTop_toTopOf="@id/sleepTimeLabelTv"
+            app:layout_constraintTop_toTopOf="@id/startTimeLabelTv"
             tools:text="02:10 hr" />
 
         <View
@@ -69,10 +69,10 @@
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
             android:background="@color/colorLine"
-            app:layout_constraintTop_toBottomOf="@id/sleepTimeLabelTv" />
+            app:layout_constraintTop_toBottomOf="@id/startTimeLabelTv" />
 
         <TextView
-            android:id="@+id/blockedListTv"
+            android:id="@+id/blockedAppsLabelTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -95,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/blockedListTv"
+            app:layout_constraintTop_toBottomOf="@id/blockedAppsLabelTv"
             tools:listitem="@layout/blocked_app_list_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

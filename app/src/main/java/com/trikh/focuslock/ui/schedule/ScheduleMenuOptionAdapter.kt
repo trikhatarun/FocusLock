@@ -8,16 +8,28 @@ import android.widget.ListAdapter
 import android.widget.TextView
 import com.trikh.focuslock.R
 
-class ScheduleMenuOptionAdapter(private val optionList: List<PopupMenuOption>) : BaseAdapter(), ListAdapter {
+class ScheduleMenuOptionAdapter(
+    private val optionList: List<PopupMenuOption>,
+    private val itemClickListener: PopupMenuItemClickListener) : BaseAdapter(), ListAdapter {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val itemView = convertView
-                ?: LayoutInflater.from(parent?.context).inflate(R.layout.menu_item, parent, false)
+            ?: LayoutInflater.from(parent?.context).inflate(R.layout.menu_item, parent, false)
 
         val menuOption = itemView.findViewById<TextView>(R.id.menu_option)
         val currentOption = (getItem(position) as PopupMenuOption)
         menuOption.text = currentOption.title
-        menuOption.setCompoundDrawablesRelativeWithIntrinsicBounds(menuOption.context.getDrawable(currentOption.iconRes), null, null, null)
+        menuOption.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            menuOption.context.getDrawable(currentOption.iconRes),
+            null,
+            null,
+            null
+        )
+
+        menuOption.setOnClickListener {
+            itemClickListener.onItemClicked(currentOption.id)
+        }
 
         return itemView!!
     }
@@ -34,4 +46,7 @@ class ScheduleMenuOptionAdapter(private val optionList: List<PopupMenuOption>) :
         return optionList.size
     }
 
+    interface PopupMenuItemClickListener {
+        fun onItemClicked(id: Long)
+    }
 }

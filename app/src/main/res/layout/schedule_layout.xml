@@ -97,7 +97,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/sleepTimeLabelTv"
+                    android:id="@+id/startTimeLabelTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -107,31 +107,31 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/blockedListTv"
+                    android:id="@+id/endTimeLabelTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:text="@string/awake_time"
-                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
+                    app:layout_constraintBaseline_toBaselineOf="@id/startTimeLabelTv"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
-                    android:id="@+id/sleepTimeTv"
+                    android:id="@+id/startTimeTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="6dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/sleepTimeLabelTv"
-                    app:layout_constraintTop_toBottomOf="@id/sleepTimeLabelTv"
+                    app:layout_constraintStart_toStartOf="@id/startTimeLabelTv"
+                    app:layout_constraintTop_toBottomOf="@id/startTimeLabelTv"
                     tools:text="11:00 PM" />
 
                 <TextView
-                    android:id="@+id/awakeTimeTv"
+                    android:id="@+id/endTimeTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeTv"
-                    app:layout_constraintStart_toStartOf="@id/blockedListTv"
+                    app:layout_constraintBaseline_toBaselineOf="@id/startTimeTv"
+                    app:layout_constraintStart_toStartOf="@id/endTimeLabelTv"
                     tools:text="08:30 AM" />
 
                 <TextView
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="12sp"
-                    app:layout_constraintBaseline_toBaselineOf="@id/sleepTimeLabelTv"
+                    app:layout_constraintBaseline_toBaselineOf="@id/startTimeLabelTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="09hr 30min" />
@@ -148,10 +148,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/sleepTimeTv"
+                    app:layout_constraintBottom_toBottomOf="@id/startTimeTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sleepTimeTv"
+                    app:layout_constraintTop_toTopOf="@id/startTimeTv"
                     app:srcCompat="@drawable/ic_arrow" />
 
                 <androidx.constraintlayout.widget.Guideline
