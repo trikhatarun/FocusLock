@@ -4,6 +4,7 @@
     android:id="@+id/menu_option"
     android:layout_width="203dp"
     android:layout_height="50dp"
+    android:background="?selectableItemBackground"
     android:gravity="center"
     android:paddingStart="25dp"
     android:paddingEnd="25dp"

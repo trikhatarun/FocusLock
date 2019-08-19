@@ -31,8 +31,8 @@
         android:label="CustomScheduleActivity"
         tools:layout="@layout/activity_custom_schedule">
         <argument
-            android:name="schedule"
-            app:argType="com.trikh.focuslock.data.model.Schedule"/>
+                android:name="schedule"
+                app:argType="com.trikh.focuslock.data.model.Schedule" app:nullable="true" />
     </activity>
 
     <activity
@@ -41,8 +41,8 @@
         android:label="InstantLock"
         tools:layout="@layout/activity_instant_lock" >
         <argument
-            android:name="instant_lock_schedule"
-            app:argType="com.trikh.focuslock.data.model.InstantLockSchedule"/>
+                android:name="instant_lock_schedule"
+                app:argType="com.trikh.focuslock.data.model.InstantLockSchedule" app:nullable="true"/>
     </activity>
     <activity
         android:id="@+id/videoPlayerActivity"
@@ -64,13 +64,12 @@
     </fragment>
 
     <activity
-        android:id="@+id/primaryScheduleActivity"
-        android:name="com.trikh.focuslock.ui.schedule.primaryschedule.PrimaryScheduleActivity"
-        android:label="PrimaryScheduleActivity">
+            android:id="@+id/primaryScheduleActivity"
+            android:name="com.trikh.focuslock.ui.schedule.primaryschedule.PrimaryScheduleActivity"
+            android:label="PrimaryScheduleActivity">
 
         <argument
-            android:name="schedule"
-            app:argType="com.trikh.focuslock.data.model.Schedule"/>
-
+                android:name="schedule"
+                app:argType="com.trikh.focuslock.data.model.Schedule" app:nullable="true"/>
     </activity>
 </navigation>

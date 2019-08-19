@@ -35,7 +35,6 @@ import java.util.*
 
 class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
 
-
     private lateinit var blockedAppsAdapter: BlockedAppsAdapter
     private lateinit var binding: ActivityCustomScheduleBinding
     private lateinit var viewModelCustom: CustomScheduleViewModel
@@ -59,7 +58,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             Constants.DEFAULT_TYPE
         )
         if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
-            schedule = args.schedule
+            schedule = args.schedule!!
             val active = schedule.active
 
             schedule.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)

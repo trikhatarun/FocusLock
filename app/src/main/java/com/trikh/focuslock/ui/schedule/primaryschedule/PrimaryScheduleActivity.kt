@@ -61,7 +61,7 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
             Constants.DEFAULT_TYPE
         )
         if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
-            schedule = args.schedule
+            schedule = args.schedule!!
             val active = schedule.active
 
             schedule.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)

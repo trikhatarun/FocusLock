@@ -10,7 +10,10 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.utils.extensions.getMenuOptions
 
-class ScheduleMenuOptionAdapter(schedule: Schedule) : BaseAdapter(), ListAdapter {
+class ScheduleMenuOptionAdapter(
+    schedule: Schedule,
+    private val popupMenuItemClickListener: PopupMenuItemClickListener
+) : BaseAdapter(), ListAdapter {
 
     private val optionList: List<PopupMenuOption> = schedule.getMenuOptions
 
@@ -29,11 +32,9 @@ class ScheduleMenuOptionAdapter(schedule: Schedule) : BaseAdapter(), ListAdapter
             null
         )
 
-        //Todo: setup menu item click listener
-        /*menuOption.setOnClickListener
-
-            itemClickListener.onItemClicked(currentOption.id)
-        }*/
+        menuOption.setOnClickListener {
+            popupMenuItemClickListener.onItemClicked(currentOption.id)
+        }
 
         return itemView!!
     }

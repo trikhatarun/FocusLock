@@ -1,6 +1,9 @@
 package com.trikh.focuslock.ui.schedule
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,22 +11,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trikh.focuslock.R
+import com.trikh.focuslock.data.model.Schedule
+import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.utils.Constants
+import com.trikh.focuslock.widget.customdialog.CustomDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class ScheduleFragment : Fragment() {
+class ScheduleFragment : Fragment(), SchedulesAdapter.ScheduleInteractionListener {
 
     private lateinit var pref: SharedPreferences
     private lateinit var viewModelSchedule: ScheduleViewModel
     private lateinit var endTime: Calendar
     private var compositeDisposable = CompositeDisposable()
-    private val scheduleAdapter = SchedulesAdapter()
+    private val scheduleAdapter = SchedulesAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModelSchedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
@@ -62,43 +69,33 @@ class ScheduleFragment : Fragment() {
         compositeDisposable.dispose()
     }
 
-    /*override fun onItemClicked(type: String, adpaterPos: Int) {
-        val schedule = viewModelSchedule.scheduleList.value!![adpaterPos]
-        when (type) {
-            Constants.POPUP_EDIT -> {
-                val editor = pref.edit()
-                editor.putString(Constants.TYPE, Constants.POPUP_EDIT)
-                editor.apply()
-                if (adpaterPos == 0) {
+    override fun onScheduleAction(actionId: Long, schedule: Schedule) {
+        when (actionId) {
+            Constants.MENU_EDIT -> {
+                if (schedule.level != -1) {
                     findNavController().navigate(
-                        ScheduleFragmentDirections.actionEditPrimarySchedule(
-                            schedule
-                        )
+                        ScheduleFragmentDirections.actionEditPrimarySchedule(schedule)
                     )
                 } else {
                     findNavController().navigate(
-                        ScheduleFragmentDirections.actionEditSchedule(
-                            schedule
-                        )
+                        ScheduleFragmentDirections.actionEditSchedule(schedule)
                     )
                 }
 
             }
-            Constants.POPUP_ENABLE -> {
+            Constants.MENU_ENABLE -> {
                 schedule.active = true
-                Log.e("Fragment: ", " $schedule")
                 viewModelSchedule.enableOrDisableSchedule(schedule).subscribe {
                     startService()
                 }
             }
-            Constants.POPUP_DISABLE -> {
+            Constants.MENU_DISABLE -> {
                 schedule.active = false
-                Log.e("Fragment: ", " $schedule")
                 viewModelSchedule.enableOrDisableSchedule(schedule).subscribe {
                     startService()
                 }
             }
-            Constants.POPUP_DELETE -> {
+            Constants.MENU_DELETE -> {
                 CustomDialog(
                     R.string.remove_schedule,
                     { viewModelSchedule.removeSchedule(schedule.id) },
@@ -108,13 +105,14 @@ class ScheduleFragment : Fragment() {
 
             }
         }
-    }*/
+    }
 
-    /*private fun startService() {
+
+    private fun startService() {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, StartServiceReceiver::class.java)
         val pendingIntent =
             PendingIntent.getBroadcast(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent)
-    }*/
+    }
 }
