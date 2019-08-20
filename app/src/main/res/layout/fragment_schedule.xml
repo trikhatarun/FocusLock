@@ -5,6 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:paddingTop="16dp"
+        android:clipToPadding="false"
         tools:context=".ui.schedule.ScheduleFragment">
 
     <androidx.recyclerview.widget.RecyclerView

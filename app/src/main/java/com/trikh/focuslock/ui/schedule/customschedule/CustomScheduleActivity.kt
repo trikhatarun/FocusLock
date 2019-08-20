@@ -40,8 +40,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     private lateinit var viewModelCustom: CustomScheduleViewModel
     private var weekFlag = false
     private var appListFlag = false
-    private var type = Constants.DEFAULT_TYPE
-    private lateinit var schedule: Schedule
+    private var schedule: Schedule? = null
 
     private val args: CustomScheduleActivityArgs by navArgs()
 
@@ -53,24 +52,9 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         binding.viewModel = viewModelCustom
         binding.lifecycleOwner = this
 
-        type = getSharedPreferences(Constants.MY_PREF, 0).getString(
-            Constants.TYPE,
-            Constants.DEFAULT_TYPE
-        )
-        if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
-            schedule = args.schedule!!
-            val active = schedule.active
+        schedule = args.schedule
 
-            schedule.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)
-            val appInfoList = schedule.appInfoList
-
-            setTime(schedule.startTime, schedule.endTime)
-            viewModelCustom.applicationList.postValue(appInfoList)
-            viewModelCustom.checkedIds.postValue(schedule.selectedWeekDays)
-            setWeekDays(schedule.selectedWeekDays!!)
-
-
-        } else {
+        if(schedule == null) {
             val start = Calendar.getInstance()
             start.set(Calendar.HOUR_OF_DAY, 2)
             start.set(Calendar.MINUTE, 0)
@@ -78,9 +62,18 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
             end.set(Calendar.HOUR_OF_DAY, 10)
             end.set(Calendar.MINUTE, 0)
             setTime(start, end)
+        } else {
+            val active = schedule.active
+
+            schedule?.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule?.appList!!)
+            val appInfoList = schedule?.appInfoList
+
+            setTime(schedule?.startTime, schedule.endTime)
+            viewModelCustom.applicationList.postValue(appInfoList)
+            viewModelCustom.checkedIds.postValue(schedule.selectedWeekDays)
+            setWeekDays(schedule.selectedWeekDays!!)
+
         }
-
-
 
         arcToolbar.setAppBarLayout(appbar)
         setSupportActionBar(toolbar)
