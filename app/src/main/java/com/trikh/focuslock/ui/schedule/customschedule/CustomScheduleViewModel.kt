@@ -74,14 +74,6 @@ class CustomScheduleViewModel : ViewModel() {
     }
 
 
-
-    /*fun getScheduleById(scheduleId: Int){
-        val schedule = scheduleId.let {scheduleRepository.getScheduleById(it) }
-        checkedIds.value = schedule.selectedWeekDays
-        applicationList.value = schedule.appInfoList
-    }*/
-
-
     val onTimeChangedListener = TimeSliderRangePicker.OnSliderRangeMovedListener { start, end ->
         this@CustomScheduleViewModel.endTime.value = end
         this@CustomScheduleViewModel.startTime.value = start

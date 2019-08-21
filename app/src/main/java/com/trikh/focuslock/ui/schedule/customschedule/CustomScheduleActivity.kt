@@ -1,26 +1,20 @@
 package com.trikh.focuslock.ui.schedule.customschedule
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.navArgs
 import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.ActivityCustomScheduleBinding
-import com.trikh.focuslock.utils.AutoFitGridLayoutManager
-import androidx.lifecycle.Observer
-import androidx.navigation.navArgs
-import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.ui.MainActivity
-import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
+import com.trikh.focuslock.utils.AlarmManager
+import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
@@ -40,7 +34,7 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
     private lateinit var viewModelCustom: CustomScheduleViewModel
     private var weekFlag = false
     private var appListFlag = false
-    private var schedule: Schedule? = null
+    private val schedule by lazy { args.schedule }
 
     private val args: CustomScheduleActivityArgs by navArgs()
 
@@ -52,27 +46,25 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         binding.viewModel = viewModelCustom
         binding.lifecycleOwner = this
 
-        schedule = args.schedule
+        schedule.let { schedule ->
+            if (schedule != null) {
+                schedule.appInfoList =
+                    IconsUtils(this).getIconsFromPackageManager(schedule.appList!!)
+                val appInfoList = schedule.appInfoList
 
-        if(schedule == null) {
-            val start = Calendar.getInstance()
-            start.set(Calendar.HOUR_OF_DAY, 2)
-            start.set(Calendar.MINUTE, 0)
-            val end = Calendar.getInstance()
-            end.set(Calendar.HOUR_OF_DAY, 10)
-            end.set(Calendar.MINUTE, 0)
-            setTime(start, end)
-        } else {
-            val active = schedule.active
-
-            schedule?.appInfoList = IconsUtils(this).getIconsFromPackageManager(schedule?.appList!!)
-            val appInfoList = schedule?.appInfoList
-
-            setTime(schedule?.startTime, schedule.endTime)
-            viewModelCustom.applicationList.postValue(appInfoList)
-            viewModelCustom.checkedIds.postValue(schedule.selectedWeekDays)
-            setWeekDays(schedule.selectedWeekDays!!)
-
+                setTime(schedule.startTime, schedule.endTime)
+                viewModelCustom.applicationList.postValue(appInfoList)
+                viewModelCustom.checkedIds.postValue(schedule.selectedWeekDays)
+                setWeekDays(schedule.selectedWeekDays!!)
+            } else {
+                val start = Calendar.getInstance()
+                start.set(Calendar.HOUR_OF_DAY, 2)
+                start.set(Calendar.MINUTE, 0)
+                val end = Calendar.getInstance()
+                end.set(Calendar.HOUR_OF_DAY, 10)
+                end.set(Calendar.MINUTE, 0)
+                setTime(start, end)
+            }
         }
 
         arcToolbar.setAppBarLayout(appbar)
@@ -80,24 +72,13 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         toolbar_title.text = getString(R.string.set_schedule)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //Replace this code and get start and end from intents instead
-        /***********************************/
-
-        /**********************************/
-
-
         timePicker.setOnTouchListener { _, _ ->
             nestedScrollView.requestDisallowInterceptTouchEvent(true)
             false
         }
 
-
         viewModelCustom.checkedIds.observe(this, Observer {
             var flag = false
-            Log.e(
-                "CustomScheduleActivity:",
-                "selectedWeeks: ${it[0]} ${it[1]} ${it[2]} ${it[3]} ${it[4]} ${it[5]} ${it[6]} "
-            )
             for (i in 0 until it.size) {
                 if (it[i]) {
                     flag = true
@@ -121,8 +102,6 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
                 it.getContentIfNotHandled()
             }
         })
-
-
 
         blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
         blockedAppsAdapter = BlockedAppsAdapter(emptyList())
@@ -154,50 +133,43 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-
             R.id.saveSchedule -> {
                 if (weekFlag and appListFlag) {
 
-                    if (TextUtils.equals(type, Constants.POPUP_EDIT)) {
-
-                        viewModelCustom.updateSchedule(
-                            schedule.id,
-                            schedule.level!!,
-                            schedule.active!!
-                        )?.subscribe {
-                            viewModelCustom.startTime.value?.let { it2 ->
-
-                                setCustomScheduleAlarm(
-                                    it2,
-                                    Constants.CUSTOM_SCHEDULE,
-                                    schedule.id
-                                )
-
+                    schedule.let { schedule ->
+                        if (schedule != null) {
+                            viewModelCustom.updateSchedule(
+                                schedule.id,
+                                schedule.level!!,
+                                schedule.active!!
+                            )?.subscribe {
+                                viewModelCustom.startTime.value?.let {
+                                    AlarmManager(this@CustomScheduleActivity).setScheduleAlarm(
+                                        it,
+                                        Constants.CUSTOM_SCHEDULE,
+                                        schedule.id
+                                    )
+                                }
                             }
-                        }
+                        } else {
+                            viewModelCustom.createSchedule()?.subscribeBy {
+                                if (it > 0) {
+                                    viewModelCustom.scheduleRepository.getLastSchedule()
+                                        .subscribeBy {
+                                            viewModelCustom.startTime.value?.let {startTimeCalendar ->
+                                                AlarmManager(this@CustomScheduleActivity).setScheduleAlarm(
+                                                    startTimeCalendar,
+                                                    Constants.CUSTOM_SCHEDULE,
+                                                    it
+                                                )
 
-
-
-                    } else {
-
-                        viewModelCustom.createSchedule()?.subscribeBy {
-                            if (it > 0) {
-                                viewModelCustom.scheduleRepository.getLastSchedule().subscribeBy {
-                                    viewModelCustom.startTime.value?.let { it2 ->
-
-                                            setCustomScheduleAlarm(
-                                                it2,
-                                                Constants.CUSTOM_SCHEDULE,
-                                                it
-                                            )
-
-                                    }
+                                            }
+                                        }
                                 }
                             }
                         }
-
-
                     }
+
                     val serviceIntent = Intent(this, MainActivity::class.java)
                     startActivity(serviceIntent)
                 } else {
@@ -225,30 +197,6 @@ class CustomScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionL
         }
         return true
     }
-
-
-    fun setCustomScheduleAlarm(
-        calender: Calendar,
-        type: Int,
-        requestCode: Int
-    ) {
-
-        val intent = Intent(this, StartServiceReceiver::class.java)
-        intent.putExtra(Constants.SCHEDULE_TYPE, type)
-        val pendingIntent =
-            PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calender.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-
-
-    }
-
 
     override fun onConfirm(applicationList: List<AppInfo>) {
         viewModelCustom.applicationList.value = applicationList

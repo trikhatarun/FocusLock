@@ -11,7 +11,6 @@ import io.reactivex.rxkotlin.subscribeBy
 class StartServiceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.e("onReceive:", "Start")
         val serviceIntent = Intent(context, AppBlockService::class.java)
         serviceIntent.putExtras(intent)
         val active = intent.getBooleanExtra("SetPrimaryScheduleActive", false)
@@ -25,11 +24,10 @@ class StartServiceReceiver : BroadcastReceiver() {
             } else {
                 context.startService(serviceIntent)
             }
-            Log.e("onReceive:", "Start")
         }
     }
 
-    fun setPrimaryScheduleActive(context: Context, serviceIntent: Intent) {
+    private fun setPrimaryScheduleActive(context: Context, serviceIntent: Intent) {
         val repository = ScheduleRepository()
 
         repository.setPrimaryScheduleActive().subscribeBy {
@@ -39,7 +37,5 @@ class StartServiceReceiver : BroadcastReceiver() {
                 context.startService(serviceIntent)
             }
         }
-
-
     }
 }

@@ -42,12 +42,9 @@ class AppBlockService : Service() {
     private val usageStatsManager by lazy { getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
     private val activityManager by lazy { getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }
     private val scheduleRepository = ScheduleRepository()
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-
         start()
-
-
         return START_STICKY;
     }
 
@@ -116,7 +113,7 @@ class AppBlockService : Service() {
 
     }
 
-    fun setTimeAndPackages(time: Long, packages: List<String>) {
+    private fun setTimeAndPackages(time: Long, packages: List<String>) {
         runningTime = time
         val cal = Calendar.getInstance()
         cal.timeInMillis = 600000
