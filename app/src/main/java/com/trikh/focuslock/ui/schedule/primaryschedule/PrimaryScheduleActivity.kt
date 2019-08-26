@@ -11,7 +11,9 @@ import com.trikh.focuslock.databinding.ActivityPrimaryScheduleBinding
 import com.trikh.focuslock.utils.IconsUtils
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import com.trikh.focuslock.widget.app_picker.AppPickerDialog
+import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import kotlinx.android.synthetic.main.activity_primary_schedule.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.InteractionListener {
@@ -28,6 +30,11 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_primary_schedule)
         viewModel = ViewModelProviders.of(this).get(PrimaryViewModel::class.java)
+
+        arcToolbar.setAppBarLayout(appbar)
+        setSupportActionBar(toolbar)
+        toolbar_title.text = getString(R.string.set_schedule)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         schedule.let {
             if (it != null) {
