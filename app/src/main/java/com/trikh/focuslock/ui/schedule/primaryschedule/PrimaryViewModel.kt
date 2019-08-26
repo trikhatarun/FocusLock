@@ -12,7 +12,6 @@ import com.trikh.focuslock.widget.timepicker.TimeSliderRangePicker
 import io.reactivex.Observable
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.logging.Level
 import kotlin.collections.ArrayList
 
 class PrimaryViewModel : ViewModel() {
@@ -36,27 +35,15 @@ class PrimaryViewModel : ViewModel() {
         appPicker.postValue(Event(Unit))
     }
 
-    init {
-
-    }
-
-
     fun setTime(start: Calendar, end: Calendar) {
 
         startTime.value = start
         endTime.value = end
-
     }
 
-
-
-
-    fun onChecked( id: Int) {
-
-            level.postValue(id)
-
+    fun onChecked(id: Int) {
+        level.postValue(id)
     }
-
 
     /*fun setLevels(id: Int) {
         when (id) {
@@ -83,13 +70,6 @@ class PrimaryViewModel : ViewModel() {
 
     }*/
 
-
-    /*fun setChecked(id: Int): Boolean {
-
-       return checkedIds.value?.get(id)!!
-    }*/
-
-
     fun getSleepTime(time: Date, level: Int): String? {
         val sleepTime = Calendar.getInstance()
         sleepTime.time = time
@@ -103,7 +83,6 @@ class PrimaryViewModel : ViewModel() {
         awakeTime.add(Calendar.MINUTE, (level * 60))
         return timeFormat.format(awakeTime.time)
     }
-
 
     /*fun getScheduleById(scheduleId: Int){
         val schedule = scheduleId.let {scheduleRepository.getScheduleById(it) }
@@ -133,9 +112,6 @@ class PrimaryViewModel : ViewModel() {
         )
 
         return scheduleRepository.addSchedule(schedule)
-
-
-        //return schedule
     }
 
     fun updateSchedule(id: Int, active: Boolean): Observable<Int>? {
@@ -146,8 +122,8 @@ class PrimaryViewModel : ViewModel() {
 
         Log.e(
             "Schedule ",
-            "active: $active  End Time: ${endTime.value!!.timeInMillis}"+
-                  "level: ${level.value}"
+            "active: $active  End Time: ${endTime.value!!.timeInMillis}" +
+                    "level: ${level.value}"
         )
 
 
@@ -161,7 +137,7 @@ class PrimaryViewModel : ViewModel() {
             appList = list as List<String>
         )
 
-       return scheduleRepository.updateSchedule(schedule)
+        return scheduleRepository.updateSchedule(schedule)
 
     }
 
