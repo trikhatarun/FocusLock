@@ -52,7 +52,7 @@ class PrimaryViewModel : ViewModel() {
     fun calculateSleepTime(time: Date, level: Int): Calendar {
         val sleepTime = Calendar.getInstance()
         sleepTime.time = time
-        sleepTime.add(Calendar.MINUTE, (level * 30))
+        sleepTime.add(Calendar.MINUTE, -(level * 30))
         return sleepTime
     }
 
@@ -63,7 +63,7 @@ class PrimaryViewModel : ViewModel() {
     fun calculateAwakeTime(time: Date, level: Int): Calendar {
         val awakeTime = Calendar.getInstance()
         awakeTime.time = time
-        awakeTime.add(Calendar.MINUTE, -(level * 60))
+        awakeTime.add(Calendar.MINUTE, (level * 60))
         return awakeTime
     }
 
