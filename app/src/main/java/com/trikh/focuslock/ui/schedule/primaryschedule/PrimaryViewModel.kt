@@ -45,43 +45,26 @@ class PrimaryViewModel : ViewModel() {
         level.postValue(id)
     }
 
-    /*fun setLevels(id: Int) {
-        when (id) {
-            R.id.level_one_rb -> {
-                level.postValue(1)
-            }
-            R.id.level_two_rb -> {
-                level.postValue(2)
-            }
-            R.id.level_three_rb -> {
-                level.postValue(3)
-            }
-        }
-        Log.d("setLevels: ", "level: $id")
-
+    fun getSleepTime(time: Date, level: Int): String? {
+        return timeFormat.format(calculateSleepTime(time, level).time)
     }
 
-    fun getLevels(id: Int): Boolean {
-        if (id == level.value) {
-            Log.d("getLevels: ", "level: $id")
-            return true
-        }
-        return false
-
-    }*/
-
-    fun getSleepTime(time: Date, level: Int): String? {
+    fun calculateSleepTime(time: Date, level: Int): Calendar {
         val sleepTime = Calendar.getInstance()
         sleepTime.time = time
-        sleepTime.add(Calendar.MINUTE, -(level * 30))
-        return timeFormat.format(sleepTime.time)
+        sleepTime.add(Calendar.MINUTE, (level * 30))
+        return sleepTime
     }
 
     fun getAwakeTime(time: Date, level: Int): String? {
+        return timeFormat.format(calculateAwakeTime(time, level).time)
+    }
+
+    fun calculateAwakeTime(time: Date, level: Int): Calendar {
         val awakeTime = Calendar.getInstance()
         awakeTime.time = time
-        awakeTime.add(Calendar.MINUTE, (level * 60))
-        return timeFormat.format(awakeTime.time)
+        awakeTime.add(Calendar.MINUTE, -(level * 60))
+        return awakeTime
     }
 
     /*fun getScheduleById(scheduleId: Int){
