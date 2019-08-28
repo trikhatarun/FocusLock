@@ -57,15 +57,13 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         }
 
         schedule.let {
-            if (it != null) {
-                it.appInfoList = IconsUtils(this).getIconsFromPackageManager(it.appList!!)
-                val appInfoList = it.appInfoList
+            it.appInfoList = IconsUtils(this).getIconsFromPackageManager(it.appList!!)
+            val appInfoList = it.appInfoList
 
-                setTime(it.startTime, it.endTime)
-                viewModel.applicationList.postValue(appInfoList)
-                viewModel.level.postValue(it.level)
-                binding.viewModel = viewModel
-            }
+            setTime(it.startTime, it.endTime)
+            viewModel.applicationList.postValue(appInfoList)
+            viewModel.level.postValue(it.level)
+            binding.viewModel = viewModel
         }
 
         blocked_apps_rv.layoutManager = AutoFitGridLayoutManager(this, 48)
@@ -80,6 +78,13 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
         viewModel.applicationList.observe(this, Observer {
             blockedAppsAdapter.updateList(it)
             blocked_apps_title.text = getString(R.string.blocked_apps, it.size)
+        })
+
+        viewModel.appPicker.observe(this, Observer {
+            if (!it.hasBeenHandled) {
+                AppPickerDialog(viewModel.applicationList.value!!, this)
+                    .show(supportFragmentManager, "appPicker")
+            }
         })
     }
 
@@ -97,18 +102,19 @@ class PrimaryScheduleActivity : AppCompatActivity(), AppPickerDialog.Interaction
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.saveSchedule -> {
-                if (appListFlag) {
-                    viewModel.updateSchedule(
-                        schedule.id,
-                        schedule?.active!!
-                    )?.subscribeBy {
-                        AlarmManager(this).setScheduleAlarm(schedule?.startTime!!)
-                    }
+                viewModel.applicationList.value.let {
+                    if (it != null && it.isNotEmpty()) {
+                        schedule.let { schedule ->
+                            viewModel.updateSchedule(
+                                schedule.id
+                            )?.subscribeBy {id ->
+                                AlarmManager(this).setScheduleAlarm(schedule.startTime, id, Constants.DAILY_SCHEDULE)
+                            }
+                        }
 
-                    val serviceIntent = Intent(this, MainActivity::class.java)
-                    startActivity(serviceIntent)
-                } else {
-                    if (!appListFlag) {
+                        val serviceIntent = Intent(this, MainActivity::class.java)
+                        startActivity(serviceIntent)
+                    } else {
                         CustomDialog(
                             R.string.minimum_blocked_apps_msg,
                             {},

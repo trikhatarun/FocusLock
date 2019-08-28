@@ -103,7 +103,6 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
             if (!it.hasBeenHandled) {
                 AppPickerDialog(viewModel.applicationList.value!!, this)
                     .show(supportFragmentManager, "appPicker")
-                it.getContentIfNotHandled()
             }
         })
 

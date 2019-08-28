@@ -70,6 +70,6 @@
 
         <argument
                 android:name="schedule"
-                app:argType="com.trikh.focuslock.data.model.Schedule" app:nullable="true"/>
+                app:argType="com.trikh.focuslock.data.model.Schedule"/>
     </activity>
 </navigation>

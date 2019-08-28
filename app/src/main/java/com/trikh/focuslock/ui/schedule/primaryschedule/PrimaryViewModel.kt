@@ -1,6 +1,5 @@
 package com.trikh.focuslock.ui.schedule.primaryschedule
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.trikh.focuslock.R
@@ -46,10 +45,10 @@ class PrimaryViewModel : ViewModel() {
     }
 
     fun getSleepTime(time: Date, level: Int): String? {
-        return timeFormat.format(calculateSleepTime(time, level).time)
+        return timeFormat.format(calulcateEndTime(time, level).time)
     }
 
-    fun calculateSleepTime(time: Date, level: Int): Calendar {
+    private fun calulcateEndTime(time: Date, level: Int): Calendar {
         val sleepTime = Calendar.getInstance()
         sleepTime.time = time
         sleepTime.add(Calendar.MINUTE, -(level * 30))
@@ -57,10 +56,10 @@ class PrimaryViewModel : ViewModel() {
     }
 
     fun getAwakeTime(time: Date, level: Int): String? {
-        return timeFormat.format(calculateAwakeTime(time, level).time)
+        return timeFormat.format(calculateStartTime(time, level).time)
     }
 
-    fun calculateAwakeTime(time: Date, level: Int): Calendar {
+    private fun calculateStartTime(time: Date, level: Int): Calendar {
         val awakeTime = Calendar.getInstance()
         awakeTime.time = time
         awakeTime.add(Calendar.MINUTE, (level * 60))
@@ -79,40 +78,14 @@ class PrimaryViewModel : ViewModel() {
         this@PrimaryViewModel.startTime.value = start
     }
 
-    fun createSchedule(): Observable<Long>? {
+    fun updateSchedule(id: Int): Observable<Int>? {
         val list: ArrayList<String> = ArrayList()
         applicationList.value?.forEach {
             list.add(it.packageName)
         }
-
-        val schedule = Schedule(
-            level = -1,
-            endTime = endTime.value!!,
-            startTime = startTime.value!!,
-            active = true,
-            selectedWeekDays = arrayOf(true, true, true, true, true, true, true),
-            appList = list as List<String>
-        )
-
-        return scheduleRepository.addSchedule(schedule)
-    }
-
-    fun updateSchedule(id: Int, active: Boolean): Observable<Int>? {
-        val list: ArrayList<String> = ArrayList()
-        applicationList.value?.forEach {
-            list.add(it.packageName)
-        }
-
-        Log.e(
-            "Schedule ",
-            "active: $active  End Time: ${endTime.value!!.timeInMillis}" +
-                    "level: ${level.value}"
-        )
-
 
         val schedule = Schedule(
             id = id,
-            active = active,
             level = level.value!!,
             endTime = endTime.value!!,
             startTime = startTime.value!!,

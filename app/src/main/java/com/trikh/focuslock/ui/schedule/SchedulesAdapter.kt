@@ -106,10 +106,12 @@ class SchedulesAdapter(val scheduleInteractionListener: ScheduleInteractionListe
             this.schedule = schedule
 
             //Set background gray if schedule is disabled
-            if (schedule.active!!) {
-                itemView.backgroundView.visibility = View.GONE
-            } else {
-                itemView.backgroundView.visibility = View.VISIBLE
+            if (schedule.level == -1) {
+                if (schedule.active!!) {
+                    itemView.backgroundView.visibility = View.GONE
+                } else {
+                    itemView.backgroundView.visibility = View.VISIBLE
+                }
             }
 
             if (schedule.level == -1) {
