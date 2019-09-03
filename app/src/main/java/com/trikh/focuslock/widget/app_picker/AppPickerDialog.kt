@@ -15,7 +15,6 @@ import com.trikh.focuslock.utils.AutoFitGridLayoutManager
 import com.trikh.focuslock.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.app_picker_dialog.*
 
-
 class AppPickerDialog(
     private val selectedAppList: List<AppInfo>,
     private val interactionListener: InteractionListener
@@ -38,11 +37,6 @@ class AppPickerDialog(
         appsRV.layoutManager = AutoFitGridLayoutManager(view.context, 70)
 
         appsRV.adapter = applicationListAdapter
-        val columns =
-            (appsRV.layoutManager as AutoFitGridLayoutManager).getColumnCountForAccessibility(
-                appsRV.Recycler(),
-                RecyclerView.State()
-            )
 
         ViewModelProviders.of(this, ViewModelFactory(activity!!.application, selectedAppList))
             .get(AppListViewModel::class.java)
