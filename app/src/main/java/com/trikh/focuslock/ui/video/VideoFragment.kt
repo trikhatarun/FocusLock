@@ -26,7 +26,6 @@ class VideoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.fabMenu?.visibility = View.GONE
         activity?.toolbar_title?.text = getString(R.string.video)
 
         viewModel = ViewModelProviders.of(this).get(VideoViewModel::class.java)

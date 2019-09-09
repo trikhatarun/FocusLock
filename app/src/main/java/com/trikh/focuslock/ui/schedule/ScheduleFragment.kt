@@ -19,7 +19,6 @@ import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.utils.Constants
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -32,7 +31,11 @@ class ScheduleFragment : Fragment(), SchedulesAdapter.ScheduleInteractionListene
     private var compositeDisposable = CompositeDisposable()
     private val scheduleAdapter = SchedulesAdapter(this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewModelSchedule = ViewModelProviders.of(this).get(ScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
@@ -45,15 +48,21 @@ class ScheduleFragment : Fragment(), SchedulesAdapter.ScheduleInteractionListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.fabMenu?.visibility = View.VISIBLE
-        activity?.instantLockFab?.visibility = View.VISIBLE
         activity?.toolbar_title?.text = getString(R.string.schedule)
 
         endTime = Calendar.getInstance()
 
-        schedulesRv.layoutManager = LinearLayoutManager(context)
         schedulesRv.isNestedScrollingEnabled = false
+        schedulesRv.layoutManager = LinearLayoutManager(context)
         schedulesRv.adapter = scheduleAdapter
+
+        instantLockFab.setOnClickListener {
+            findNavController().navigate(ScheduleFragmentDirections.actionInstantLock())
+        }
+
+        scheduleFab.setOnClickListener {
+            findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(null))
+        }
 
         viewModelSchedule.scheduleList.observe(this, androidx.lifecycle.Observer {
             scheduleAdapter.setList(it)
@@ -106,7 +115,6 @@ class ScheduleFragment : Fragment(), SchedulesAdapter.ScheduleInteractionListene
             }
         }
     }
-
 
     private fun startService() {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager

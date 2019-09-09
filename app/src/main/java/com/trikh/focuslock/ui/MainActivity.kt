@@ -68,22 +68,6 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    fun onAddScheduleClick(v: View) {
-        val editor = pref!!.edit()
-        editor.putString(Constants.TYPE, Constants.DEFAULT_TYPE)
-        editor.apply()
-        findNavController(R.id.container).navigate(R.id.customSchedule)
-        fabMenu.toggle(true)
-    }
-
-    fun onInstantLockClick(v: View) {
-        val editor = pref!!.edit()
-        editor.putString(Constants.TYPE, Constants.DEFAULT_TYPE)
-        editor.apply()
-        findNavController(R.id.container).navigate(R.id.instantLock)
-        fabMenu.toggle(true)
-    }
-
     override fun onBackPressed() {
 
     }

@@ -54,8 +54,6 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
 
     private lateinit var instantLockSchedule: InstantLockSchedule
 
-    private val args: InstantLockActivityArgs by navArgs()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_instant_lock)

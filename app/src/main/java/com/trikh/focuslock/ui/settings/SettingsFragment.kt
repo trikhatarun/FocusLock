@@ -65,7 +65,7 @@ class SettingsFragment : Fragment(), SettingRecyclerViewAdapter.AdapterInteracti
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.fabMenu?.visibility = View.GONE
+
         activity?.toolbar_title?.text = getString(R.string.settings)
 
         initRecyclerView()
