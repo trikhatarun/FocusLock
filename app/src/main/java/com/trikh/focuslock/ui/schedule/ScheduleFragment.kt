@@ -58,10 +58,12 @@ class ScheduleFragment : Fragment(), SchedulesAdapter.ScheduleInteractionListene
 
         instantLockFab.setOnClickListener {
             findNavController().navigate(ScheduleFragmentDirections.actionInstantLock())
+            fabMenu.toggle(true)
         }
 
         scheduleFab.setOnClickListener {
             findNavController().navigate(ScheduleFragmentDirections.actionEditSchedule(null))
+            fabMenu.toggle(true)
         }
 
         viewModelSchedule.scheduleList.observe(this, androidx.lifecycle.Observer {
