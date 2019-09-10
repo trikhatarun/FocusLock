@@ -97,9 +97,7 @@ class AppsAdapter(private var applicationList: List<AppInfo>) : RecyclerView.Ada
         }
 
         private fun updateData() {
-            applicationList.find { it.packageName == filteredList[adapterPosition].packageName }?.let {
-                it.blocked = !it.blocked
-            }
+            filteredList[adapterPosition].blocked = !filteredList[adapterPosition].blocked
         }
     }
 }
