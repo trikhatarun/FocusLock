@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,8 @@ class AppsAdapter(private var applicationList: List<AppInfo>) : RecyclerView.Ada
 
     fun updateList(applicationList: List<AppInfo>) {
         this.applicationList = applicationList
-        this.filteredList = applicationList.toMutableList()
+        this.filteredList.clear()
+        this.filteredList.addAll(applicationList)
         notifyDataSetChanged()
     }
 
@@ -98,7 +100,6 @@ class AppsAdapter(private var applicationList: List<AppInfo>) : RecyclerView.Ada
             applicationList.find { it.packageName == filteredList[adapterPosition].packageName }?.let {
                 it.blocked = !it.blocked
             }
-            filteredList[adapterPosition].blocked = !filteredList[adapterPosition].blocked
         }
     }
 }
