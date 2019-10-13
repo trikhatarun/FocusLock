@@ -36,19 +36,20 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/inviteLinkTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/muli_light"
-            android:text="@string/setting_bottom_message_1"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/mainTv2"
-            app:layout_constraintEnd_toEndOf="@+id/mainTv2"
-            app:layout_constraintStart_toStartOf="@+id/mainTv2"
-            app:layout_constraintTop_toBottomOf="@id/materialCardView3" />
+                android:id="@+id/inviteLinkTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/muli_light"
+                android:text="@string/setting_bottom_message_1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/mainTv2"
+                app:layout_constraintEnd_toEndOf="@+id/mainTv2"
+                app:layout_constraintStart_toStartOf="@+id/mainTv2"
+                app:layout_constraintTop_toBottomOf="@id/materialCardView3"
+                app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/mainTv2"
