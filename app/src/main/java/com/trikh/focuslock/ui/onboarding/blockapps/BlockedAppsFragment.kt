@@ -1,7 +1,5 @@
 package com.trikh.focuslock.ui.onboarding.blockapps
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TabHost
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,8 +18,6 @@ import com.google.android.material.tabs.TabLayout
 import com.trikh.focuslock.R
 import com.trikh.focuslock.data.model.Schedule
 import com.trikh.focuslock.databinding.FragmentBlockedAppsBinding
-import com.trikh.focuslock.ui.MainActivity
-import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.onboarding.OnboardingActivity
 import com.trikh.focuslock.ui.schedule.BlockedAppsAdapter
 import com.trikh.focuslock.utils.AutoFitGridLayoutManager
@@ -35,14 +29,9 @@ import com.trikh.focuslock.widget.app_picker.AppPickerDialog
 import com.trikh.focuslock.widget.customdialog.CustomDialog
 import kotlinx.android.synthetic.main.fragment_blocked_apps.*
 import kotlinx.android.synthetic.main.fragment_blocked_apps.view.*
-import kotlinx.android.synthetic.main.fragment_blocked_apps.view.levels
-import kotlinx.android.synthetic.main.fragment_blocked_apps.view.setSchedule
-import kotlinx.android.synthetic.main.fragment_slides.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
-class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
+class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener {
 
 
     private lateinit var listener: InteractionListener
@@ -101,8 +90,13 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
 
     override fun onResume() {
         super.onResume()
-        if (!context!!.hasUsageStatsPermission){
-            CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(fragmentManager,null)
+        if (!context!!.hasUsageStatsPermission) {
+            CustomDialog(
+                R.string.usage_permission_request_message,
+                this::requestUsagePermission,
+                R.string.grant,
+                R.string.deny
+            ).show(fragmentManager, null)
         }
     }
 
@@ -113,7 +107,7 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
         levels.addTab(levels.newTab().setText("Level 2"))
         levels.addTab(levels.newTab().setText("Level 3"))
         onLevelChanged(1)
-        levels.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        levels.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) {
             }
 
@@ -142,29 +136,34 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
     }
 
 
-   /* override fun onLevelChanged(level: Int) {
-        Log.d("BlocksAppsFragment:", "levels: $level")
+    /* override fun onLevelChanged(level: Int) {
+         Log.d("BlocksAppsFragment:", "levels: $level")
 
 
 
 
-    }*/
+     }*/
 
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is InteractionListener){
+        if (context is InteractionListener) {
             listener = context
-        }else{
+        } else {
             throw RuntimeException(context?.packageName + "must implement dialog interaction listener")
         }
     }
 
     private fun createPrimarySchedule() {
         if (listFlag) {
-            if (!context!!.hasUsageStatsPermission){
-                CustomDialog(R.string.usage_permission_request_message,this::requestUsagePermission,R.string.grant,R.string.deny).show(fragmentManager,null)
-            }else{
+            if (!context!!.hasUsageStatsPermission) {
+                CustomDialog(
+                    R.string.usage_permission_request_message,
+                    this::requestUsagePermission,
+                    R.string.grant,
+                    R.string.deny
+                ).show(fragmentManager, null)
+            } else {
                 val list: ArrayList<String> = ArrayList()
                 viewModel.applicationList.value?.forEach {
                     list.add(it.packageName)
@@ -172,9 +171,8 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
                 Log.d("BlockedAppsFragment:", " list Size: ${list.size}")
 
 
-
                 val schedule = Schedule(
-                    level = levels.selectedTabPosition+1,
+                    level = levels.selectedTabPosition + 1,
                     endTime = args.stringEndTime,
                     startTime = args.stringStartTime,
                     active = true,
@@ -186,7 +184,10 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
                     "Level: ${schedule.level} endTime: ${schedule.endTime} startTime: ${schedule.startTime} active: ${schedule.active} appList: ${schedule.appList!!.size}"
                 )
                 viewModel.scheduleRepository.addSchedule(schedule).subscribe {
-                    (activity as OnboardingActivity).setSchedule(schedule.startTime, Constants.DAILY_SCHEDULE )
+                    (activity as OnboardingActivity).setSchedule(
+                        schedule.startTime,
+                        Constants.DAILY_SCHEDULE
+                    )
                     val pref = context!!.getSharedPreferences(Constants.MY_PREF, 0)
                     val editor = pref!!.edit()
                     editor.putBoolean(Constants.ON_BOARDING, false)
@@ -199,12 +200,17 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
 
 
         } else {
-            CustomDialog(R.string.minimum_blocked_apps_msg, {}, R.string.ok_text, R.string.empty_string).show(fragmentManager, "")
+            CustomDialog(
+                R.string.minimum_blocked_apps_msg,
+                {},
+                R.string.ok_text,
+                R.string.empty_string
+            ).show(fragmentManager, "")
         }
 
     }
 
-    fun onLevelChanged(level: Int){
+    fun onLevelChanged(level: Int) {
         val startTime = args.stringStartTime
         val endTime = args.stringEndTime
         val sleepTime = TimeUtils.getSleepTime(startTime.time, level)
@@ -215,12 +221,12 @@ class BlockedAppsFragment : Fragment(), AppPickerDialog.InteractionListener{
     }
 
 
-    interface InteractionListener{
+    interface InteractionListener {
 
     }
 
 
-    private fun requestUsagePermission(){
+    private fun requestUsagePermission() {
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }

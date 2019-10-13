@@ -1,15 +1,12 @@
 package com.trikh.focuslock.ui
 
-import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -17,7 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.trikh.focuslock.R
 import com.trikh.focuslock.ui.appblock.StartServiceReceiver
 import com.trikh.focuslock.ui.settings.SettingsFragment
-import com.trikh.focuslock.utils.Constants
+import com.trikh.focuslock.utils.BaseActivity
 import com.trikh.focuslock.utils.extensions.hasUsageStatsPermission
 import com.trikh.focuslock.widget.arctoolbar.setAppBarLayout
 import com.trikh.focuslock.widget.customdialog.CustomDialog
@@ -25,23 +22,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity(),
     SettingsFragment.OnFragmentInteractionListener {
-
-    private var pref: SharedPreferences? = null
 
     override fun onFragmentInteraction(uri: Uri) {
 
     }
 
-    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        pref = getSharedPreferences(Constants.MY_PREF, 0)
-        val editor = pref!!.edit()
-        editor.putString(Constants.TYPE, Constants.DEFAULT_TYPE)
-        editor.apply()
 
         arcToolbar.setAppBarLayout(appbar)
 
@@ -63,13 +53,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (Intent.ACTION_VIEW.equals(intent?.action)) {
+        if (Intent.ACTION_VIEW == intent?.action) {
             Toast.makeText(this, "Open via link", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onBackPressed() {
-
     }
 
     fun startService() {
@@ -80,17 +66,14 @@ class MainActivity : AppCompatActivity(),
         setPrimaryScheduleActive()
     }
 
-    fun setPrimaryScheduleActive() {
+    private fun setPrimaryScheduleActive() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, StartServiceReceiver::class.java)
-        intent.putExtra("SetPrimaryScheduleActive", true)
+        val intent = Intent(this, StartServiceReceiver::class.java).apply {
+            putExtra("SetPrimaryScheduleActive", true)
+        }
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
         val cal = Calendar.getInstance()
         cal.add(Calendar.HOUR, 12)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-    }
-
-    private fun requestUsagePermission() {
-        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }

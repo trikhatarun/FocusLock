@@ -15,14 +15,7 @@ interface Constants {
         const val PLAIN_TEXT = "text/plain"
         const val SHARE_FOCUS_LOCK = "Share Focus Lock"
 
-        const val TYPE = "type"
         const val MY_PREF = "focus_lock_pref"
-        const val POPUP_EDIT = "edit"
-        const val POPUP_DISABLE = "disable"
-        const val POPUP_ENABLE = "enable"
-        const val POPUP_DELETE = "delete"
-        const val DEFAULT_TYPE = "no_type"
-        const val POPUP_INSTANT_EDIT = "instant_edit"
 
         const val ON_BOARDING = "on_Boarding"
         const val DEFAULT_ON_BOARDING = true
