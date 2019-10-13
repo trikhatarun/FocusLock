@@ -1,7 +1,6 @@
 package com.trikh.focuslock.data.source
 
 import android.content.pm.PackageManager
-import android.util.Log
 import com.trikh.focuslock.Application
 import com.trikh.focuslock.data.model.InstantLockSchedule
 import com.trikh.focuslock.data.model.Schedule
@@ -10,6 +9,7 @@ import com.trikh.focuslock.data.source.local.ScheduleLocalRepository
 import com.trikh.focuslock.data.utils.ServiceUtil
 import com.trikh.focuslock.widget.app_picker.AppInfo
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -18,18 +18,13 @@ import kotlin.collections.ArrayList
 class ScheduleRepository {
     private val scheduleLocalRepository = ScheduleLocalRepository.getInstance()
 
-    fun addSchedule(schedule: Schedule) =
+    fun addSchedule(schedule: Schedule): Observable<Long> =
         scheduleLocalRepository.addSchedule(schedule)
 
-    //fun addApplicationList(list: List<Application>) =
-    //scheduleLocalRepository.addApplicationList(list)
-
-    //fun getAllApplicationList(id: Int) = scheduleLocalRepository.getAllApplicationList(id)
-
-    fun updateSchedule(schedule: Schedule) =
+    fun updateSchedule(schedule: Schedule): Observable<Int> =
         scheduleLocalRepository.updateSchedule(schedule)
 
-    fun getInstantLockBlockedPackages() = getInstantLock().map {
+    private fun getInstantLockBlockedPackages(): Observable<ArrayList<String>> = getInstantLock().map {
         val list = ArrayList<String>()
         if (it.endTime > System.currentTimeMillis()) {
             list.addAll(it.blockedApps)
@@ -39,78 +34,29 @@ class ScheduleRepository {
         return@map list
     }
 
-    fun setEmergencyModeOn() =
+    fun setEmergencyModeOn(): Observable<Int> =
         scheduleLocalRepository.deleteInstantLock().flatMap {
             return@flatMap scheduleLocalRepository.setEmergencyModeOn(false).map {
                 return@map it
             }
-
         }
 
-    fun setPrimaryScheduleActive() =
+    fun setPrimaryScheduleActive(): Observable<Int> =
         scheduleLocalRepository.setPrimaryScheduleActive()
 
-    private fun setAllScheduleInActive(list: ArrayList<Schedule>): ArrayList<Schedule> {
-
-
-        list.forEach { it: Schedule ->
-            it.active = false
-        }
-        Log.d("all Schedule Disabled ", "$list")
-        return list
+    private fun getScheduleBlockedPackages(): Observable<ArrayList<String>> = scheduleLocalRepository.getSchedules().map {
+        return@map ServiceUtil.getAllBlockedPackages(it)
     }
 
 
-    fun getScheduleBlockedPackages() = scheduleLocalRepository.getSchedules().map {
-        val packageList = ServiceUtil.getAllBlockedPackages(it)
-        Log.d("jkg", "${packageList.size}")
-        return@map packageList
-    }
+    fun getInstantLockCount(): Observable<Int> = scheduleLocalRepository.getCount()
 
-
-    fun getInstantLockCount() = scheduleLocalRepository.getCount()
-
-    fun getBlockedPackages() =
+    fun getBlockedPackages(): Observable<ArrayList<String>> =
         scheduleLocalRepository.getCount().flatMap {
             return@flatMap choosePackage(it)
-
-            /*if (it > 0) {
-              return@flatMap getInstantLockBlockedPackages().map {
-                    val list = it
-                    return@map getScheduleBlockedPackages().map {
-                        list.addAll(it)
-                        return@map list
-                    }
-                }
-            } else {
-               return@flatMap getScheduleBlockedPackages().map {
-                    return@map it
-                }
-            }*/
-
         }
 
-    /*fun choosePackage(size: Int) = when {
-        size > 0 -> {
-            val list = ArrayList<String>()
-            getInstantLockBlockedPackages().map {
-                list.addAll(it)
-                 getScheduleBlockedPackages().map {
-                    list.addAll(it)
-                    list
-                }
-            }
-
-        }
-        else -> {
-            getScheduleBlockedPackages().map {
-                return@map it
-            }
-
-        }*/
-
-
-    fun mergePackages() = Observable.zip(
+    private fun mergePackages(): Observable<ArrayList<String>> = Observable.zip(
         getScheduleBlockedPackages(),
         getInstantLockBlockedPackages(),
         BiFunction { t2: ArrayList<String>, t1: ArrayList<String> ->
@@ -119,7 +65,7 @@ class ScheduleRepository {
         }
     )
 
-    fun choosePackage(size: Int) = when {
+    private fun choosePackage(size: Int): Observable<ArrayList<String>> = when {
         size > 0 -> {
             mergePackages()
         }
@@ -131,7 +77,7 @@ class ScheduleRepository {
     }
 
 
-    fun mergeTiming() = Observable.zip(
+    private fun mergeTiming(): Observable<Long> = Observable.zip(
         scheduleLocalRepository.getScheduleEndTime(),
         scheduleLocalRepository.getInstantLockEndTime(),
         BiFunction { t1: ArrayList<WeekDayTime>, t2: ArrayList<Calendar> ->
@@ -141,7 +87,7 @@ class ScheduleRepository {
         }
     )
 
-    fun chooseTiming(size: Int) =
+    private fun chooseTiming(size: Int): Observable<Long> =
         when {
             size > 0 -> {
                 mergeTiming()
@@ -165,58 +111,18 @@ class ScheduleRepository {
             }
         }
         return endTimeList
-
-
     }
 
-    fun getLastSchedule() = scheduleLocalRepository.getLastSchedule()
+    fun getLastSchedule(): Observable<Int> = scheduleLocalRepository.getLastSchedule()
 
 
     fun removeSchedule(scheduleId: Int) = scheduleLocalRepository.removeSchedule(scheduleId)
 
-    fun getSchedules() =
+    fun getSchedules(): Observable<List<Schedule>> =
         scheduleLocalRepository.getSchedules().flatMap { return@flatMap withDrawableAndLabel(it) }
 
-    /*fun getScheduleById(id: Int) = scheduleLocalRepository.getScheduleById(id).flatMap {
-        return@flatMap scheduleWithAppInfoList(it)
-    }*/
-
-    fun getRunningTime() = scheduleLocalRepository.getCount().flatMap {
-
+    fun getRunningTime(): Observable<Long> = scheduleLocalRepository.getCount().flatMap {
         return@flatMap chooseTiming(it)
-    }
-
-
-    /*private fun checkSmallestEndTime(scheduleEndTime: List<Calendar>): Observable<Long> {
-        return scheduleLocalRepository.getInstantLockEndTime().map {
-            var cal = Calendar.getInstance()
-            cal.timeInMillis = it
-            val list = (scheduleEndTime as ArrayList<Calendar>)
-            list.add(cal)
-            return@map ServiceUtil.getRunningTime(list)
-
-        }
-    }*/
-
-
-    private fun scheduleWithAppInfoList(schedule: Schedule): Observable<Schedule> {
-        return Observable.fromCallable {
-            val localAppList: ArrayList<AppInfo> = ArrayList()
-            schedule.appList?.forEach {
-                val pkgManager = Application.instance.packageManager
-                val appInfo = pkgManager.getApplicationInfo(it, 0)
-                localAppList.add(
-                    AppInfo(
-                        name = pkgManager.getApplicationLabel(appInfo).toString(),
-                        icon = appInfo.loadIcon(pkgManager),
-                        blocked = true,
-                        packageName = it
-                    )
-                )
-            }
-            schedule.appInfoList = localAppList
-            return@fromCallable schedule
-        }
     }
 
     private fun withDrawableAndLabel(schedules: List<Schedule>): Observable<List<Schedule>> {
@@ -243,15 +149,13 @@ class ScheduleRepository {
         }.subscribeOn(Schedulers.io())
     }
 
-    fun insertInstantLock(schedule: InstantLockSchedule) =
+    fun insertInstantLock(schedule: InstantLockSchedule): Observable<Long> =
         scheduleLocalRepository.insertInstantLock(schedule)
 
-    fun deleteInstantLock() = scheduleLocalRepository.deleteInstantLock().subscribe()
+    fun deleteInstantLock(): Disposable = scheduleLocalRepository.deleteInstantLock().subscribe()
 
     fun updateInstantLockSchedule(schedule: InstantLockSchedule) =
         scheduleLocalRepository.updateInstantSchedule(schedule)
 
-
-    fun getInstantLock() = scheduleLocalRepository.getInstantLock()
-
+    fun getInstantLock(): Observable<InstantLockSchedule> = scheduleLocalRepository.getInstantLock()
 }

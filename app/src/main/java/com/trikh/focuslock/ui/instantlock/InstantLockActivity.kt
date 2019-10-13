@@ -178,14 +178,14 @@ class InstantLockActivity : AppCompatActivity(), AppPickerDialog.InteractionList
                         }
 
                     } else {
-                        if (time.compareTo(10) < 0) {
+                        if (time < 10) {
                             CustomDialog(
                                 R.string.minimum_time_msg,
                                 {},
                                 R.string.ok_text,
                                 R.string.empty_string
                             ).show(supportFragmentManager, "")
-                        } else if (blockedApps!!.compareTo(0) <= 0) {
+                        } else if (blockedApps!! <= 0) {
                             CustomDialog(
                                 R.string.minimum_blocked_apps_msg,
                                 {},

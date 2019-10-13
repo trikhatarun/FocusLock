@@ -16,7 +16,7 @@ class InstantLockViewModel : ViewModel() {
     val applicationList: MutableLiveData<List<AppInfo>> =
         MutableLiveData<List<AppInfo>>().apply { value = emptyList() }
     val appPicker: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val scheduleRepository = ScheduleRepository()
+    private val scheduleRepository = ScheduleRepository()
     fun showAppPicker() {
         appPicker.postValue(Event(Unit))
     }
@@ -49,11 +49,5 @@ class InstantLockViewModel : ViewModel() {
         val instantLockSchedule = InstantLockSchedule(endTime = getEndTime(), blockedApps = getBlockedPackageNames())
 
         return scheduleRepository.insertInstantLock(instantLockSchedule)
-    }
-
-    fun updateInstantLockSchedule(): InstantLockSchedule {
-        val instantLockSchedule = InstantLockSchedule(endTime = getEndTime(), blockedApps = getBlockedPackageNames())
-        scheduleRepository.updateInstantLockSchedule(instantLockSchedule)
-        return instantLockSchedule
     }
 }
