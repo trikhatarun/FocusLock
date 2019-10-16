@@ -1,19 +1,14 @@
 package com.trikh.focuslock.ui.onboarding.timepicker
 
 
-import android.app.usage.UsageEvents
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
@@ -21,13 +16,9 @@ import com.trikh.focuslock.R
 import com.trikh.focuslock.databinding.FragmentTimePickerBinding
 import com.trikh.focuslock.utils.TimeDurationUtils
 import com.trikh.focuslock.widget.customdialog.CustomDialog
-import kotlinx.android.synthetic.main.activity_custom_schedule.*
 import kotlinx.android.synthetic.main.fragment_time_picker.view.*
 import kotlinx.android.synthetic.main.fragment_time_picker.view.nestedScrollView
 import kotlinx.android.synthetic.main.fragment_time_picker.view.timePicker
-import kotlinx.android.synthetic.main.instant_lock_schedule.view.*
-import java.util.*
-import kotlin.math.min
 
 class TimePickerFragment : Fragment() {
 
@@ -149,7 +140,7 @@ class TimePickerFragment : Fragment() {
                     endTime
                 )
             )
-            val duration = TimeDurationUtils.calculateDuration(startTime, endTime)
+            val duration = TimeDurationUtils.calculateDurationRoundOffTen(startTime, endTime)
             Log.d("TimePickerViewModel:", " duration: $duration")
         }
     }

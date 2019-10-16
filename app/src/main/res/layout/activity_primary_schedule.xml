@@ -162,7 +162,7 @@
                                 android:id="@+id/time_duration_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{TimeDurationUtils.calculateDuration(viewModel.startTime,viewModel.endTime)}"
+                                android:text="@{TimeDurationUtils.calculateDurationRoundOffTen(viewModel.startTime,viewModel.endTime)}"
                                 android:textSize="22sp"
                                 app:layout_constraintBottom_toBottomOf="@id/timePicker"
                                 app:layout_constraintEnd_toEndOf="@id/timePicker"

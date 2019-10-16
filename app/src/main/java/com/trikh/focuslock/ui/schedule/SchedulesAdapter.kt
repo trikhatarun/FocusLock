@@ -1,5 +1,6 @@
 package com.trikh.focuslock.ui.schedule
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +82,6 @@ class SchedulesAdapter(val scheduleInteractionListener: ScheduleInteractionListe
     inner class InstantLockViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(instantLock: InstantLockSchedule?) {
             instantLock?.run {
-                val startTime = Calendar.getInstance()
                 val endTimeCalendar = Calendar.getInstance()
                 endTimeCalendar.timeInMillis = endTime
                 val appInfoList = IconsUtils(itemView.context).getIconsFromPackageManager(blockedApps)
@@ -90,7 +90,16 @@ class SchedulesAdapter(val scheduleInteractionListener: ScheduleInteractionListe
                 itemView.blockedAppsRv.adapter = BlockedAppsAdapter(appInfoList)
                 itemView.blockedAppsLabelTv.text =
                     Application.instance.getString(R.string.blocked_apps, appInfoList.size)
-                itemView.time.text = TimeDurationUtils.calculateDuration(startTime, endTimeCalendar)
+
+                val timer = object: CountDownTimer(TimeDurationUtils.calculateDifferenceMillis(Calendar.getInstance(), endTimeCalendar), 60000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        itemView.time.text = TimeDurationUtils.calculateDuration(Calendar.getInstance(), endTimeCalendar)
+                    }
+
+                    override fun onFinish() {
+                    }
+                }
+                timer.start()
             }
         }
     }
@@ -124,7 +133,7 @@ class SchedulesAdapter(val scheduleInteractionListener: ScheduleInteractionListe
                     itemView.startTimeLabelTv.context.resources.getString(R.string.sleep_time)
             }
 
-            val duration = TimeDurationUtils.calculateDuration(schedule.startTime, schedule.endTime)
+            val duration = TimeDurationUtils.calculateDurationRoundOffTen(schedule.startTime, schedule.endTime)
             itemView.hours_tv.text = duration
 
             val level: Int = if (schedule.level == -1) {

@@ -35,11 +35,10 @@ class AppBlockService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         start()
-        return START_STICKY;
+        return START_STICKY
     }
 
     private fun start() {
-
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.app_blocked_message))
